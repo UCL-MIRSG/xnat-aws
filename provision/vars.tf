@@ -12,6 +12,12 @@ variable "availability_zone" {
 }
 
 # SSH
+variable "keypair_name" {
+  type        = string
+  description = "Name of SSH keypair for logging into the servers"
+  default     = "aws-rsa"
+}
+
 variable "private_key_filename" {
   type        = string
   description = "Filename in which to store a private key to SSH into the servers"
