@@ -35,14 +35,20 @@ resource "aws_instance" "xnat_db" {
   }
 }
 
-output "xnat_web_public_ip" {
-  value = aws_instance.xnat_web.public_ip
-}
-
-output "xnat_db_public_ip" {
-  value = aws_instance.xnat_db.public_ip
+# Write the ansible hosts file
+resource "local_file" "ansible-hosts" {
+  content = templatefile("templates/ansible_hosts.yml.tftpl", {
+    xnat_web_hostname = aws_instance.xnat_web.public_dns,
+    xnat_web_ip       = aws_instance.xnat_web.public_ip,
+    xnat_web_port     = 22,
+    xnat_db_hostname  = aws_instance.xnat_db.public_dns,
+    xnat_db_ip        = aws_instance.xnat_db.public_ip,
+    xnat_db_port      = 22,
+  })
+  filename = "../configure/hosts.yml"
+  file_permission = "0644"
 }
 
 output "ansible_command" {
-  value = "ansible-playbook app.yml -u ec2-user --key-file '../ssh/aws_rsa.pem' -T 300 -i '${aws_instance.xnat_web.public_ip},${aws_instance.xnat_db.public_ip},'"
+  value = "ansible-playbook app.yml -u ec2-user --key-file '../ssh/aws_rsa.pem' -i hosts.yml --ssh-common-args='-o StrictHostKeyChecking=accept-new'"
 }
