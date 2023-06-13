@@ -4,5 +4,10 @@
 *.bkp
 *.retry
 *.*~
-hosts.yml # this is automatically created and destroyed by terraform
+
+# Password to decrypt vault
+.vault_password
+
+# this is automatically created and destroyed by terraform
+hosts.yml
 
