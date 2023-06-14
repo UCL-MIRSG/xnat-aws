@@ -1,9 +1,10 @@
 # Create infrastructure on AWS using Terraform
 
 The Terraform scripts will create the following:
-    - a Virtual Private Cloud (VPC) and security groups
-    - two EC2 instances - `xnat_web` and `xnat_db` for the webserver and database, respectively
-    - attach an Elastic Block Storage (EBS) volume to `xnat_db`
+
+- a Virtual Private Cloud (VPC) and security groups
+- two EC2 instances - `xnat_web` and `xnat_db` for the webserver and database, respectively
+- attach an Elastic Block Storage (EBS) volume to `xnat_db`
 
 ## Warning
 
@@ -32,5 +33,3 @@ To destroy the infrastructure:
 ```bash
 terraform destroy
 ```
-
-
