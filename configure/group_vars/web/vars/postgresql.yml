@@ -1,0 +1,17 @@
+---
+postgresql_client:
+  server_certificate_filename: "/usr/share/tomcat/.postgresql/root.crt" # where to copy the server certificate to on the client
+
+# mirsg.ssl_certificates
+postgresql_client_ssl_certificate:
+  owner: "{{ tomcat.owner }}"
+  group: "{{ tomcat.owner }}"
+  certificate_directory: "/usr/share/tomcat/.postgresql"
+  privatekey_filename: "/usr/share/tomcat/.postgresql/postgresql.key"
+  use_pk8: true
+  pk8_filename: "/usr/share/tomcat/.postgresql/postgresql.pk8"
+  csr_filename: "/usr/share/tomcat/.postgresql/postgresql.csr"
+  csr_common_name: "{{ xnat_web_server.host }}"
+  certificate_filename: "/usr/share/tomcat/.postgresql/postgresql.crt"
+  provider: "selfsigned"
+  cache_filename: "{{ database_client_certificate_cache_filename }}" # where to store the client certificate in cache

@@ -1,0 +1,22 @@
+---
+# Directory on the control node where the Ansible scripts can store files that
+# need to be temporarily cached, such as certificate files that are copied
+# between hosts.
+# You can persist these files between runs to speed up future deployments.
+# In a CI setup, it is best to choose a location that is not within the
+# repository clone, as the files that are created could interfere with the CI's
+# automated checkout and update processes
+ansible_cache_dir: "{{ lookup('env', 'HOME') }}/ansible_persistent_files"
+
+# Locale for the servers
+server_locale: "en_GB.UTF-8"
+
+# Mount point for external storage, for backups etc
+EXTERNAL_STORAGE_DRIVE: "/storage"
+
+# For nginx and tomcat
+dicom_port: 8104
+xnat_dicom_port: 8105
+
+# Set this to true if selinux is enabled on the hosting OS
+selinux_enabled: false

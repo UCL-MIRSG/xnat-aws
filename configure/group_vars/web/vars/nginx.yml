@@ -1,0 +1,22 @@
+---
+nginx:
+  owner: root
+  group: root
+  log_folder: "/var/log/nginx"
+  http_port: 80
+  https_port: 443
+  certs_dir: "/etc/nginx/ssl"
+  dh_params_file: "/etc/nginx/ssl/dhparam.pem"
+  conf_file: "/etc/nginx/nginx.conf"
+  ssl_cert_file: "/etc/nginx/ssl/server.cert"
+  ssl_key_file: "/etc/nginx/ssl/server.key"
+
+# Bit size for OpenSSL Diffie-Hellman Parameters. Higher bit sizes are more
+# secure, but require exponentially larger times for the one-off parameter
+# generation. Use 4096 for production. These may take 10mins+ to generate but
+# are only generated once per server.
+# For local testing (non-production), use 2048 to speed up deployment.
+diffie_helman_size_bits: 1024
+
+# Support for ipv6
+ipv6_enabled: false

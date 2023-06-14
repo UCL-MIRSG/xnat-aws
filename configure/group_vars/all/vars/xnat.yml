@@ -1,0 +1,76 @@
+---
+xnat_data_dir: "/data"
+xnat_root_dir: "{{ xnat_data_dir }}/xnat"
+xnat_home_dir: "{{ xnat_root_dir }}/home"
+
+# XNAT configuration shared between all servers
+xnat_common_config:
+  admin_email: "xnatadmin@{{ hostvars['xnat_web']['ansible_host'] }}"
+  restrictUserListAccessToAdmins: true
+  uiAllowNonAdminProjectCreation: false
+  allowNonAdminsToClaimUnassignedSessions: true
+  reloadPrearcDatabaseOnStartup: true
+  par: false
+  primaryAdminUsername: "{{ xnat_service_admin.username }}"
+  receivedFileUser: "{{ xnat_service_admin.username }}"
+  ipsThatCanSendEmailsThroughRest: "127.0.0.1"
+  sessionXmlRebuilderInterval: "5"
+  # "^.*$" for all IPs
+  enabledProviders: ["localdb"]
+  enableSitewideAnonymizationScript: true
+  sitewideAnonymizationScript: "//\nversion \"6.1\"\nproject != \"Unassigned\" ? (0008,1030) := project\n(0010,0010) := subject\n(0010,0020) := session"
+
+# XNAT configuration
+xnat_config:
+  site_name: "VAGRANT_XNAT"
+  site_description: "<h1>Vagrant XNAT</h1><p>A vagrant test instance of XNAT."
+  admin_password: "{{ vault_admin_password }}"
+
+# JSON representation of the site-wide anonymisation script: this could be
+# defined in a string, or extracted from a template file e.g. using
+# lookup('template, 'foo.j2') | to_json
+xnat_sitewide_anonymization_script: "{{ xnat_common_config.sitewideAnonymizationScript | to_json }}"
+
+xnat_service_admin:
+  username: "admin"
+  firstname: "ADMIN"
+  lastname: "USER"
+  password: "{{ vault_service_admin_password }}"
+
+xnat_plugin_urls:
+  - "https://api.bitbucket.org/2.0/repositories/xnatx/xnatx-batch-launch-plugin/downloads/batch-launch-0.6.0.jar"
+  - "https://github.com/VUIIS/dax/raw/main/misc/xnat-plugins/dax-plugin-genProcData-1.4.2.jar"
+  - "https://api.bitbucket.org/2.0/repositories/icrimaginginformatics/ohif-viewer-xnat-plugin/downloads/ohif-viewer-3.5.1-XNAT-1.8.7.jar"
+  - "https://api.bitbucket.org/2.0/repositories/xnatx/ml-plugin/downloads/ml-plugin-1.0.2.jar"
+  - "https://api.bitbucket.org/2.0/repositories/xnatx/datasets-plugin/downloads/datasets-plugin-1.0.3.jar"
+  - "https://api.bitbucket.org/2.0/repositories/xnatdev/xnat-image-viewer-plugin/downloads/ximgview-plugin-1.0.2.jar"
+  - "https://api.bitbucket.org/2.0/repositories/xnatx/xnatx-dxm-settings-plugin/downloads/dxm-settings-plugin-1.0.jar"
+
+xnat_plugin_bundle_urls: []
+
+xnat_plugin_packages: []
+
+# Configures whether the pipeline engine is installed
+pipeline_engine_enabled: true
+
+# Mail server settings
+smtp:
+  enabled: "false"
+
+# web server
+xnat_web_server:
+  host: "{{ hostvars['xnat_web']['ansible_host'] }}"
+  url: "https://{{ hostvars['xnat_web']['ansible_host'] }}"
+  ip: "{{ hostvars['xnat_web']['ansible_ip'] }}"
+  storage_dir: "{{ EXTERNAL_STORAGE_DRIVE }}/data"
+
+# database server
+xnat_db:
+  host: "{{ hostvars['xnat_db']['ansible_host'] }}"
+  port: 5432
+  postgres_xnat_database: "xnat"
+  postgres_xnat_user: "xnat"
+  postgres_xnat_password: "{{ vault_postgres_xnat_password }}"
+  storage_dir: "{{ EXTERNAL_STORAGE_DRIVE }}/pgsql"
+  data_dir: "{{ EXTERNAL_STORAGE_DRIVE }}/pgsql/{{ postgresql_version }}/data"
+  backups_dir: "{{ EXTERNAL_STORAGE_DRIVE }}/pgsql/backups"

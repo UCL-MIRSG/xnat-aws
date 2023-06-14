@@ -1,0 +1,20 @@
+---
+xnat:
+  owner: "{{ tomcat.owner }}"
+  group: "{{ tomcat.group }}"
+  install_downloads: "{{ tomcat.catalina_home }}/install_downloads"
+  pipeline_install_dir: "{{ tomcat.catalina_home }}/pipeline_installer"
+  processingUrl: ""
+
+xnat_version: 1.8.7.1
+xnat_pipeline_version: 1.8.3
+
+xnat_source:
+  war_file_name: "xnat-web-{{ xnat_version }}.war"
+  plugins_downloads_dir: "/ansible/downloads/xnat_plugins"
+  xnat_downloads_dir: "/ansible/downloads/xnat"
+  pipeline_installer_file_name: "pipeline-installer-{{ xnat_pipeline_version }}.tar"
+  xnat_war_url: "https://api.bitbucket.org/2.0/repositories/xnatdev/xnat-web/downloads/xnat-web-{{ xnat_version }}.war"
+  pipelines_url: "https://api.github.com/repos/NrgXnat/xnat-pipeline-engine/tarball/{{ xnat_pipeline_version }}"
+  context_file_location: "/usr/share/tomcat/webapps/ROOT/META-INF/context.xml"
+
