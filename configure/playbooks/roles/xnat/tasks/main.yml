@@ -1,0 +1,29 @@
+---
+- name: Install lxml using pip
+  ansible.builtin.pip:
+    name:
+      - lxml
+
+- name: Ensure dependencies are installed
+  ansible.builtin.yum:
+    name: ["postgresql", "wget"]
+    state: installed
+
+- name: "Configure XNAT directories"
+  include: directories.yml
+
+- name: "Add or upgrade XNAT code"
+  include: upgrade_xnat.yml
+
+- name: "Add or upgrade plugins"
+  include: plugins.yml
+
+- name: "Add or upgrade pipeline installer"
+  include: pipelines.yml
+  when: pipeline_engine_enabled
+
+- name: "Configure XNAT settings files"
+  include: settings_files.yml
+
+- name: "XNAT site configuration"
+  include: configure.yml

@@ -1,0 +1,22 @@
+---
+- name: Ensure postgres is running
+  ansible.builtin.service:
+    name: "{{ postgresql_service.name }}"
+    state: started
+    enabled: true
+
+- name: "Create XNAT PostgreSQL user"
+  become: true
+  become_user: postgres
+  community.postgresql.postgresql_user:
+    name: "{{ xnat_db.postgres_xnat_user }}"
+    password: "{{ xnat_db.postgres_xnat_password }}"
+    port: "{{ xnat_db.port }}"
+
+- name: "Create XNAT PostgreSQL db"
+  become: true
+  become_user: postgres
+  community.postgresql.postgresql_db:
+    name: "{{ xnat_db.postgres_xnat_database }}"
+    owner: "{{ xnat_db.postgres_xnat_user }}"
+    port: "{{ xnat_db.port }}"

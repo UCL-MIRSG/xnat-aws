@@ -1,0 +1,12 @@
+---
+- name: check if locale already set
+  ansible.builtin.shell: |
+    set -o pipefail
+    localectl status | grep -i {{ server_locale | quote }}
+  register: found_locale
+  changed_when: false
+  failed_when: false
+
+- name: set locale
+  ansible.builtin.command: "localectl set-locale LANG={{ server_locale | quote }}"
+  when: found_locale.rc != 0

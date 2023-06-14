@@ -1,0 +1,92 @@
+---
+- name: Stop Tomcat
+  ansible.builtin.service:
+    name: tomcat
+    state: stopped
+  when: "tomcat_check.stat.exists"
+
+- name: Back up existing Tomcat {{ tomcat.catalina_home }}
+  ansible.builtin.command: "mv {{ tomcat.catalina_home }} /usr/share/tomcat_bkp"
+  args:
+    creates: "/usr/share/tomcat_bkp"
+  when: "tomcat_check.stat.exists"
+
+- name: Remove currently installed Tomcat folder
+  ansible.builtin.file:
+    path: "{{ tomcat.catalina_home }}"
+    state: absent
+
+- name: Ensure Tomcat directory exists
+  ansible.builtin.file:
+    path: "{{ tomcat.catalina_home }}"
+    state: directory
+    owner: "{{ tomcat.owner }}"
+    group: "{{ tomcat.group }}"
+    mode: 0755
+
+- name: Download and unarchive Tomcat v{{ tomcat_version }}
+  ansible.builtin.unarchive:
+    src: "{{ tomcat.binary_url }}"
+    dest: "{{ tomcat.catalina_home }}"
+    remote_src: true
+    owner: "{{ tomcat.owner }}"
+    group: "{{ tomcat.group }}"
+    extra_opts: "--strip-components=1"
+    creates: "{{ tomcat.catalina_home }}/bin"
+
+- name: Remove default Tomcat webapps
+  ansible.builtin.file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - "{{ tomcat.catalina_home }}/webapps/examples"
+    - "{{ tomcat.catalina_home }}/webapps/manager"
+    - "{{ tomcat.catalina_home }}/webapps/host-manager"
+    - "{{ tomcat.catalina_home }}/webapps/docs"
+
+- name: Remove default Tomcat ROOT application
+  ansible.builtin.file:
+    state: absent
+    path: "{{ tomcat.catalina_home }}/webapps/ROOT"
+
+- name: Check if a pipeline_installer exists
+  ansible.builtin.stat:
+    path: "/usr/share/tomcat_bkp/pipeline_installer"
+  register: pipeline_installer_folder
+
+- name: "Restore pipeline installer if it exists"
+  ansible.builtin.copy:
+    src: "/usr/share/tomcat_bkp/pipeline_installer"
+    dest: "{{ tomcat.catalina_home }}"
+    owner: "{{ tomcat.owner }}"
+    group: "{{ tomcat.group }}"
+    mode: preserve
+    remote_src: true
+  when:
+    - "tomcat_check.stat.exists"
+    - "pipeline_installer_folder.stat.exists"
+  notify: restart tomcat
+
+- name: "Restore previously installed XNAT and files"
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ tomcat.catalina_home }}"
+    owner: "{{ tomcat.owner }}"
+    group: "{{ tomcat.group }}"
+    mode: preserve
+    remote_src: true
+  with_items:
+    - "/usr/share/tomcat_bkp/webapps"
+    - "/usr/share/tomcat_bkp/.postgresql"
+    - "/usr/share/tomcat_bkp/logs"
+    - "/usr/share/tomcat_bkp/install_downloads"
+  when: "tomcat_check.stat.exists"
+  notify: restart tomcat
+
+- name: Show suggested commands for removing backed-up Tomcat folder
+  ansible.builtin.debug:
+    msg:
+      - "A backup of the previously installed Tomcat folder was created at /usr/share/tomcat_bkp"
+      - "You may wish to remove this"
+      - "e.g sudo rm -rf /usr/share/tomcat_bkp"
+  when: "tomcat_check.stat.exists"

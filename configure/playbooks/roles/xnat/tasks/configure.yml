@@ -1,0 +1,179 @@
+---
+- name: "Ensure any Tomcat restart handlers have been called before REST configuration"
+  ansible.builtin.meta: flush_handlers
+
+- name: "Ensure Tomcat is running"
+  ansible.builtin.service:
+    name: "tomcat"
+    state: started
+    enabled: true
+
+- name: "Waiting for Tomcat to start - this could take several minutes: {{ xnat_web_server.url }}"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}"
+    method: GET
+    validate_certs: "{{ ssl.validate_certs }}"
+  register: _result
+  until: _result.status == 200
+  retries: 10
+  delay: 30
+
+# XNAT initally creates a default admin account with a default password.
+# On the first run, we change the default admin password, then use this account to create a service user, and then disable the default admin account.
+
+# First, test if the default admin password needs to be changed.
+# To do this, first request a restricted page using the default admin credentials.
+# If this succeeds (200), this is the initial run and the password needs to be changed.
+# Subsequently, this should return 401 indicating the password has already been changed and/or the account is disabled.
+- name: "Checking if the default admin credentials are the default values"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/siteConfig"
+    user: "admin"
+    password: "admin"
+    method: GET
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: 200, 401
+  register: admin_default_auth
+
+# If the previous call succeeded, it means the default admin password has not yet been changed so we change it now
+- name: "Changing default admin password"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/users/admin"
+    user: "admin"
+    password: "admin"
+    method: PUT
+    body_format: json
+    body: '{"password":"{{ xnat_config.admin_password }}", "confirmPassword":"{{ xnat_config.admin_password }}"}'
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: 200
+  register: create
+  when: admin_default_auth.status == 200
+
+# At this point the default admin password has been changed.
+# Next, ensure the service account exists, and then that the default admin account has been disabled.
+# To do this, use the admin user with the updated admin password to request the XNAT API details for the service user (/xpi/users/USERNAME)
+# If an authentication error occurs (401) then the default admin is disabled, so we assume the service account must already exist
+# If this succeeds (200) then the service_admin is already present, but the default admin is still enabled
+# If user is not found (404 or 500) then the service_admin has not yet been created and the default admin is still enabled
+- name: "Check existence of service admin user using default admin"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/users/{{ xnat_service_admin.username }}"
+    user: "admin"
+    password: "{{ xnat_config.admin_password }}"
+    method: GET
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: 200, 404, 401, 500
+  register: service_admin_check
+
+# If the above service_admin_check failed with a non-authentication error (404, 500), then we create the service account
+- name: "Create service admin user"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/users/"
+    user: "admin"
+    password: "{{ xnat_config.admin_password }}"
+    method: POST
+    body_format: json
+    body:
+      admin: true
+      username: "{{ xnat_service_admin.username }}"
+      password: "{{ xnat_service_admin.password }}"
+      firstName: "{{ xnat_service_admin.firstname }}"
+      lastName: "{{ xnat_service_admin.lastname }}"
+      email: "{{ xnat_common_config.admin_email }}"
+      verified: true
+      enabled: true
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: 201
+  when: service_admin_check.status not in [200, 401]
+
+# Ensure that the created service_admin user has the correct admin role
+- name: "Set service admin user roles"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/users/{{ xnat_service_admin.username }}/roles/Administrator"
+    user: "admin"
+    password: "{{ xnat_config.admin_password }}"
+    method: PUT
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: 200
+  when: service_admin_check.status != 401
+
+# Ensure that the created service_admin user is non-expiring
+- name: "Set service admin account to non-expiring"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/users/{{ xnat_service_admin.username }}/roles/non_expiring"
+    user: "admin"
+    password: "{{ xnat_config.admin_password }}"
+    method: PUT
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: 200
+  when: service_admin_check.status != 401
+
+  # Give the created service_admin access to all data
+- name: "Set service admin role to all data admin"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/users/{{ xnat_service_admin.username }}/groups/ALL_DATA_ADMIN"
+    user: "admin"
+    password: "{{ xnat_config.admin_password }}"
+    method: PUT
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: 200
+  when: service_admin_check.status != 401
+
+# All further admin actions can then be undertaken using the new service_admin
+- name: "XNAT configuration"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/siteConfig"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: POST
+    body_format: json
+    body: "{{ lookup('template', 'roles/xnat/templates/xnat-settings.json.j2') }}"
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: 200
+  register: login
+
+# The default admin is disabled once it is verified that the service_admin works
+- name: "Disable default admin user"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/users/admin"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: PUT
+    body_format: json
+    body:
+      enabled: false
+      verified: false
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: 200, 201, 304
+  when: service_admin_check.status != 401
+
+- name: "Disable the guest user"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/users/guest"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: PUT
+    body_format: json
+    body:
+      enabled: false
+      verified: false
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: 200, 201, 304
+  when: service_admin_check.status != 401
+
+- name: "Store automation scripts"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/data/automation/scripts/{{ item.id }}"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: PUT
+    body_format: json
+    body:
+      scriptLabel: "{{ item.label }}"
+      description: "{{ item.description }}"
+      scriptVersion: "{{ item.version }}"
+      language: "{{ item.language }}"
+      content: "{{ item.script }}"
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: 200, 201, 304
+  loop: "{{ automation_scripts | default([]) }}"

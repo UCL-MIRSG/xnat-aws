@@ -1,0 +1,95 @@
+---
+- name: Ensure Ansible sefcontext dependencies are installed
+  ansible.builtin.yum:
+    name: ["python3-libselinux", "policycoreutils-python-utils"]
+    state: installed
+
+- name: Ensure Tomcat Native library is installed
+  ansible.builtin.yum:
+    name: "tomcat-native"
+    state: installed
+
+- name: Configure SELinux to allow Tomcat to listen on port {{ tomcat.port }}
+  community.general.seport:
+    ports: "{{ tomcat.port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+  when: selinux_enabled
+
+- name: Add tomcat group
+  ansible.builtin.group:
+    name: "{{ tomcat.group }}"
+
+- name: Add "tomcat" user
+  ansible.builtin.user:
+    name: "{{ tomcat.owner }}"
+    group: "{{ tomcat.group }}"
+    home: "{{ tomcat.catalina_home }}"
+    createhome: false
+    system: true
+
+- name: Check for existing Tomcat install
+  ansible.builtin.stat:
+    path: "{{ tomcat.catalina_home }}/bin"
+  register: tomcat_check
+
+- name: Check installed Tomcat version
+  ansible.builtin.shell: |
+    set -o pipefail
+    ./version.sh | grep -oP '(?<=Apache Tomcat/)([0-9]+\.?)+'
+  args:
+    chdir: "{{ tomcat.catalina_home }}/bin"
+  register: tomcat_check_version
+  when: "tomcat_check.stat.exists"
+  changed_when: false
+  failed_when: false
+
+- name: Upgrade/install Tomcat if needed
+  include: tasks/upgrade.yml
+  when: "not tomcat_check.stat.exists or tomcat_version not in tomcat_check_version.stdout"
+
+- name: Copy tomcat service file
+  ansible.builtin.template:
+    src: templates/tomcat.service.j2
+    dest: "{{ tomcat.service_config_file }}"
+    mode: 0644
+  when: ansible_service_mgr == "systemd"
+
+- name: Copy Tomcat config file
+  ansible.builtin.template:
+    src: tomcat.conf.j2
+    dest: "{{ tomcat.config_file }}"
+    owner: "{{ tomcat.owner }}"
+    group: "{{ tomcat.group }}"
+    mode: 0644
+    force: true
+  notify: Restart tomcat
+
+- name: Start and enable tomcat
+  ansible.builtin.service:
+    daemon_reload: true
+    name: tomcat
+    state: started
+    enabled: true
+  when: ansible_service_mgr == "systemd"
+
+- name: Copy Tomcat setenv.sh file
+  ansible.builtin.template:
+    src: setenv.sh.j2
+    dest: "{{ tomcat.catalina_home }}/bin/setenv.sh"
+    owner: "{{ tomcat.owner }}"
+    group: "{{ tomcat.group }}"
+    mode: 0644
+    force: true
+  notify: Restart tomcat
+
+- name: Copy Tomcat server config file
+  ansible.builtin.template:
+    src: server.xml.j2
+    dest: "{{ tomcat.server_config_file }}"
+    owner: "{{ tomcat.owner }}"
+    group: "{{ tomcat.group }}"
+    mode: 0644
+    force: true
+  notify: Restart tomcat

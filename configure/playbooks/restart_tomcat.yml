@@ -1,0 +1,22 @@
+---
+- name: Stop and restart tomcat
+  hosts: xnat_web
+  become: true
+  become_user: root
+  become_method: sudo
+  gather_facts: true
+
+  pre_tasks:
+    - name: stop tomcat
+      ansible.builtin.service:
+        name: tomcat
+        state: stopped
+
+  roles:
+    - { role: tomcat }
+
+  post_tasks:
+    - name: restart tomcat
+      ansible.builtin.service:
+        name: tomcat
+        state: restarted

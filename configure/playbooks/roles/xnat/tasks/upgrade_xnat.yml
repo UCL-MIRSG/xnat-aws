@@ -1,0 +1,76 @@
+---
+- name: "Ensure download directories exist"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ xnat.owner }}"
+    group: "{{ xnat.group }}"
+    mode: 0755
+  with_items:
+    - "{{ xnat_source.xnat_downloads_dir }}"
+
+- name: Download XNAT WAR
+  ansible.builtin.get_url:
+    url: "{{ xnat_source.xnat_war_url }}"
+    dest: "{{ xnat_source.xnat_downloads_dir }}/{{ xnat_source.war_file_name }}"
+    timeout: 30
+    owner: "{{ xnat.owner }}"
+    group: "{{ xnat.group }}"
+    mode: 0644
+
+- name: "Ensure directories exist for install files"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: "{{ xnat.owner }}"
+    group: "{{ xnat.group }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - "{{ xnat.install_downloads }}"
+
+# We do an advance check without modification using check_mode. This allows us
+# to stop Tomcat if required before updating the WAR file.
+- name: "Check if XNAT war file has changed"
+  ansible.builtin.copy:
+    src: "{{ xnat_source.xnat_downloads_dir }}/{{ xnat_source.war_file_name }}"
+    dest: "{{ tomcat.root_webapp }}"
+    owner: "{{ tomcat.owner }}"
+    group: "{{ tomcat.group }}"
+    mode: 0600
+    remote_src: true
+  check_mode: true
+  register: xnat_war_file_check
+
+# If the war file did not change but XNAT has not already been deployed (eg due
+# to a previous failed deployment), we may need to force tomcat to restart
+- name: check if XNAT is already deployed
+  ansible.builtin.stat:
+    path: "{{ tomcat.root }}/xnat-templates"
+  register: deployed_xnat_found
+
+# Stop Tomcat before deploying the WAR file, otherwise Tomcat may start extracting the file before it has finished copying
+# But do not stop Tomcat unless we are going to deploy the new file
+- name: Ensure tomcat is not running during deployment
+  ansible.builtin.service:
+    name: tomcat
+    state: stopped
+  when: xnat_war_file_check.changed or not deployed_xnat_found.stat.exists
+
+# Tomcat will not redeploy a WAR file that has already been expanded, even if
+# the WAR file changes. We need to clear out the existing deployment.
+- name: Remove existing XNAT deployment because of updated WAR file
+  ansible.builtin.file:
+    state: absent
+    path: "{{ tomcat.root }}"
+  when: xnat_war_file_check.changed
+
+- name: "Deploy XNAT war file"
+  ansible.builtin.copy:
+    src: "{{ xnat_source.xnat_downloads_dir }}/{{ xnat_source.war_file_name }}"
+    dest: "{{ tomcat.root_webapp }}"
+    owner: "{{ tomcat.owner }}"
+    group: "{{ tomcat.group }}"
+    mode: 0600
+    remote_src: true
+  register: deployed_war_file
+  when: xnat_war_file_check.changed

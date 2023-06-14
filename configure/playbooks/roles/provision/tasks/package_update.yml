@@ -1,0 +1,18 @@
+---
+- name: upgrade all packages # noqa package-latest
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+
+- name: Install EPEL-release
+  block:
+    - name: Install the EPEL repository
+      ansible.builtin.raw: dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm -y
+    
+    - name: Now enable the CRB repository (see https://pagure.io/epel/issue/128#comment-804295)
+      raw: /usr/bin/crb enable
+
+- name: Ensure epel is installed
+  ansible.builtin.dnf:
+    name: epel-release
+    state: present

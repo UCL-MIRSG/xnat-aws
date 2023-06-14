@@ -1,0 +1,20 @@
+---
+- name: "Configure xnat-conf.properties"
+  ansible.builtin.template:
+    src: "xnat-conf.properties.j2"
+    dest: "{{ xnat_config_dir }}/xnat-conf.properties"
+    owner: "{{ xnat.owner }}"
+    group: "{{ xnat.group }}"
+    mode: 0644
+    force: true
+  notify: restart tomcat
+
+- name: "Configure prefs-init"
+  ansible.builtin.template:
+    src: "prefs-init.j2"
+    dest: "{{ xnat_config_dir }}/prefs-init.ini"
+    owner: "{{ xnat.owner }}"
+    group: "{{ xnat.group }}"
+    mode: 0644
+    force: true
+  notify: restart tomcat

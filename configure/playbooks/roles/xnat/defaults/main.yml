@@ -1,0 +1,13 @@
+---
+xnat_archive_dir: "{{ xnat_root_dir }}/archive"
+xnat_prearchive_dir: "{{ xnat_root_dir }}/prearchive"
+xnat_cache_dir: "{{ xnat_root_dir }}/cache"
+xnat_build_dir: "{{ xnat_root_dir }}/build"
+xnat_ftp_dir: "{{ xnat_root_dir }}/ftp"
+xnat_pipeline_dir: "{{ xnat_root_dir }}/pipeline"
+xnat_inbox_dir: "{{ xnat_root_dir }}/inbox"
+xnat_plugins_dir: "{{ xnat_home_dir }}/plugins"
+xnat_config_dir: "{{ xnat_home_dir }}/config"
+xnat_logs_dir: "{{ xnat_home_dir }}/logs"
+xnat_work_dir: "{{ xnat_home_dir }}/work"
+xnat_create_data_directory: true

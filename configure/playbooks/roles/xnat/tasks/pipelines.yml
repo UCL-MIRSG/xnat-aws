@@ -1,0 +1,67 @@
+---
+- name: Download pipelines installer
+  ansible.builtin.get_url:
+    url: "{{ xnat_source.pipelines_url }}"
+    dest: "{{ xnat_source.xnat_downloads_dir }}/{{ xnat_source.pipeline_installer_file_name }}"
+    timeout: 30
+    owner: "{{ xnat.owner }}"
+    group: "{{ xnat.group }}"
+    mode: 0644
+
+- name: "Ensure pipeline installer folder exists"
+  ansible.builtin.file:
+    path: "{{ xnat.pipeline_install_dir }}"
+    owner: "{{ xnat.owner }}"
+    group: "{{ xnat.group }}"
+    state: directory
+    mode: 0755
+
+- name: "Extract pipeline installer files"
+  ansible.builtin.unarchive:
+    src: "{{ xnat_source.xnat_downloads_dir }}/{{ xnat_source.pipeline_installer_file_name }}"
+    dest: "{{ xnat.pipeline_install_dir }}"
+    owner: "{{ xnat.owner }}"
+    group: "{{ xnat.group }}"
+    remote_src: true
+    extra_opts: [--strip-components=1]
+  register: pipeline_extract
+
+- name: "Configure pipeline installer gradle.properties"
+  ansible.builtin.template:
+    src: "gradle.properties.j2"
+    dest: "{{ xnat.pipeline_install_dir }}/gradle.properties"
+    owner: "{{ xnat.owner }}"
+    group: "{{ xnat.group }}"
+    mode: 0644
+    force: true
+  register: pipeline_config
+
+- name: check if pipelines already built
+  ansible.builtin.stat:
+    path: "{{ xnat_pipeline_dir }}/config"
+  register: pipeline_deployment
+
+- name: "Run pipeline builder"
+  ansible.builtin.command: ./gradlew
+  args:
+    chdir: "{{ xnat.pipeline_install_dir }}"
+  when: pipeline_extract.changed or pipeline_config.changed or not pipeline_deployment.stat.exists
+
+- name: "Ensure pipelines subdirectory ownership is correct"
+  ansible.builtin.file:
+    path: "{{ xnat_pipeline_dir }}"
+    state: directory
+    owner: "{{ xnat.owner }}"
+    group: "{{ xnat.group }}"
+    recurse: true
+  notify: restart tomcat
+
+- name: Add self-signed web certificate for web server to keystore
+  community.general.java_cert:
+    cert_path: "{{ ssl.server_cert }}"
+    keystore_path: "{{ java.keystore_path }}"
+    keystore_pass: "{{ java_keystore.keystore_pass }}"
+    cert_alias: "{{ xnat_web_server.host }}"
+    keystore_create: true
+    state: present
+  when: ssl.use_ssl and not ssl.validate_certs

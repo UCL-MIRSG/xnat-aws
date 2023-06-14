@@ -1,0 +1,32 @@
+[siteConfig]
+
+siteId={{ xnat_config.site_name }}
+siteUrl={{ xnat_web_server.url }}
+adminEmail={{ xnat_common_config.admin_email }}
+
+archivePath={{ xnat_archive_dir }}
+prearchivePath={{ xnat_prearchive_dir }}
+cachePath={{ xnat_cache_dir }}
+buildPath={{ xnat_build_dir }}
+ftpPath={{ xnat_ftp_dir }}
+pipelinePath={{ xnat_pipeline_dir }}
+
+requireLogin=true
+userRegistration=false
+enableCsrfToken=true
+sessionTimeout=1 hour
+initialized=false
+
+[notifications]
+
+smtpEnabled={{ smtp.enabled }}
+smtpHostname={{ smtp.hostname | default("localhost", true) }}
+smtpPort={{ smtp.port }}
+smtpProtocol={{ smtp.protocol }}
+smtpAuth={{ smtp.auth }}
+smtpUsername={{ smtp.username }}
+smtpPassword={{ smtp.password }}
+smtpStartTls={{ smtp.start_tls }}
+smtpSslTrust={{ smtp.ssl_trust }}
+
+emailPrefix={{ xnat_config.site_name }}
