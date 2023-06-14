@@ -10,3 +10,12 @@ all:
       ansible_host: ${xnat_db_hostname}
       ansible_ip: ${xnat_db_ip}
       ansible_port: ${xnat_db_port}
+
+  # Groups that hosts belong
+  children:
+    db:
+      hosts:
+        xnat_db:
+    web:
+      hosts:
+        xnat_web:

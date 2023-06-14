@@ -45,7 +45,7 @@ ansible-vault encrypt vault --vault-password-file ../../.vault_password
 After creating the infrastructure using Terraform and installing the Ansible requirements, we can configure the servers by going to the `xnat-aws/configure` directory and running the following command:
 
 ```bash
-ansible-playbook playbooks/install_xnat.yml -u ec2-user --key-file '../ssh/aws_rsa.pem' -i hosts.yml --ssh-common-args='-o StrictHostKeyChecking=accept-new'
+ansible-playbook playbooks/install_xnat.yml -u ec2-user -i hosts.yml --vault-password-file=.vault_password --key-file '../ssh/aws_rsa.pem' --ssh-common-args='-o StrictHostKeyChecking=accept-new'
 ```
 
 **Note**, we set `StrictHostKeyChecking=accept-new` to automatically accept fingerprints for new hosts. This means we still do host key checking but we do not need to explicitly accept keys for new hosts.
@@ -53,4 +53,3 @@ ansible-playbook playbooks/install_xnat.yml -u ec2-user --key-file '../ssh/aws_r
 ## Logging in to the web server
 
 Once Ansible has finished configuring the server, you should be able to go to the public dns hostname of the web server and log into xnat. To check the hostname, go to the `xnat-aws/provision` directory and type `terraform output`. This will print, among other things, the hostname of the web server.
-
