@@ -55,5 +55,5 @@ resource "local_file" "ansible-hosts" {
 }
 
 output "ansible_command" {
-  value = "ansible-playbook playbooks/install_xnat.yml -u centos -i hosts.yml --vault-password-file=~/.vault_password --key-file '../ssh/aws_rsa.pem' --ssh-common-args='-o StrictHostKeyChecking=accept-new'"
+  value = "ansible-playbook playbooks/install_xnat.yml -u centos -i hosts.yml --vault-password-file=.vault_password --key-file '../ssh/aws_rsa.pem' --ssh-common-args='-o StrictHostKeyChecking=accept-new'"
 }
