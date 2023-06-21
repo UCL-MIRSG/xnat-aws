@@ -27,5 +27,5 @@ variable "private_key_filename" {
 variable "ec2_instance_type" {
   type        = string
   description = "EC2 instance type to use for xnat_web and xnat_db servers"
-  default     = "t2.micro"
+  default     = "t2.small"
 }
