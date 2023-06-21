@@ -1,13 +1,23 @@
 ---
-- name: Provision web server and create PostgreSQL client certificate
+- name: Determine whether we're running on RedHat 7
+  hosts: all
+  tasks:
+    - name: Check if we're running on RedHat 7
+      ansible.builtin.set_fact:
+        os_is_redhat_7: "{{ ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] is version('7') }}"
+
+- name: Create PostgreSQL client certificate
   hosts: web
   become: true
   become_user: root
   become_method: sudo
   gather_facts: true
+  vars:
+    install_python: "{{ install_python2 if os_is_redhat_7 else install_python3 }}"
 
   roles:
     - { role: provision }
+    - { role: mirsg.install_python }
     - { role: java }
     - { role: tomcat }
     - { role: nginx }
@@ -22,12 +32,15 @@
   become_user: root
   become_method: sudo
   gather_facts: true
+  vars:
+    install_python: "{{ install_python2 if os_is_redhat_7 else install_python3 }}"
 
   roles:
     - { role: provision }
+    - { role: mirsg.install_python }
     - { role: mirsg.postgresql }
     - { role: setup_xnat_db }
-    - { role: mirsg.firewalld }
+    #- { role: mirsg.firewalld }
 
 - name: Add PG server certificate to client
   hosts: web
@@ -39,4 +52,5 @@
   roles:
     - { role: add_pg_server_cert_to_client, when: postgresql_use_ssl }
     - { role: xnat }
-    - { role: mirsg.firewalld }
+    #- { role: mirsg.firewalld }
+    - { role: container_service_client, when: container_service_enabled }

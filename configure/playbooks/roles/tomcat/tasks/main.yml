@@ -1,7 +1,19 @@
 ---
-- name: Ensure Ansible sefcontext dependencies are installed
+- name: Ensure Ansible sefcontext dependencies are installed (Python 2)
+  ansible.builtin.yum:
+    name: ["libselinux-python", "policycoreutils-python"]
+    state: installed
+  when: ansible_facts["python"]["version"]["major"] is version("2")
+
+- name: Ensure Ansible sefcontext dependencies are installed (Python 3)
   ansible.builtin.yum:
     name: ["python3-libselinux", "policycoreutils-python-utils"]
+    state: installed
+  when: ansible_facts["python"]["version"]["major"] is version("3")
+
+- name: Ensure epel is installed
+  ansible.builtin.yum:
+    name: "epel-release"
     state: installed
 
 - name: Ensure Tomcat Native library is installed
@@ -64,7 +76,7 @@
     group: "{{ tomcat.group }}"
     mode: 0644
     force: true
-  notify: Restart tomcat
+  notify: restart tomcat
 
 - name: Start and enable tomcat
   ansible.builtin.service:
@@ -82,7 +94,7 @@
     group: "{{ tomcat.group }}"
     mode: 0644
     force: true
-  notify: Restart tomcat
+  notify: restart tomcat
 
 - name: Copy Tomcat server config file
   ansible.builtin.template:
@@ -92,4 +104,4 @@
     group: "{{ tomcat.group }}"
     mode: 0644
     force: true
-  notify: Restart tomcat
+  notify: restart tomcat

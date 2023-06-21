@@ -3,6 +3,7 @@ collections:
   - community.general
   - ansible.posix
   - community.postgresql
+  - community.docker
   - community.crypto
 
 roles:
@@ -19,5 +20,5 @@ roles:
     name: mirsg.ssl_certificates
 
   - src: https://github.com/UCL-MIRSG/ansible-role-postgresql.git
-    version: 2023.03.02.0
+    version: 2023.04.28.0
     name: mirsg.postgresql

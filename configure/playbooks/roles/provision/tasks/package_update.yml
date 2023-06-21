@@ -1,18 +1,31 @@
 ---
+- name: Ensure base mirrorlist is in repository file (CentOS)
+  community.general.ini_file:
+    path: /etc/yum.repos.d/CentOS-Base.repo
+    section: base
+    option: mirrorlist
+    value: http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os
+    backup: true
+    mode: 0644
+  when: ansible_facts['distribution'] == "CentOS"
+
+- name: Ensure updates mirrorlist is in repository file (CentOS)
+  community.general.ini_file:
+    path: /etc/yum.repos.d/CentOS-Base.repo
+    section: updates
+    option: mirrorlist
+    value: http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates
+    backup: true
+    mode: 0644
+  when: ansible_facts['distribution'] == "CentOS"
+
 - name: upgrade all packages # noqa package-latest
-  ansible.builtin.dnf:
+  ansible.builtin.yum:
     name: "*"
     state: latest
 
-- name: Install EPEL-release
-  block:
-    - name: Install the EPEL repository
-      ansible.builtin.raw: dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm -y
-    
-    - name: Now enable the CRB repository (see https://pagure.io/epel/issue/128#comment-804295)
-      raw: /usr/bin/crb enable
-
 - name: Ensure epel is installed
-  ansible.builtin.dnf:
-    name: epel-release
-    state: present
+  become: true
+  ansible.builtin.yum:
+    name: "epel-release"
+    state: installed

@@ -1,5 +1,5 @@
 ---
-- name: Ensure Java version {{ java.package }} is installed
+- name: ensure Java version {{ java.package }} is installed
   ansible.builtin.package:
     name: "{{ java.package }}"
     state: installed

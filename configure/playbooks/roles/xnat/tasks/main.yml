@@ -3,6 +3,7 @@
   ansible.builtin.pip:
     name:
       - lxml
+  when: ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "8"
 
 - name: Ensure dependencies are installed
   ansible.builtin.yum:
@@ -24,6 +25,10 @@
 
 - name: "Configure XNAT settings files"
   include: settings_files.yml
+
+- name: "Configure LDAP for XNAT"
+  include: ldap.yml
+  when: ldap.enabled
 
 - name: "XNAT site configuration"
   include: configure.yml

@@ -1,33 +1,6 @@
 ---
-- name: Set SELinux to permissive (it cannot be disabled without a reboot)
-  ansible.posix.selinux:
-    state: permissive
-    policy: targeted
-
 - name: "Update packages"
-  ansible.builtin.include: package_update.yml
+  include: package_update.yml
 
 - name: "Set locale"
-  ansible.builtin.include: locale.yml
-
-- name: Install Python 3 and pip packages
-  ansible.builtin.include_role:
-    name: mirsg.install_python
-
-- name: Create self-signed SSL certificate
-  ansible.builtin.include_role:
-    name: mirsg.ssl_certificates
-  when: ssl.use_ssl
-
-- name: Disable default postgresl module and install rpm key
-  block:
-    - name: Disable default Postgres module # noqa command-instead-of-module
-      ansible.builtin.command: yum module disable -y postgresql
-      register: disable_postgresql_module
-      changed_when:
-        - "'Disabling modules:' in disable_postgresql_module.stdout"
-
-    - name: Import postgresql rpm key
-      ansible.builtin.rpm_key:
-        state: present
-        key: "{{ postgresql_rpm_gpg_key_pgdg }}"
+  include: locale.yml

@@ -26,6 +26,11 @@
     state: present
   when: selinux_enabled
 
+- name: Ensure epel is installed
+  ansible.builtin.yum:
+    name: "epel-release"
+    state: installed
+
 - name: Ensure nginx is installed
   ansible.builtin.yum:
     name: ["nginx", "nginx-mod-stream"]
@@ -50,15 +55,14 @@
   with_items:
     - { src: "{{ ssl.server_cert }}", dest: "{{ nginx.ssl_cert_file }}" }
     - { src: "{{ ssl.server_key }}", dest: "{{ nginx.ssl_key_file }}" }
-  notify: Reload nginx
+  notify: reload nginx
   when: ssl.use_ssl
 
 - name: Generate Diffie-Hellman (DH) parameters with {{ diffie_helman_size_bits }} bits.
   community.crypto.openssl_dhparam:
     path: "{{ nginx.dh_params_file }}"
     size: "{{ diffie_helman_size_bits }}"
-    select_crypto_backend: "openssl"
-  notify: Reload nginx
+  notify: reload nginx
 
 - name: Copy nginx config file
   ansible.builtin.template:
@@ -68,7 +72,7 @@
     group: "{{ nginx.group }}"
     mode: 0644
     force: true
-  notify: Reload nginx
+  notify: reload nginx
 
 - name: Ensure nginx is running
   ansible.builtin.service:

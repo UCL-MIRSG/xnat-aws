@@ -27,6 +27,27 @@
     - "{{ xnat_plugin_urls }}"
     - "{{ xnat_server_specific_plugin_urls | default([]) }}"
 
+- name: Download plugins from package registry
+  community.general.maven_artifact:
+    group_id: "{{ item.group_id }}"
+    artifact_id: "{{ item.artifact_id }}"
+    version: "{{ item.version }}"
+    classifier: "{{ item.classifier | default(omit) }}"
+    repository_url: "{{ package_registry.url }}"
+    keep_name: true
+    dest: "{{ xnat_source.plugins_downloads_dir }}"
+    timeout: 30
+    owner: "{{ xnat.owner }}"
+    group: "{{ xnat.group }}"
+    verify_checksum: always
+    headers: "{{ package_registry.authentication_header }}"
+  register: package_plugins_downloaded
+  with_items:
+    - "{{ xnat_plugin_packages | default([]) }}"
+    - "{{ xnat_server_specific_plugin_packages | default([]) }}"
+  when:
+    - package_registry.enabled
+
 - name: Get current plugins from remote file cache
   ansible.builtin.find:
     paths: "{{ xnat_source.plugins_downloads_dir }}"
