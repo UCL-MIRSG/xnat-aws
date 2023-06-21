@@ -50,10 +50,10 @@ resource "local_file" "ansible-hosts" {
     xnat_db_private_ip  = aws_instance.xnat_db.private_ip,
     xnat_db_port        = 22,
   })
-  filename        = "../hosts.yml"
+  filename        = "../configure/hosts.yml"
   file_permission = "0644"
 }
 
 output "ansible_command" {
-  value = "ansible-playbook playbooks/install_xnat.yml -u centos -i hosts.yml --vault-password-file=~/.ucl_xnat_vault_password --key-file '../ssh/aws_rsa.pem' --ssh-common-args='-o StrictHostKeyChecking=accept-new'"
+  value = "ansible-playbook playbooks/install_xnat.yml -u centos -i hosts.yml --vault-password-file=~/.vault_password --key-file '../ssh/aws_rsa.pem' --ssh-common-args='-o StrictHostKeyChecking=accept-new'"
 }
