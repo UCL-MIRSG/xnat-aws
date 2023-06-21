@@ -40,15 +40,15 @@ resource "aws_instance" "xnat_db" {
 # Write the ansible hosts file
 resource "local_file" "ansible-hosts" {
   content = templatefile("templates/ansible_hosts.yml.tftpl", {
-    xnat_web_hostname  = aws_instance.xnat_web.public_dns,
-    xnat_web_public_ip = aws_instance.xnat_web.public_ip,
+    xnat_web_hostname   = aws_instance.xnat_web.public_dns,
+    xnat_web_public_ip  = aws_instance.xnat_web.public_ip,
     xnat_web_private_ip = aws_instance.xnat_web.private_ip,
-    xnat_web_port      = 22,
-    xnat_web_smtp_ip   = "192.168.56.101",
-    xnat_db_hostname   = aws_instance.xnat_db.public_dns,
-    xnat_db_public_ip  = aws_instance.xnat_db.public_ip,
-    xnat_db_private_ip = aws_instance.xnat_db.private_ip,
-    xnat_db_port       = 22,
+    xnat_web_port       = 22,
+    xnat_web_smtp_ip    = "192.168.56.101",
+    xnat_db_hostname    = aws_instance.xnat_db.public_dns,
+    xnat_db_public_ip   = aws_instance.xnat_db.public_ip,
+    xnat_db_private_ip  = aws_instance.xnat_db.private_ip,
+    xnat_db_port        = 22,
   })
   filename        = "../hosts.yml"
   file_permission = "0644"
