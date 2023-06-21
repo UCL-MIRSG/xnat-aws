@@ -81,7 +81,7 @@ resource "aws_security_group" "allow-ssh-and-incoming" {
 resource "aws_security_group" "allow-ssh-and-postgres" {
 
   vpc_id      = aws_vpc.xnat.id
-  description = "security group that allows ssh and all egress traffic"
+  description = "security group that allows ssh and connection to postgres post, and all egress traffic"
 
   # Allow SSH
   ingress {
@@ -95,6 +95,28 @@ resource "aws_security_group" "allow-ssh-and-postgres" {
   ingress {
     from_port   = 5432
     to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow outgoing traffic
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "allow-ssh-only" {
+
+  vpc_id      = aws_vpc.xnat.id
+  description = "security group that allows ssh and all egress traffic"
+
+  # Allow SSH
+  ingress {
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

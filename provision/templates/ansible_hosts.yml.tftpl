@@ -13,6 +13,11 @@ all:
       ansible_ip: ${xnat_db_public_ip}
       private_ip: ${xnat_db_private_ip}
       ansible_port: ${xnat_db_port}
+    xnat_cserv:
+      ansible_host: ${xnat_cserv_hostname}
+      ansible_ip: ${xnat_cserv_public_ip}
+      private_ip: ${xnat_cserv_private_ip}
+      ansible_port: ${xnat_cserv_port}
 
   # Groups that hosts belong
   children:
@@ -21,4 +26,15 @@ all:
         xnat_db:
     web:
       hosts:
+        xnat_web:
+ 
+    # Group of all Container Service servers
+    container_service_host:
+      hosts:
+        xnat_cserv:
+
+    # Group comprising Container Service host and all the clients (web servers) it serves
+    container_service:
+      hosts:
+        xnat_cserv:
         xnat_web:
