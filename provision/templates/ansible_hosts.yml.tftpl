@@ -4,12 +4,14 @@ all:
   hosts:
     xnat_web:
       ansible_host: ${xnat_web_hostname}
-      ansible_ip: ${xnat_web_ip}
+      ansible_ip: ${xnat_web_public_ip}
+      private_ip: ${xnat_web_private_ip}
       ansible_port: ${xnat_web_port}
       smtp_ip: ${xnat_web_smtp_ip}
     xnat_db:
       ansible_host: ${xnat_db_hostname}
-      ansible_ip: ${xnat_db_ip}
+      ansible_ip: ${xnat_db_public_ip}
+      private_ip: ${xnat_db_private_ip}
       ansible_port: ${xnat_db_port}
 
   # Groups that hosts belong

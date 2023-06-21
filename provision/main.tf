@@ -29,7 +29,7 @@ resource "aws_instance" "xnat_db" {
   availability_zone      = var.availability_zone
   subnet_id              = aws_subnet.xnat-public.id
   private_ip             = "192.168.56.11"
-  vpc_security_group_ids = [aws_security_group.allow-ssh-only.id]
+  vpc_security_group_ids = [aws_security_group.allow-ssh-and-postgres.id]
   key_name               = var.keypair_name
 
   tags = {
@@ -40,18 +40,20 @@ resource "aws_instance" "xnat_db" {
 # Write the ansible hosts file
 resource "local_file" "ansible-hosts" {
   content = templatefile("templates/ansible_hosts.yml.tftpl", {
-    xnat_web_hostname = aws_instance.xnat_web.public_dns,
-    xnat_web_ip       = aws_instance.xnat_web.public_ip,
-    xnat_web_port     = 22,
-    xnat_web_smtp_ip  = "192.168.56.101",
-    xnat_db_hostname  = aws_instance.xnat_db.public_dns,
-    xnat_db_ip        = aws_instance.xnat_db.public_ip,
-    xnat_db_port      = 22,
+    xnat_web_hostname  = aws_instance.xnat_web.public_dns,
+    xnat_web_public_ip = aws_instance.xnat_web.public_ip,
+    xnat_web_private_ip = aws_instance.xnat_web.private_ip,
+    xnat_web_port      = 22,
+    xnat_web_smtp_ip   = "192.168.56.101",
+    xnat_db_hostname   = aws_instance.xnat_db.public_dns,
+    xnat_db_public_ip  = aws_instance.xnat_db.public_ip,
+    xnat_db_private_ip = aws_instance.xnat_db.private_ip,
+    xnat_db_port       = 22,
   })
-  filename        = "../configure/hosts.yml"
+  filename        = "../hosts.yml"
   file_permission = "0644"
 }
 
 output "ansible_command" {
-  value = "ansible-playbook playbooks/install_xnat.yml -u ec2-user -i hosts.yml --vault-password-file=.vault_password --key-file '../ssh/aws_rsa.pem' --ssh-common-args='-o StrictHostKeyChecking=accept-new'"
+  value = "ansible-playbook playbooks/install_xnat.yml -u centos -i hosts.yml --vault-password-file=~/.ucl_xnat_vault_password --key-file '../ssh/aws_rsa.pem' --ssh-common-args='-o StrictHostKeyChecking=accept-new'"
 }
