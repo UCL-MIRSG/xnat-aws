@@ -1,0 +1,10 @@
+---
+docker_client:
+  owner: "{{ tomcat.owner }}"
+  group: "{{ tomcat.owner }}"
+  cert_dir: "/usr/share/tomcat/.docker"
+  ssl_key_file: "/usr/share/tomcat/.docker/key.pem"
+  ssl_csr_file: "/usr/share/tomcat/.docker/docker.csr"
+  ssl_pk8_file: "/usr/share/tomcat/.docker/docker.pk8"
+  ssl_cert_file: "/usr/share/tomcat/.docker/cert.pem"
+  server_ca_cert_file: "/usr/share/tomcat/.docker/ca.pem"

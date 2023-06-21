@@ -1,4 +1,16 @@
 ---
+nginx:
+  owner: root
+  group: root
+  log_folder: "/var/log/nginx"
+  http_port: 80
+  https_port: 443
+  certs_dir: "/etc/nginx/ssl"
+  dh_params_file: "/etc/nginx/ssl/dhparam.pem"
+  conf_file: "/etc/nginx/nginx.conf"
+  ssl_cert_file: "/etc/nginx/ssl/server.cert"
+  ssl_key_file: "/etc/nginx/ssl/server.key"
+
 # Support for ipv6
 ipv6_enabled: false
 

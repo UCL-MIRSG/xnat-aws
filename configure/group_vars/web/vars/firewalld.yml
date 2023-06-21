@@ -1,2 +1,14 @@
 ---
 allow_public_access: true
+
+# mirsg.firewalld
+internal_zone_open_services:
+  - http
+  - https
+  - ssh
+public_zone_open_services:
+  - http
+  - https
+work_zone_open_services:
+  - http
+  - https

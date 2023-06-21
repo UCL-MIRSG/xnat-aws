@@ -1,9 +1,45 @@
 ---
+# mirsg.postgresql - download and install
+postgresql_install:
+  disable_gpg_check: false
+  rpm: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_facts['distribution_major_version'] }}-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
+  yum_package: "{{ postgresql_package_name }}-server"
+  yum_contrib_package: "{{ postgresql_package_name }}-contrib" # required only on CentOS 7
+
+# mirsg.postgresql - setting up the database
+postgresql_database:
+  database_name: "{{ xnat_db.postgres_xnat_database }}"
+  user_name: "{{ xnat_db.postgres_xnat_user }}"
+  user_password: "{{ xnat_db.postgres_xnat_password }}"
+
 # mirsg.postgresql - connections and authentication
 postgresql_connection:
   host: "{{ xnat_db.host }}"
   port: "{{ xnat_db.port }}"
   client_ip: "{{ xnat_web_server.ip }}"
   client_certificate_filename: "/var/lib/pgsql/certs/root.crt" # required if using SSL, where to copy the client certificate to on the server
-  listen_addresses: "*"
+  listen_addresses: "{{ xnat_db.listen_addresses | default('127.0.0.1, ' + xnat_db.host) | quote }}"
   subnet_mask: "{{ xnat_web_server.subnet_mask | default('255.255.255.0') }}"
+
+# mirsg.postgresql - storage
+postgresql_storage:
+  storage_directory: "{{ xnat_db.storage_dir }}"
+  data_directory: "{{ xnat_db.data_dir }}" # symlink to data_directory
+
+# mirsg.postgresql - backup
+postgresql_backup:
+  directory: "{{ xnat_db.backups_dir }}"
+  script: "{{ postgresql.base_directory }}/run_db_backup.sh" # script to run cron backup job
+
+# mirsg.ssl_certificates
+postgresql_ssl_certificate:
+  owner: "{{ postgresql.owner }}"
+  group: "{{ postgresql.owner }}"
+  certificate_directory: "{{ postgresql.base_directory }}/certs"
+  privatekey_filename: "{{ postgresql.base_directory }}/certs/server.key"
+  use_pk8: false
+  csr_filename: "{{ postgresql.base_directory }}/certs/server.csr"
+  csr_common_name: "{{ xnat_db.host }}"
+  certificate_filename: "{{ postgresql.base_directory }}/certs/server.crt"
+  provider: "selfsigned"
+  cache_filename: "{{ database_server_certificate_cache_filename }}" # where to store the server certificate in cache

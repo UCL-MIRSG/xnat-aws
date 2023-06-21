@@ -4,3 +4,11 @@ postgresql_version: "12"
 
 # Generally this should be set to true
 postgresql_use_ssl: true
+
+# Where to store ssl certificates in local cache
+database_server_certificate_cache_filename: "{{ ansible_cache_dir }}/pg_certificates/{{ xnat_db.host }}.pg.server.crt"
+database_client_certificate_cache_filename: "{{ ansible_cache_dir }}/pg_certificates/{{ xnat_db.host }}.pg.client.crt"
+
+# For installing postgres
+postgresql_rpm_gpg_key_pgdg: "https://www.postgresql.org/download/keys/RPM-GPG-KEY-PGDG"
+

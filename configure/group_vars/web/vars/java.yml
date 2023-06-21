@@ -1,0 +1,6 @@
+---
+java:
+  profile_d: "/etc/profile.d"
+  home: "/usr/lib/jvm/jre"
+  package: "java-1.8.0-openjdk-devel"
+  keystore_path: "/usr/lib/jvm/jre/lib/security/cacerts/"

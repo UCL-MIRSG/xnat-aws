@@ -1,4 +1,27 @@
 ---
+xnat_data_dir: "/data"
+xnat_root_dir: "{{ xnat_data_dir }}/xnat"
+xnat_home_dir: "{{ xnat_root_dir }}/home"
+
+xnat:
+  owner: "{{ tomcat.owner }}"
+  group: "{{ tomcat.group }}"
+  install_downloads: "{{ tomcat.catalina_home }}/install_downloads"
+  pipeline_install_dir: "{{ tomcat.catalina_home }}/pipeline_installer"
+  processingUrl: ""
+
+xnat_version: 1.8.7.1
+xnat_pipeline_version: 1.8.3
+
+xnat_source:
+  war_file_name: "xnat-web-{{ xnat_version }}.war"
+  plugins_downloads_dir: "/ansible/downloads/xnat_plugins"
+  xnat_downloads_dir: "/ansible/downloads/xnat"
+  pipeline_installer_file_name: "pipeline-installer-{{ xnat_pipeline_version }}.tar"
+  xnat_war_url: "https://api.bitbucket.org/2.0/repositories/xnatdev/xnat-web/downloads/xnat-web-{{ xnat_version }}.war"
+  pipelines_url: "https://api.github.com/repos/NrgXnat/xnat-pipeline-engine/tarball/{{ xnat_pipeline_version }}"
+  context_file_location: "/usr/share/tomcat/webapps/ROOT/META-INF/context.xml"
+
 xnat_plugin_urls:
   - "https://api.bitbucket.org/2.0/repositories/xnatdev/xsync/downloads/xsync-plugin-all-1.5.0.jar"
   #- "https://api.bitbucket.org/2.0/repositories/xnatx/ldap-auth-plugin/downloads/ldap-auth-plugin-1.1.0.jar"
@@ -16,7 +39,7 @@ xnat_plugin_packages: []
 xnat_server_specific_plugin_urls: []
 xnat_server_specific_plugin_packages: []
 
-pipeline_engine_enabled: false
+pipeline_engine_enabled: true
 
 java_keystore:
   keystore_pass: "{{ vault_keystore_password }}"
@@ -69,6 +92,8 @@ ldap:
   filter: ""
   ca_cert: ""
   keystore_alias: ""
+
+ldap_ca_cert_file_on_client: "{{ xnat.install_downloads }}/certs/ldap-ca.cert"
 
 # Mail server settings
 smtp:
