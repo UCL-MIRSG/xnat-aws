@@ -19,10 +19,10 @@
     mode: 0644
   when: ansible_facts['distribution'] == "CentOS"
 
-- name: upgrade all packages # noqa package-latest
-  ansible.builtin.yum:
-    name: "*"
-    state: latest
+#- name: upgrade all packages # noqa package-latest
+#  ansible.builtin.yum:
+#    name: "*"
+#    state: latest
 
 - name: Ensure epel is installed
   become: true
