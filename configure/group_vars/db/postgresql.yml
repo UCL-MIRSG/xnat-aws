@@ -1,0 +1,9 @@
+---
+# mirsg.postgresql - connections and authentication
+postgresql_connection:
+  host: "{{ xnat_db.host }}"
+  port: "{{ xnat_db.port }}"
+  client_ip: "{{ xnat_web_server.ip }}"
+  client_certificate_filename: "/var/lib/pgsql/certs/root.crt" # required if using SSL, where to copy the client certificate to on the server
+  listen_addresses: "*"
+  subnet_mask: "{{ xnat_web_server.subnet_mask | default('255.255.255.0') }}"

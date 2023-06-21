@@ -1,5 +1,0 @@
----
-# mirsg.firewalld
-rich_rules:
-  - zone: "internal"
-    rule: "family=ipv4 source address={{ xnat_web_server.subnet | default(xnat_web_server.ip + '/32') }} port protocol=tcp port={{ xnat_db.port }} accept"

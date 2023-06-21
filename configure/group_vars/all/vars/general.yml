@@ -1,4 +1,9 @@
 ---
+package_registry:
+  enabled: false
+  url: ""
+  authentication_header: {}
+
 # Directory on the control node where the Ansible scripts can store files that
 # need to be temporarily cached, such as certificate files that are copied
 # between hosts.
@@ -11,12 +16,13 @@ ansible_cache_dir: "{{ lookup('env', 'HOME') }}/ansible_persistent_files"
 # Locale for the servers
 server_locale: "en_GB.UTF-8"
 
-# Mount point for external storage, for backups etc
+# Set this to true if selinux is enabled on the hosting OS
+selinux_enabled: true
+
+# Mount point for external storage
 EXTERNAL_STORAGE_DRIVE: "/storage"
 
-# For nginx and tomcat
-dicom_port: 8104
-xnat_dicom_port: 8105
-
-# Set this to true if selinux is enabled on the hosting OS
-selinux_enabled: false
+# Infrastructure
+monitoring_service_enabled: false
+container_service_enabled: false
+container_service_remote_xnat_root: ""

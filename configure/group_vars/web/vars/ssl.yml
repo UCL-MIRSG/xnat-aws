@@ -1,0 +1,7 @@
+---
+# SSL certificate settings
+ssl:
+  use_ssl: false
+  server_cert: "/etc/ssl/certs/{{ hostvars['xnat_web']['ansible_host'] }}.cert"
+  server_key: "/etc/ssl/certs/{{ hostvars['xnat_web']['ansible_host'] }}.key"
+  validate_certs: no
