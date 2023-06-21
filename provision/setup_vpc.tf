@@ -1,7 +1,7 @@
 
 # Set up VPC, subnets, internet gateway, and security groups
 resource "aws_vpc" "xnat" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = "192.168.0.0/16"
   instance_tenancy     = "default"
   enable_dns_support   = true
   enable_dns_hostnames = true
@@ -13,7 +13,7 @@ resource "aws_vpc" "xnat" {
 
 resource "aws_subnet" "xnat-public" {
   vpc_id                  = aws_vpc.xnat.id
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = "192.168.56.0/24"
   map_public_ip_on_launch = true
   availability_zone       = var.availability_zone
   tags = {
