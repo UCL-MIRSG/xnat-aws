@@ -52,7 +52,7 @@ resource "aws_security_group" "web-server" {
   vpc_id      = aws_vpc.xnat.id
   description = "security group for the web server"
 
-  # Allow incoming traffic
+  # Allow incoming HTTP traffic
   ingress {
     from_port   = 80
     to_port     = 80
@@ -74,6 +74,10 @@ resource "aws_security_group" "web-server" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = [module.get_my_ip.my_public_cidr]
+  }
+
+  tags = {
+    Name = "xnat-web"
   }
 
 }
@@ -105,6 +109,10 @@ resource "aws_security_group" "database" {
     to_port     = 5432
     protocol    = "tcp"
     cidr_blocks = [aws_subnet.xnat-public.cidr_block] # only allow connection from public subnet
+  }
+
+  tags = {
+    Name = "xnat-db"
   }
 
 }
