@@ -47,10 +47,10 @@ resource "aws_route_table_association" "xnat-public" {
 }
 
 # Setup security groups
-resource "aws_security_group" "allow-ingress" {
+resource "aws_security_group" "web-server" {
 
   vpc_id      = aws_vpc.xnat.id
-  description = "security group that allows all incoming http traffic"
+  description = "security group for the web server"
 
   # Allow incoming traffic
   ingress {
@@ -60,13 +60,6 @@ resource "aws_security_group" "allow-ingress" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-}
-
-resource "aws_security_group" "allow-egress" {
-
-  vpc_id      = aws_vpc.xnat.id
-  description = "security group that allows all outgoing traffic"
-
   # Allow outgoing traffic
   egress {
     from_port   = 0
@@ -75,14 +68,7 @@ resource "aws_security_group" "allow-egress" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-}
-
-resource "aws_security_group" "allow-ssh" {
-
-  vpc_id      = aws_vpc.xnat.id
-  description = "security group that allows incoming ssh"
-
-  # Allow SSH
+  # Allow SSH into the instance
   ingress {
     from_port   = 22
     to_port     = 22
@@ -92,10 +78,26 @@ resource "aws_security_group" "allow-ssh" {
 
 }
 
-resource "aws_security_group" "open-postgres-port" {
+resource "aws_security_group" "database" {
 
   vpc_id      = aws_vpc.xnat.id
-  description = "security group that opens port for connections to postgresql database"
+  description = "security group for the database"
+
+  # Allow outgoing traffic
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow SSH into the instance
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [module.get_my_ip.my_public_cidr]
+  }
 
   # Allow connection to postgres port
   ingress {
