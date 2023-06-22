@@ -49,25 +49,6 @@ resource "aws_instance" "xnat_db" {
   }
 }
 
-# Launch ec2 instance for the Container Service
-resource "aws_instance" "xnat_cserv" {
-  ami           = data.aws_ami.centos7.id
-  instance_type = var.ec2_instance_type
-
-  availability_zone      = var.availability_zone
-  subnet_id              = aws_subnet.xnat-public.id
-  private_ip             = "192.168.56.14"
-  vpc_security_group_ids = [
-    aws_security_group.allow-egress.id,
-    aws_security_group.allow-ssh.id,
-  ]
-  key_name               = var.keypair_name
-
-  tags = {
-    Name = "xnat_cserv"
-  }
-}
-
 
 # Write the ansible hosts file
 resource "local_file" "ansible-hosts" {
@@ -81,10 +62,6 @@ resource "local_file" "ansible-hosts" {
     xnat_db_public_ip     = aws_instance.xnat_db.public_ip,
     xnat_db_private_ip    = aws_instance.xnat_db.private_ip,
     xnat_db_port          = 22,
-    xnat_cserv_hostname   = aws_instance.xnat_cserv.public_dns,
-    xnat_cserv_public_ip  = aws_instance.xnat_cserv.public_ip,
-    xnat_cserv_private_ip = aws_instance.xnat_cserv.private_ip,
-    xnat_cserv_port       = 22,
   })
   filename        = "../configure/hosts.yml"
   file_permission = "0644"
