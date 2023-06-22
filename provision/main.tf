@@ -1,3 +1,8 @@
+# Get IP address for this machine
+module "get_my_ip" {
+  source = "./modules/get_my_ip"
+}
+
 # Generate SSH key pair
 module "ssh_keypair" {
   source   = "./modules/ssh_keygen"
@@ -13,7 +18,11 @@ resource "aws_instance" "xnat_web" {
   availability_zone      = var.availability_zone
   subnet_id              = aws_subnet.xnat-public.id
   private_ip             = "192.168.56.10"
-  vpc_security_group_ids = [aws_security_group.allow-ssh-and-incoming.id]
+  vpc_security_group_ids = [
+    aws_security_group.allow-ingress.id,
+    aws_security_group.allow-egress.id,
+    aws_security_group.allow-ssh.id,
+  ]
   key_name               = var.keypair_name
 
   tags = {
@@ -29,7 +38,10 @@ resource "aws_instance" "xnat_db" {
   availability_zone      = var.availability_zone
   subnet_id              = aws_subnet.xnat-public.id
   private_ip             = "192.168.56.11"
-  vpc_security_group_ids = [aws_security_group.allow-ssh-and-postgres.id]
+  vpc_security_group_ids = [
+    aws_security_group.allow-egress.id,
+    aws_security_group.allow-ssh.id,
+  ]
   key_name               = var.keypair_name
 
   tags = {
@@ -45,7 +57,10 @@ resource "aws_instance" "xnat_cserv" {
   availability_zone      = var.availability_zone
   subnet_id              = aws_subnet.xnat-public.id
   private_ip             = "192.168.56.14"
-  vpc_security_group_ids = [aws_security_group.allow-ssh-only.id]
+  vpc_security_group_ids = [
+    aws_security_group.allow-egress.id,
+    aws_security_group.allow-ssh.id,
+  ]
   key_name               = var.keypair_name
 
   tags = {

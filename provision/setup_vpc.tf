@@ -47,19 +47,10 @@ resource "aws_route_table_association" "xnat-public" {
 }
 
 # Setup security groups
-resource "aws_security_group" "allow-ssh-and-incoming" {
+resource "aws_security_group" "allow-ingress" {
 
-  #vpc_id = data.aws_vpc.default.id
   vpc_id      = aws_vpc.xnat.id
-  description = "security group that allows ssh as well as all ingress and egress traffic"
-
-  # Allow SSH
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  description = "security group that allows all incoming http traffic"
 
   # Allow incoming traffic
   ingress {
@@ -69,6 +60,13 @@ resource "aws_security_group" "allow-ssh-and-incoming" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+}
+
+resource "aws_security_group" "allow-egress" {
+
+  vpc_id      = aws_vpc.xnat.id
+  description = "security group that allows all outgoing traffic"
+
   # Allow outgoing traffic
   egress {
     from_port   = 0
@@ -76,56 +74,35 @@ resource "aws_security_group" "allow-ssh-and-incoming" {
     protocol    = -1
     cidr_blocks = ["0.0.0.0/0"]
   }
+
 }
 
-resource "aws_security_group" "allow-ssh-and-postgres" {
+resource "aws_security_group" "allow-ssh" {
 
   vpc_id      = aws_vpc.xnat.id
-  description = "security group that allows ssh and connection to postgres post, and all egress traffic"
+  description = "security group that allows incoming ssh"
 
   # Allow SSH
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [module.get_my_ip.my_public_cidr]
   }
+
+}
+
+resource "aws_security_group" "open-postgres-port" {
+
+  vpc_id      = aws_vpc.xnat.id
+  description = "security group that opens port for connections to postgresql database"
 
   # Allow connection to postgres port
   ingress {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [aws_subnet.xnat-public.cidr_block] # only allow connection from public subnet
   }
 
-  # Allow outgoing traffic
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-resource "aws_security_group" "allow-ssh-only" {
-
-  vpc_id      = aws_vpc.xnat.id
-  description = "security group that allows ssh and all egress traffic"
-
-  # Allow SSH
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Allow outgoing traffic
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 }
