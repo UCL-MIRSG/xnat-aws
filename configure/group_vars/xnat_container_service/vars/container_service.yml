@@ -1,8 +1,9 @@
 ---
+# Variables for the Container Service hosts and the clients (web servers) it serves
 xnat_container_service:
-  name: "container service"
+  name: "Container Service"
   host: "{{ hostvars['xnat_cserv']['ansible_host'] }}"
-  ip: "{{ hostvars['xnat_cserv']['ansible_ip'] }}"
+  ip: "{{ hostvars['xnat_cserv']['private_ip'] }}"
   port: "2376"
   clients:
     - "{{ hostvars['xnat_web']['ansible_host'] }}"

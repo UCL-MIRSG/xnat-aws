@@ -1,0 +1,18 @@
+---
+docker:
+  owner: "root"
+  group: "root"
+  cert_dir: "/home/docker/.docker"
+  client_cert_dir: "/home/docker/.docker/client_certs"
+  ca_key: "/home/docker/.docker/ca.key"
+  ca_csr: "/home/docker/.docker/ca.csr"
+  ca_cert: "/home/docker/.docker/ca.pem"
+  server_key: "/home/docker/.docker/server-key.pem"
+  server_csr: "/home/docker/.docker/server.csr"
+  server_cert: "/home/docker/.docker/server-cert.pem"
+  config_dir: "/etc/docker"
+  daemon_conf_file: "/etc/docker/daemon.json"
+  service_file_dir: "/etc/systemd/system/docker.service.d"
+  service_name: "docker"
+  repo_url: "https://download.docker.com/linux/centos/docker-ce.repo"
+  yum_package: "docker"

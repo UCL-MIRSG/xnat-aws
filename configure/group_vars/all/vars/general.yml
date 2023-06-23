@@ -24,5 +24,6 @@ EXTERNAL_STORAGE_DRIVE: "/storage"
 
 # Infrastructure
 monitoring_service_enabled: false
-container_service_enabled: false
-container_service_remote_xnat_root: ""
+container_service_enabled: true
+container_service_remote_xnat_root: "/storage/web/data/xnat"
+
