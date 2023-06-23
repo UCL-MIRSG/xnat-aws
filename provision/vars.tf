@@ -38,8 +38,9 @@ variable "instance_private_ips" {
   type        = map(any)
   description = "Private IP addresses for each instance"
   default = {
-    "xnat_web" = "192.168.56.10"
-    "xnat_db"  = "192.168.56.11"
+    "xnat_web"   = "192.168.56.10"
+    "xnat_db"    = "192.168.56.11"
+    "xnat_cserv" = "192.168.56.14"
   }
 }
 
@@ -54,8 +55,9 @@ variable "ec2_instance_types" {
   type        = map(any)
   description = "Instance type to use for each server"
   default = {
-    "xnat_web" = "t2.small"
-    "xnat_db"  = "t2.micro"
+    "xnat_web"   = "t2.small"
+    "xnat_db"    = "t2.micro"
+    "xnat_cserv" = "t2.micro"
   }
 }
 
