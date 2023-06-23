@@ -6,20 +6,30 @@ all:
       ansible_host: ${xnat_web_hostname}
       ansible_ip: ${xnat_web_public_ip}
       private_ip: ${xnat_web_private_ip}
-      ansible_port: ${xnat_web_port}
       smtp_ip: ${xnat_web_smtp_ip}
     xnat_db:
       ansible_host: ${xnat_db_hostname}
-      ansible_ip: ${xnat_db_public_ip}
-      private_ip: ${xnat_db_private_ip}
-      ansible_port: ${xnat_db_port}
-
+  
   # Groups that hosts belong
   children:
     db:
       hosts:
         xnat_db:
+      vars:
+        bastion_ip: ${xnat_bastion_public_ip}
+        ansible_ssh_common_args: >
+          -o StrictHostKeyChecking="accept-new" \
+          -o ProxyCommand="ssh -W %h:%p -q centos@${xnat_bastion_public_ip}" \
+          -o ServerAliveInterval=5
     web:
       hosts:
         xnat_web:
- 
+      vars:
+        ansible_ssh_common_args: >
+          -o StrictHostKeyChecking="accept-new"
+
+  # Variables to use for all hosts
+  vars:
+    ansible_port: 22
+    ansible_user: centos
+    ansible_ssh_private_key_file: ${ssh_key_filename}
