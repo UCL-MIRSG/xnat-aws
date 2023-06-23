@@ -1,0 +1,74 @@
+---
+- name: Ensure Ansible sefcontext dependencies are installed (Python 2)
+  ansible.builtin.yum:
+    name: ["libselinux-python", "policycoreutils-python"]
+    state: installed
+  when: ansible_facts["python"]["version"]["major"] is version("2")
+
+- name: Ensure Ansible sefcontext dependencies are installed (Python 3)
+  ansible.builtin.yum:
+    name: ["python3-libselinux", "policycoreutils-python-utils"]
+    state: installed
+  when: ansible_facts["python"]["version"]["major"] is version("3")
+
+- name: Ensure docker dependencies are installed
+  ansible.builtin.yum:
+    name: ["yum-utils", "device-mapper-persistent-data", "lvm2", "epel-release"]
+    state: installed
+
+- name: Add Docker repository
+  ansible.builtin.command: "yum-config-manager --add-repo={{ docker.repo_url }}"
+  args:
+    creates: /etc/yum.repos.d/docker.repo
+
+- name: Ensure docker is installed
+  ansible.builtin.yum:
+    name: ["docker-ce", "docker-ce-cli", "containerd.io"]
+    state: installed
+
+- name: Ensure docker service directory {{ docker.service_file_dir }} exists
+  ansible.builtin.file:
+    path: "{{ docker.service_file_dir }}"
+    owner: "root"
+    group: "root"
+    state: directory
+    mode: 0700
+
+- name: Set custom docker service configuration
+  ansible.builtin.template:
+    src: docker.service.j2
+    dest: "{{ docker.service_file_dir }}/docker.conf"
+    owner: "root"
+    group: "root"
+    mode: 0644
+  notify: reload docker
+
+- name: Ensure docker config directory {{ docker.config_dir }} exists
+  ansible.builtin.file:
+    path: "{{ docker.config_dir }}"
+    owner: "{{ docker.owner }}"
+    group: "{{ docker.group }}"
+    state: directory
+    mode: 0700
+
+- name: Write docker daemon configuration file
+  ansible.builtin.template:
+    src: daemon.json.j2
+    dest: "{{ docker.daemon_conf_file }}"
+    owner: "{{ docker.owner }}"
+    group: "{{ docker.group }}"
+    mode: 0640
+  notify: reload docker
+
+- name: Generate container server certificate
+  include: create_docker_server_cert.yml
+  notify: restart docker
+
+- name: "Ensure docker service configuraiton is reloaded before restarting the service"
+  ansible.builtin.meta: flush_handlers
+
+- name: Ensure docker daemon is running
+  ansible.builtin.service:
+    name: "{{ docker.service_name }}"
+    state: started
+    enabled: true
