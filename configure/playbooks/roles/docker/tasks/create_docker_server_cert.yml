@@ -1,0 +1,67 @@
+---
+- name: Ensure docker cert dir exists
+  ansible.builtin.file:
+    path: "{{ docker.cert_dir }}"
+    state: directory
+    owner: "{{ docker.owner }}"
+    group: "{{ docker.group }}"
+    mode: 0700
+
+- name: Generate CA private key
+  community.crypto.openssl_privatekey:
+    path: "{{ docker.ca_key }}"
+    owner: "{{ docker.owner }}"
+    group: "{{ docker.group }}"
+    mode: 0400
+
+- name: Generate CA CSR
+  community.crypto.openssl_csr:
+    path: "{{ docker.ca_csr }}"
+    privatekey_path: "{{ docker.ca_key }}"
+    common_name: "{{ xnat_container_service.host }}"
+    subject_alt_name: "IP:{{ xnat_container_service.ip }}"
+    basic_constraints_critical: true
+    basic_constraints: ["CA:TRUE"]
+
+- name: Generate self-signed CA certificate
+  community.crypto.x509_certificate:
+    path: "{{ docker.ca_cert }}"
+    privatekey_path: "{{ docker.ca_key }}"
+    csr_path: "{{ docker.ca_csr }}"
+    provider: selfsigned
+    owner: "{{ docker.owner }}"
+    group: "{{ docker.group }}"
+    mode: 0400
+  notify: restart docker
+
+- name: Generate server private key
+  community.crypto.openssl_privatekey:
+    path: "{{ docker.server_key }}"
+    owner: "{{ docker.owner }}"
+    group: "{{ docker.group }}"
+    mode: 0400
+
+- name: Generate server CSR
+  community.crypto.openssl_csr:
+    path: "{{ docker.server_csr }}"
+    privatekey_path: "{{ docker.server_key }}"
+    common_name: "{{ xnat_container_service.host }}"
+    subject_alt_name: "IP:{{ xnat_container_service.ip }}"
+
+- name: Generate server certificate
+  community.crypto.x509_certificate:
+    path: "{{ docker.server_cert }}"
+    csr_path: "{{ docker.server_csr }}"
+    provider: ownca
+    ownca_path: "{{ docker.ca_cert }}"
+    ownca_privatekey_path: "{{ docker.ca_key }}"
+    owner: "{{ docker.owner }}"
+    group: "{{ docker.group }}"
+    mode: 0400
+  notify: restart docker
+
+- name: Copy server certificate
+  ansible.builtin.fetch:
+    src: "{{ docker.ca_cert }}"
+    dest: "{{ xnat_container_service_temp_files_cert_dir }}/ca.pem"
+    flat: true
