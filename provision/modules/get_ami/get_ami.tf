@@ -51,3 +51,12 @@ data "aws_ami" "centos7" {
   #owners = ["679593333241"] # CentOS
   owners = ["125523088429"] # CentOS
 }
+
+output "amis" {
+  description = "AMI to use for each OS"
+  value = {
+    "centos7" = data.aws_ami.centos7.id
+    "rocky8" = data.aws_ami.rocky8.id
+    "rhel9" = data.aws_ami.rhel9.id
+  }
+}
