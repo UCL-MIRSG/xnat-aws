@@ -11,16 +11,34 @@ all:
       ansible_host: ${xnat_db_hostname}
       ansible_ip: ${xnat_db_public_ip}
       private_ip: ${xnat_db_private_ip}
+    xnat_cserv:
+      ansible_host: ${xnat_cserv_hostname}
+      ansible_ip: ${xnat_cserv_public_ip}
+      private_ip: ${xnat_cserv_private_ip}
 
   # Groups that hosts belong
   children:
+
+    # All database servers
     db:
       hosts:
         xnat_db:
+
+    # All web servers
     web:
       hosts:
         xnat_web:
-        
+
+    # All Container Service server hosts
+    cserv_hosts:
+      hosts:
+        xnat_cserv:
+
+    # xnat_cserv hosts and all the clients (web servers) it serves
+    xnat_container_service:
+      hosts:
+        xnat_cserv:
+        xnat_web:
 
   # Variables to use for all hosts
   vars:
