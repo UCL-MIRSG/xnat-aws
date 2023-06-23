@@ -130,3 +130,38 @@ resource "aws_security_group" "xnat-db" {
   }
 
 }
+
+resource "aws_security_group" "xnat-cserv" {
+
+  vpc_id      = aws_vpc.xnat.id
+  description = "security group for the Container Service"
+
+  # Allow outgoing traffic
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow SSH into the instance
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [module.get_my_ip.my_public_cidr]
+  }
+
+  # Allow connection to Container Service port
+  ingress {
+    from_port       = 2376
+    to_port         = 2376
+    protocol        = "tcp"
+    security_groups = [aws_security_group.xnat-web.id] # only allow connection from web server
+  }
+
+  tags = {
+    Name = "xnat-cserv"
+  }
+
+}
