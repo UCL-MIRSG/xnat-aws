@@ -49,23 +49,47 @@ resource "aws_instance" "xnat_db" {
   }
 }
 
+# Launch ec2 instance for the database
+resource "aws_instance" "xnat_cserv" {
+  #ami           = data.aws_ami.centos7.id
+  ami           = module.get_ami.amis[var.instance_os]
+  instance_type = var.ec2_instance_types["xnat_cserv"]
+
+  availability_zone      = var.availability_zone
+  subnet_id              = aws_subnet.xnat-public.id
+  private_ip             = var.instance_private_ips["xnat_cserv"]
+  vpc_security_group_ids = [aws_security_group.xnat-cserv.id]
+  key_name               = var.keypair_name
+
+  tags = {
+    Name = "xnat_cserv"
+  }
+}
+
 # Write the ansible hosts file
 resource "local_file" "ansible-hosts" {
   content = templatefile("templates/ansible_hosts.yml.tftpl", {
-    ssh_key_filename    = var.private_key_filename,
-    ssh_user            = var.ansible_ssh_user[var.instance_os],
-    xnat_web_hostname   = aws_instance.xnat_web.public_dns,
-    xnat_web_public_ip  = aws_instance.xnat_web.public_ip,
-    xnat_web_private_ip = aws_instance.xnat_web.private_ip,
-    xnat_web_smtp_ip    = var.smtp_private_ip,
-    xnat_db_hostname    = aws_instance.xnat_db.public_dns,
-    xnat_db_public_ip   = aws_instance.xnat_db.public_ip,
-    xnat_db_private_ip  = aws_instance.xnat_db.private_ip,
+    ssh_key_filename      = var.private_key_filename,
+    ssh_user              = var.ansible_ssh_user[var.instance_os],
+    xnat_web_hostname     = aws_instance.xnat_web.public_dns,
+    xnat_web_public_ip    = aws_instance.xnat_web.public_ip,
+    xnat_web_private_ip   = aws_instance.xnat_web.private_ip,
+    xnat_web_smtp_ip      = var.smtp_private_ip,
+    xnat_db_hostname      = aws_instance.xnat_db.public_dns,
+    xnat_db_public_ip     = aws_instance.xnat_db.public_ip,
+    xnat_db_private_ip    = aws_instance.xnat_db.private_ip,
+    xnat_cserv_hostname   = aws_instance.xnat_cserv.public_dns,
+    xnat_cserv_public_ip  = aws_instance.xnat_cserv.public_ip,
+    xnat_cserv_private_ip = aws_instance.xnat_cserv.private_ip,
   })
   filename        = "../configure/hosts.yml"
   file_permission = "0644"
 }
 
-output "ansible_command" {
+output "ansible_install_cserv" {
+  value = "ansible-playbook playbooks/install_container_service.yml -i hosts.yml --vault-password-file=.vault_password"
+}
+
+output "ansible_install_xnat" {
   value = "ansible-playbook playbooks/install_xnat.yml -i hosts.yml --vault-password-file=.vault_password"
 }
