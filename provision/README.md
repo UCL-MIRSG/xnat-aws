@@ -2,31 +2,31 @@
 
 The Terraform scripts will create the following:
 
-- a Virtual Private Cloud (VPC) and security groups
-- two EC2 instances - `xnat_web` and `xnat_db` for the webserver and database, respectively
-- attach an Elastic Block Storage (EBS) volume to `xnat_db`
+- a Virtual Private Cloud (VPC) with a public subnet and required security groups
+- three EC2 instances - `xnat_web`, `xnat_db`, and `xnat_cserv` for the web server, database, and [XNAT Container Service](https://wiki.xnat.org/container-service/), respectively.
 
 ## Warning
 
-A single, **public** subnet is created in the VPC. This means that the instances will have public IP addresses and may be vulnerable to attack. However, when configuring the instances with Ansible, a firewall will be created (using `firewalld`) to limit connections to the instances.
+A single, **public** subnet is created in the VPC. This is to make is straightforwards to configure the instances with Ansible. However, it means that the instances will have public IP addresses and may be vulnerable to attack. To protect against this:
+-  only the web server has HTTP and HTTPS ports open to the internet
+-  SSH access is only allowed from the IP address of the user that creates the infrastructure
 
 ## Usage
 
-To create the infrastructure on AWS:
+First set the necessary variables. Copy the file `xnat-aws/provision/terraform.tfvars_sample` to `xnat-aws/provision/terraform.tfvars`. You shouldn't need to change any values.
+
+Then, to create the infrastructure on AWS run the following commands from within the `xnat-aws/provision` directory:
 
 ```bash
 terraform init
-terraform plan
 teraform apply
 ```
 
 ## Output
 
-After running `terraform apply`, a command will be printed for configuration the infrastructure with Ansible. It will look something like this:
+After running `terraform apply`, two commands will be printed for configuring the infrastructure with Ansible. See `xnat-aws/configure/README.md` for notes on running the XNAT installation.
 
-```bash
-ansible-playbook app.yml -u ec2-user --key-file '../ssh/aws_rsa.pem' -T 300 -i '18.135.96.91,'
-```
+## Destroy the infrastructure
 
 To destroy the infrastructure:
 
