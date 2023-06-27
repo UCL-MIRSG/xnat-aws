@@ -1,0 +1,33 @@
+# General AWS
+aws_region        = "eu-west-2"
+availability_zone = "eu-west-2a"
+
+# SSH keygen module
+keypair_name         = "aws-rsa"
+private_key_filename = "../ssh/aws_rsa.pem"
+
+# VPC
+cidr_blocks = {
+  "vpc"           = "192.168.0.0/16"  # 192.168.0.0 to 	192.168.255.255
+  "public-subnet" = "192.168.56.0/24" # 192.168.56.0 to 192.168.56.255
+}
+
+# EC2 private IPs
+instance_private_ips = {
+  "xnat_web"   = "192.168.56.10"
+  "xnat_db"    = "192.168.56.11"
+  "xnat_cserv" = "192.168.56.14"
+}
+smtp_private_ip = "192.168.56.101"
+
+# EC2 instance types
+ec2_instance_types = {
+  "xnat_web"   = "t2.small"  # XNAT needs more RAM than available in t2.micro
+  "xnat_db"    = "t2.micro"
+  "xnat_cserv" = "t2.micro"
+}
+
+# EC2 instance OS - this will be used to determine:
+# - which AMI to use
+# - the user Ansible will use to log into the instance (ansible_ssh_user)
+instance_os = "centos7"
