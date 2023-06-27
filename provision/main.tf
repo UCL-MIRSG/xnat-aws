@@ -93,3 +93,7 @@ output "ansible_install_cserv" {
 output "ansible_install_xnat" {
   value = "ansible-playbook playbooks/install_xnat.yml -i hosts.yml --vault-password-file=.vault_password"
 }
+
+output "xnat_web_url" {
+  value = "http://${aws_instance.xnat_web.public_dns}"
+}
