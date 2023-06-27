@@ -32,7 +32,7 @@ To create the vault:
 
 - go to the directory `xnat-aws/configure/group_vars/all`
 - copy the file `vault_sample` to `vault` (this will overwrite the current `vault` file)
-- edit the file to add your passwords - DO NOT put your passwords into `vault_sample` as this file will not be encrypted. There is an additional password (`vault_keystore_password`) - DO NOT change this as it's required
+- edit the file to add your passwords - DO NOT put your passwords into `vault_sample` as this file will not be encrypted. There is an additional password (`vault_keystore_password`) - DO NOT change this password
 
 A third password will be used to encrypt and decrypt your vault. Create a file `xnat-aws/configure/.vault_password` and add your password to it. **Note**, this file is ignored by git and should NOT be checked into version control.
 
