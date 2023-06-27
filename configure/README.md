@@ -4,52 +4,72 @@ To run the configuration with Ansible we will need to:
 
 - install Ansible requirements
 - set up an Ansible vault to store secrets (passwords etc.)
-- run the `install_xnat.yml` playbook
+- run the `install_container_service.yml` and `install_xnat.yml` playbooks
 
 ## Install dependencies
 
 Before configuring the servers, we need to ensure Ansible has the necessary collections and roles installed. From the `configure` directory, run the following commands:
 
 ```bash
-ansible-galaxy collection install -r playbooks/roles/requirements.yml --force
-ansible-galaxy role install -r playbooks/roles/requirements.yml --force
+ansible-galaxy install -r playbooks/roles/requirements.yml --force
 ```
 
-We use to `force` flag to ensure the collections and roles are always re-installed even if they're already present. This is to make sure we're always using the correct versions of the roles and collections.
+We use the `force` flag to ensure the collections and roles are always reinstalled even if they're already present. This is to make sure we're always using the correct versions of the roles and collections.
 
 ## Set up vault
 
-You will need to generate **three** passwords for the configuration.
+You will need to generate **six** passwords for the configuration.
 
-Two passwords will be stored in an Ansible vault, one each for:
+**Five** passwords will be stored in an Ansible vault, one each for:
 
-- the xnat admin user
-- the postgresql user
+- LDAP (single-sign on) configuration
+- the PostgreSQL user
+- the default XNAT admin user (`admin`)
+- the XNAT admin user (`admin_user`)
+- SMTP server configuration
 
 To create the vault:
 
 - go to the directory `xnat-aws/configure/group_vars/all`
 - copy the file `vault_sample` to `vault` (this will overwrite the current `vault` file)
-- edit the file to add your passwords - DO NOT put your passwords into `vault_sample` as this file will not be encrypted
+- edit the file to add your passwords - DO NOT put your passwords into `vault_sample` as this file will not be encrypted. There is an additional password (`vault_keystore_password`) - DO NOT change this as it's required
 
 A third password will be used to encrypt and decrypt your vault. Create a file `xnat-aws/configure/.vault_password` and add your password to it. **Note**, this file is ignored by git and should NOT be checked into version control.
 
 Now, we're ready to encrypt the vault you created. In the directory `xnat-aws/configure/group_vars/all`, run the following command:
 
-```
+```bash
 ansible-vault encrypt vault --vault-password-file ../../.vault_password
 ```
 
 ## Deploy XNAT
 
-After creating the infrastructure using Terraform and installing the Ansible requirements, we can configure the servers by going to the `xnat-aws/configure` directory and running the following command:
+After creating the infrastructure using Terraform and installing the Ansible requirements, we can configure the servers by going to the `xnat-aws/configure` directory and running the following commands:
 
 ```bash
-ansible-playbook playbooks/install_xnat.yml -u ec2-user -i hosts.yml --vault-password-file=.vault_password --key-file '../ssh/aws_rsa.pem' --ssh-common-args='-o StrictHostKeyChecking=accept-new'
+ansible-playbook playbooks/install_container_service.yml -i hosts.yml --vault-password-file=.vault_password
 ```
 
-**Note**, we set `StrictHostKeyChecking=accept-new` to automatically accept fingerprints for new hosts. This means we still do host key checking but we do not need to explicitly accept keys for new hosts.
+```bash
+ansible-playbook playbooks/install_xnat.yml -i hosts.yml --vault-password-file=.vault_password
+```
+
+The first command will install the Container service on `xnat_cserv`. The second command will install and configure XNAT and PostgreSQL on the web server and database server
 
 ## Logging in to the web server
 
-Once Ansible has finished configuring the server, you should be able to go to the public dns hostname of the web server and log into xnat. To check the hostname, go to the `xnat-aws/provision` directory and type `terraform output`. This will print, among other things, the hostname of the web server.
+Once Ansible has finished configuring the server, you should be able to go to the public dns hostname of the web server and log into XNAT. To do this you need to know the URL of the web server and the credentials XNAT admin user.
+
+### Check the URL of the web server
+
+To check the web server URL, go to the `xnat-aws/provision` directory and type `terraform output`. This will print, among other things, the url of the web server.
+
+### Check the XNAT admin credentials
+
+The XNAT admin user have a username `admin_user`. The password is stored in the Ansible vault (`xnat-aws/configure/group_vars/all/vault`). From the `xnat-aws/configure` directory, run the command:
+
+```bash
+ansible-vault view group-vars/all/vault --vault-password .vault_password`
+```
+
+This will display the passwords used in the configuration. The one for the XNAT admin user is assigned to a variable called `vault_service_admin_password`.
