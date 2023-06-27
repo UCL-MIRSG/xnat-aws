@@ -22,7 +22,7 @@ smtp_private_ip = "192.168.56.101"
 
 # EC2 instance types
 ec2_instance_types = {
-  "xnat_web"   = "t2.small"  # XNAT needs more RAM than available in t2.micro
+  "xnat_web"   = "t2.small" # XNAT needs more RAM than available in t2.micro
   "xnat_db"    = "t2.micro"
   "xnat_cserv" = "t2.micro"
 }
