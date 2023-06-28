@@ -43,7 +43,7 @@ To check the web server URL, go to the `xnat-aws/provision` directory and type `
 The XNAT admin user have a username `admin_user`. The password is stored in the Ansible vault (`xnat-aws/configure/group_vars/all/vault`). From the `xnat-aws/configure` directory, run the command:
 
 ```bash
-ansible-vault view group-vars/all/vault --vault-password .vault_password`
+ansible-vault view group_vars/all/vault --vault-password .vault_password`
 ```
 
 This will display the passwords used in the configuration. The one for the XNAT admin user is assigned to a variable called `vault_service_admin_password`.

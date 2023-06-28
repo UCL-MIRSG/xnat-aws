@@ -15,7 +15,7 @@ output "ansible_install_xnat" {
 
 output "ansible_view_vault" {
   description = "Run this command from the `xnat-aws/configure` directory to view passwords in the Ansible vault."
-  value       = "ansible-vault view group-vars/all/vault --vault-password .vault_password`"
+  value       = "ansible-vault view group_vars/all/vault --vault-password .vault_password"
 }
 
 output "xnat_web_url" {
