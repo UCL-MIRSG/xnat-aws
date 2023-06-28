@@ -98,6 +98,10 @@ output "ansible_install_xnat" {
   value = "ansible-playbook playbooks/install_xnat.yml -i hosts.yml --vault-password-file=.vault_password"
 }
 
+output "ansible_view_vault" {
+  value = "ansible-vault view group-vars/all/vault --vault-password .vault_password`"
+}
+
 output "xnat_web_url" {
   value = "http://${aws_instance.xnat_web.public_dns}"
 }
