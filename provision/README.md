@@ -24,7 +24,7 @@ teraform apply
 
 ## Output
 
-After running `terraform apply`, two commands will be printed for configuring the infrastructure with Ansible. See `xnat-aws/configure/README.md` for notes on running the XNAT installation.
+After running `terraform apply`, two commands will be printed for configuring the infrastructure with Ansible. See [`xnat-aws/configure/README.md`](../configure/README.md#deploy-xnat) for notes on running the XNAT installation.
 
 ## Destroy the infrastructure
 
