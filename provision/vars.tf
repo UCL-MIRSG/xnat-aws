@@ -21,7 +21,7 @@ variable "keypair_name" {
 variable "private_key_filename" {
   type        = string
   description = "Filename in which to store a private key to SSH into the servers"
-  default = "../ssh/aws-rsa.pem"
+  default     = "../ssh/aws-rsa.pem"
 }
 
 # VPC
