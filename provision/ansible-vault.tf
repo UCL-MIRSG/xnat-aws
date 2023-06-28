@@ -1,38 +1,34 @@
-# Generate a password to encrypt the vault
-resource "random_password" "encryption_password" {
-  length = 24
-  special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
-}
-
-# Write the encryption password to file
-resource = "local_sensitive_file" "ansible-vault-password" {
-  content = random_password.encryption_password.result
-  filename = ../configure/.vault_password
-  file_permission = "0644"
-}
-
-# Generate passwords for the vault
-resource "random_password" "vault_passwords" {
+# Generate passwords for the vault and its encryption
+resource "random_password" "vault" {
   for_each         = toset(local.passwords)
   length           = 24
   special          = true
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
+# Write the encryption password to file
+resource "local_sensitive_file" "ansible-vault-password" {
+  content         = random_password.vault["encryption"].result
+  filename        = local.encryption_password_file
+  file_permission = "0644"
+}
+
+
 # Write the passwords to file and encrypt the vault
 resource "local_sensitive_file" "ansible-vault" {
 
-content = templatefile("templates/ansible_vault.tftpl", {
-    one   = random_password.passwords["one"].result,
-    two   = random_password.passwords["two"].result,
-    three = random_password.passwords["three"].result,
+  content = templatefile("templates/ansible_vault.tftpl", {
+    ldap_password          = random_password.vault["ldap"].result,
+    postgres_xnat_password = random_password.vault["postgres_xnat"].result,
+    admin_password         = random_password.vault["admin"].result,
+    service_admin_password = random_password.vault["service_admin"].result,
+    smtp_password          = random_password.vault["smtp"].result,
   })
-  filename        = "../configure/group_vars/all/vault"
+  filename        = local.ansible_vault_file
   file_permission = "0644"
 
   provisioner "local-exec" {
-    command = "ansible-vault encrypt ../configure/group_vars/all/vault --vault-password ../configure/.vault_password
+    command = "ansible-vault encrypt ${local.ansible_vault_file} --vault-password ${local.encryption_password_file}"
   }
 
 }
