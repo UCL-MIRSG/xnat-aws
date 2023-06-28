@@ -85,23 +85,3 @@ resource "local_file" "ansible-hosts" {
   filename        = "../configure/hosts.yml"
   file_permission = "0644"
 }
-
-output "ansible_install_dependencies" {
-  value = "ansible-galaxy install -r playbooks/roles/requirements.yml --force"
-}
-
-output "ansible_install_cserv" {
-  value = "ansible-playbook playbooks/install_container_service.yml -i hosts.yml --vault-password-file=.vault_password"
-}
-
-output "ansible_install_xnat" {
-  value = "ansible-playbook playbooks/install_xnat.yml -i hosts.yml --vault-password-file=.vault_password"
-}
-
-output "ansible_view_vault" {
-  value = "ansible-vault view group-vars/all/vault --vault-password .vault_password`"
-}
-
-output "xnat_web_url" {
-  value = "http://${aws_instance.xnat_web.public_dns}"
-}
