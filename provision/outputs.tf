@@ -1,3 +1,8 @@
+output "ansible_install_xnat" {
+  description = "Run this command from the `xnat-aws/configure` directory to install and configure XNAT."
+  value       = "./install_xnat.sh"
+}
+
 output "ansible_view_vault" {
   description = "Run this command from the `xnat-aws/configure` directory to view passwords in the Ansible vault."
   value       = "ansible-vault view group_vars/all/vault --vault-password .vault_password"
