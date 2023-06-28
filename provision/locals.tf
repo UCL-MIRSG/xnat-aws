@@ -1,4 +1,3 @@
-# list of passwords to generate for the Ansible vault
 locals {
 
   # Ansible vault
