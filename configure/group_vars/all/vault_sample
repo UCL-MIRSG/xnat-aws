@@ -1,7 +1,0 @@
----
-vault_keystore_password: "changeit"
-vault_ldap_password: "your_password"
-vault_postgres_xnat_password: "your_password"
-vault_admin_password: "your_password"
-vault_service_admin_password: "your_password"
-vault_smtp_password: "your_password"

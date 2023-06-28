@@ -5,9 +5,8 @@
 *.retry
 *.*~
 
-# Password to decrypt vault
-.vault_password
-
-# this is automatically created and destroyed by terraform
+# these are automatically created and destroyed by terraform
 hosts.yml
+.vault_password
+group_vars/all/vault
 
