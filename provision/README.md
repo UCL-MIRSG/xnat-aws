@@ -9,8 +9,8 @@ The Terraform scripts will create the following:
 
 A single, **public** subnet is created in the VPC. This is to make is straightforwards to configure the instances with Ansible. However, it means that the instances will have public IP addresses and may be vulnerable to attack. To protect against this:
 
--  only the web server has HTTP and HTTPS ports open to the internet
--  SSH access is only allowed from the IP address of the user that creates the infrastructure
+- only the web server has HTTP and HTTPS ports open to the internet
+- SSH access is only allowed from the IP address of the user that creates the infrastructure
 
 ## Usage
 
