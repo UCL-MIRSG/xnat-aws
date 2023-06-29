@@ -2,10 +2,6 @@
 aws_region        = "eu-west-2"
 availability_zone = "eu-west-2a"
 
-# SSH keygen module
-keypair_name         = "aws-rsa"
-private_key_filename = "../ssh/aws_rsa.pem"
-
 # VPC
 cidr_blocks = {
   "vpc"           = "192.168.0.0/16"  # 192.168.0.0 to 	192.168.255.255
