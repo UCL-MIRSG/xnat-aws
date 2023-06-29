@@ -3,11 +3,10 @@ module "get_my_ip" {
   source = "./modules/get_my_ip"
 }
 
-# Generate SSH key pair
-module "ssh_keypair" {
-  source   = "./modules/ssh_keygen"
-  filename = var.private_key_filename
-  name     = var.keypair_name
+# Copy public key to AWS
+resource "aws_key_pair" "key_pair" {
+  key_name   = local.ssh_key_name
+  public_key = file(var.public_key_filename)
 }
 
 # Determine which AMI to use
@@ -25,7 +24,7 @@ resource "aws_instance" "xnat_web" {
   subnet_id              = aws_subnet.xnat-public.id
   private_ip             = var.instance_private_ips["xnat_web"]
   vpc_security_group_ids = [aws_security_group.xnat-web.id]
-  key_name               = var.keypair_name
+  key_name               = local.ssh_key_name
 
   tags = {
     Name = "xnat_web"
@@ -42,7 +41,7 @@ resource "aws_instance" "xnat_db" {
   subnet_id              = aws_subnet.xnat-public.id
   private_ip             = var.instance_private_ips["xnat_db"]
   vpc_security_group_ids = [aws_security_group.xnat-db.id]
-  key_name               = var.keypair_name
+  key_name               = local.ssh_key_name
 
   tags = {
     Name = "xnat_db"
@@ -59,7 +58,7 @@ resource "aws_instance" "xnat_cserv" {
   subnet_id              = aws_subnet.xnat-public.id
   private_ip             = var.instance_private_ips["xnat_cserv"]
   vpc_security_group_ids = [aws_security_group.xnat-cserv.id]
-  key_name               = var.keypair_name
+  key_name               = local.ssh_key_name
 
   tags = {
     Name = "xnat_cserv"
