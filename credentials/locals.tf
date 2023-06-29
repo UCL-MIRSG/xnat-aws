@@ -1,7 +1,8 @@
 locals {
 
   # AWS
-  ssh_key_filename = "../ssh/aws-rsa"
+  ssh_private_key_filename = "../ssh/aws-rsa"
+  ssh_public_key_filename  = "../ssh/aws-rsa.pub"
 
   # Ansible vault
   ansible_vault_file       = "../configure/group_vars/all/vault"

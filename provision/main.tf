@@ -6,7 +6,7 @@ module "get_my_ip" {
 # Copy public key to AWS
 resource "aws_key_pair" "key_pair" {
   key_name   = local.ssh_key_name
-  public_key = file(var.public_key_filename)
+  public_key = file(local.ssh_public_key_filename)
 }
 
 # Determine which AMI to use
@@ -68,8 +68,8 @@ resource "aws_instance" "xnat_cserv" {
 # Write the ansible hosts file
 resource "local_file" "ansible-hosts" {
   content = templatefile("templates/ansible_hosts.yml.tftpl", {
-    ssh_key_filename      = var.private_key_filename,
-    ssh_user              = var.ansible_ssh_user[var.instance_os],
+    ssh_key_filename      = local.ssh_private_key_filename,
+    ssh_user              = local.ansible_ssh_user[var.instance_os],
     xnat_web_hostname     = aws_instance.xnat_web.public_dns,
     xnat_web_public_ip    = aws_instance.xnat_web.public_ip,
     xnat_web_private_ip   = aws_instance.xnat_web.private_ip,
