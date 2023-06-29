@@ -25,11 +25,11 @@ teraform apply
 
 ## Output
 
-After running `terraform apply`, the following outputs will be prints:
+After running `terraform apply`, the following outputs will be printed:
 
-- the command to run to configure the infrastructure with Ansible
-- the command to run to view the contents of the Ansible vault
-- the URL of the web server for logging into XNAT
+- `ansible_install_xnat`: the command to run to configure the infrastructure with Ansible
+- `ansible_view_vault`: the command to run to view the contents of the Ansible vault
+- `xnat_web_url`: the URL of the web server for logging into XNAT
 
 See [`xnat-aws/configure/README.md`](../configure/README.md#deploy-xnat) for notes on running the XNAT installation.
 
