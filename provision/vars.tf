@@ -12,16 +12,16 @@ variable "availability_zone" {
 }
 
 # SSH
-variable "keypair_name" {
-  type        = string
-  description = "Name of SSH keypair for logging into the servers"
-  default     = "aws-rsa"
-}
-
 variable "private_key_filename" {
   type        = string
-  description = "Filename in which to store a private key to SSH into the servers"
-  default     = "../ssh/aws-rsa.pem"
+  description = "Filename of private key for SSH access to the AWS servers"
+  default     = "../ssh/aws-rsa.pub"
+}
+
+variable "public_key_filename" {
+  type        = string
+  description = "Filename of public key to copy to the AWS servers"
+  default     = "../ssh/aws-rsa.pub"
 }
 
 # VPC
