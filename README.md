@@ -15,7 +15,7 @@ Terraform is used to create the infrastructure on AWS and Ansible is then used t
 
 Once you have installed and set up the requirements, there are three steps to deploying XNAT on AWS:
 
-1. From the `xnat-aws/credentials` directory, type:
+1. [Generate credentials](credentials/README.md). From the `xnat-aws/credentials` directory, type:
 
 ```bash
 terraform init
@@ -24,7 +24,7 @@ terraform apply
 
 This will will create and SSH key and various passwords that will be used for accessing the AWS servers and configuring XNAT.
 
-2. From the `xnat-aws/provision` directory, type:
+2. [Create the AWS instances](provision/README.md). From the `xnat-aws/provision` directory, type:
 
 ```bash
 terraform init
@@ -33,7 +33,7 @@ terraform apply
 
 This will create the infrastructure on AWS.
 
-3. From the `xnat-aws/configure` directory, type:
+3. [Install XNAT](configure/README.md). From the `xnat-aws/configure` directory, type:
 
 ```bash
 ./install_xnat.sh
@@ -41,4 +41,4 @@ This will create the infrastructure on AWS.
 
 This will run several Ansible commands to install and configure XNAT.
 
-See [`xnat-aws/configure/README.md`](configure/README.md#logging-in-to-the-web-server) for notes on logging into the web server.
+See [`Logging into the web server`](configure/README.md#logging-in-to-the-web-server) for notes on how to log into XNAT once it has been deployed.
