@@ -11,19 +11,6 @@ variable "availability_zone" {
   default     = "eu-west-2a"
 }
 
-# SSH
-variable "private_key_filename" {
-  type        = string
-  description = "Filename of private key for SSH access to the AWS servers"
-  default     = "../ssh/aws-rsa.pub"
-}
-
-variable "public_key_filename" {
-  type        = string
-  description = "Filename of public key to copy to the AWS servers"
-  default     = "../ssh/aws-rsa.pub"
-}
-
 # VPC
 variable "cidr_blocks" {
   description = "CIDR block for the VPC and subnets"
@@ -73,13 +60,13 @@ variable "instance_os" {
   }
 }
 
-# Ansible
-variable "ansible_ssh_user" {
-  description = "Define user to use for connecting to the instance with Ansible based on instance os"
-  type        = map(any)
-  default = {
-    "centos7" = "centos"
-    "rocky8"  = "rocky"
-    "rhel9"   = "ec2-user"
-  }
-}
+
+
+
+
+
+
+
+
+
+
