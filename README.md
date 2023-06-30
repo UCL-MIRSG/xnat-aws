@@ -33,6 +33,8 @@ terraform apply
 
 This will create the infrastructure on AWS.
 
+**Note**, after the `terraform apply` have completed, you may need to wait 1-2 minutes before running the configuration. This is to allow time for the AWS instances to finish starting up.
+
 3. [Install XNAT](configure/README.md). From the `xnat-aws/configure` directory, type:
 
 ```bash
