@@ -1,10 +1,13 @@
 ---
-# mirsg.postgresql - download and install
-postgresql_install:
-  disable_gpg_check: false
-  rpm: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_facts['distribution_major_version'] }}-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
-  yum_package: "{{ postgresql_package_name }}-server"
-  yum_contrib_package: "{{ postgresql_package_name }}-contrib" # required only on CentOS 7
+# mirsg.postgresql - service settings
+postgresql_service_name: "postgresql-{{ postgresql_version }}"
+postgresql_service:
+  name: "{{ postgresql_service_name }}"
+  # filename: "/etc/systemd/system/{{ postgresql_service_name }}.service"
+  # Don't add this service file, it leads to the following error:
+  # Error loading unit file 'postgresql-12': org.freedesktop.systemd1.BadUnitSetting \"Unit postgresql-12.service has a bad unit file setting.\"
+  # And the values it sets are the same as the default, so it's not needed
+  filename: "/etc/systemd/system/{{ postgresql_service_name }}.service.ignore"
 
 # mirsg.postgresql - setting up the database
 postgresql_database:
