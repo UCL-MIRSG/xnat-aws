@@ -9,6 +9,7 @@ locals {
   ansible_ssh_user = {
     "centos7" = "centos"
     "rocky8"  = "rocky"
+    "rocky9"  = "rocky"
     "rhel9"   = "ec2-user"
   }
 
