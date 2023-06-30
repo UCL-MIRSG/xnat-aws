@@ -7,7 +7,7 @@
 
 - name: Ensure dependencies are installed
   ansible.builtin.yum:
-    name: ["postgresql", "wget"]
+    name: ["postgresql{{ postgresql_version }}", "wget"]
     state: installed
 
 - name: "Configure XNAT directories"
