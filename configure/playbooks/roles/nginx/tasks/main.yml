@@ -26,6 +26,13 @@
     state: present
   when: selinux_enabled
 
+# See: https://stackoverflow.com/a/24830777/17623640
+- name: Configure SELinux to allow httpd to act as relay and keep it persistent across reboots
+  ansible.posix.seboolean:
+    name: httpd_can_network_relay
+    state: true
+    persistent: true
+
 - name: Ensure epel is installed
   ansible.builtin.yum:
     name: "epel-release"
