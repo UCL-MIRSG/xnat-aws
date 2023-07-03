@@ -26,4 +26,5 @@ ec2_instance_types = {
 # EC2 instance OS - this will be used to determine:
 # - which AMI to use
 # - the user Ansible will use to log into the instance (ansible_ssh_user)
-instance_os = "centos7"
+instance_os = "rocky9"
+
