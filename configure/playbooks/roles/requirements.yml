@@ -20,5 +20,5 @@ roles:
     name: mirsg.ssl_certificates
 
   - src: https://github.com/UCL-MIRSG/ansible-role-postgresql.git
-    version: 2023.04.28.0
+    version: 2023.07.03.0
     name: mirsg.postgresql
