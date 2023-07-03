@@ -1,5 +1,5 @@
 ---
-- name: Ensure base mirrorlist is in repository file (CentOS)
+- name: Ensure base mirrorlist is in repository file (CentOS 7)
   community.general.ini_file:
     path: /etc/yum.repos.d/CentOS-Base.repo
     section: base
@@ -7,9 +7,9 @@
     value: http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os
     backup: true
     mode: 0644
-  when: ansible_facts['distribution'] == "CentOS"
+  when: ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] is version('7', '==')
 
-- name: Ensure updates mirrorlist is in repository file (CentOS)
+- name: Ensure updates mirrorlist is in repository file (CentOS 7)
   community.general.ini_file:
     path: /etc/yum.repos.d/CentOS-Base.repo
     section: updates
@@ -17,7 +17,7 @@
     value: http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates
     backup: true
     mode: 0644
-  when: ansible_facts['distribution'] == "CentOS"
+  when: ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] is version('7', '==')
 
 #- name: upgrade all packages # noqa package-latest
 #  ansible.builtin.yum:
@@ -30,24 +30,18 @@
     name: "epel-release"
     state: installed
 
-- name: Disable default Postgres module # noqa command-instead-of-module
+- name: Disable default Postgres module (Red Hat 8+) # noqa command-instead-of-module
   ansible.builtin.command: yum module disable -y postgresql
+  when: ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] is version('7', '>')
   register: disable_postgresql_module
   changed_when:
     - "'Disabling modules:' in disable_postgresql_module.stdout"
-
-#- name: Enable correct version of PostgreSQL on web server # noqa command-instead-of-module
-#  ansible.builtin.command: "yum module enable -y postgresql:{{ postgresql_version }}"
-#  when: "'web' in group_names"
-#  register: enable_postgresql_module
-#  changed_when:
-#    - "'Enabling module streams:' in enable_postgresql_module.stdout"
 
 - name: Install PostgreSQL RPM key
   ansible.builtin.rpm_key:
     state: present
     key: "{{ postgresql_rpm_gpg_key_pgdg }}"
-  when: "'cserv_hosts' not in group_names"  
+  when: "'cserv_hosts' not in group_names"
 
 - name: Ensure postgres RPM is installed on the web server
   ansible.builtin.yum:
