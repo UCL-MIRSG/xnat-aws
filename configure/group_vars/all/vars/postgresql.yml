@@ -1,8 +1,7 @@
 ---
 # XNAT supports PostgreSQL 10 - 14
 # See: https://groups.google.com/g/xnat_discussion/c/INKizGBktEQ/m/jauYgo8oAAAJ
-#postgresql_version: "14"  # for pg 14, in pg_hba.conf clientcert=1 should be clientcert=verify-full
-postgresql_version: "12"
+postgresql_version: "14"
 
 # Generally this should be set to true
 postgresql_use_ssl: true
