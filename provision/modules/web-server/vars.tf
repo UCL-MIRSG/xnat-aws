@@ -1,7 +1,10 @@
-variable "webserver_name" {
-  type        = string
-  description = "The name of the web server"
-  default = "xnat-web"
+variable "names" {
+  type        = map(string)
+  description = "The names for the EC2 instances"
+  default = {
+    "main"      = "xnat_web"
+    "container" = "xnat_cserv"
+  }
 }
 
 variable "vpc_id" {
@@ -14,9 +17,13 @@ variable "ami" {
   description = "The AMI to use for the EC2 instance"
 }
 
-variable "instance_type" {
-  type        = string
-  description = "The instance type to use for the EC2 instance"
+variable "instance_types" {
+  type        = map(string)
+  description = "The instance type to use for the EC2 instances"
+  default = {
+    "main"      = "t2.small"
+    "container" = "t2.micro"
+  }
 }
 
 variable "availability_zone" {
@@ -29,9 +36,13 @@ variable "subnet_id" {
   description = "The subnet ID to use for the EC2 instance"
 }
 
-variable "private_ip" {
-  type        = string
-  description = "The private IP to use for the EC2 instance"
+variable "private_ips" {
+  type        = map(string)
+  description = "The private IPs to use for the EC2 instances"
+  default = {
+    "main"      = "192.168.56.10"
+    "container" = "192.168.56.14"
+  }
 }
 
 variable "ssh_key_name" {
@@ -41,5 +52,5 @@ variable "ssh_key_name" {
 
 variable "public_cidr" {
   type        = list(string)
-  description = "The CIDR blcok for allowing ssh access from the public subnet"
+  description = "The CIDR block for allowing ssh access from the public subnet"
 }

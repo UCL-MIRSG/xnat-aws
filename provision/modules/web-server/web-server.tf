@@ -1,26 +1,42 @@
 # EC2 instance for the web server
 resource "aws_instance" "main" {
   ami           = var.ami
-  instance_type = var.instance_type
+  instance_type = var.instance_types["main"]
 
   availability_zone      = var.availability_zone
   subnet_id              = var.subnet_id
-  private_ip             = var.private_ip
+  private_ip             = var.private_ips["main"]
   vpc_security_group_ids = [aws_security_group.web.id]
   key_name               = var.ssh_key_name
 
   tags = {
-    Name = var.webserver_name
+    Name = var.names["main"]
+  }
+}
+
+# EC2 instance for the container service
+resource "aws_instance" "container" {
+  ami           = var.ami
+  instance_type = var.instance_types["container"]
+
+  availability_zone      = var.availability_zone
+  subnet_id              = aws_subnet.xnat-public.id
+  private_ip             = var.private_ips["container"]
+  vpc_security_group_ids = [aws_security_group.container.id]
+  key_name               = local.ssh_key_name
+
+  tags = {
+    Name = var.names["container"]
   }
 }
 
 resource "aws_security_group" "web" {
-  name        = "${var.webserver_name}-sg"
+  name        = "${var.names["web"]}-sg"
   vpc_id      = var.vpc_id
   description = "Security group for the web server"
 
   tags = {
-    Name = var.webserver_name
+    Name = var.names["web"]
   }
 }
 
