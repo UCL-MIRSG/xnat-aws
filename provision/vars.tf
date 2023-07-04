@@ -55,7 +55,7 @@ variable "instance_os" {
   description = "OS to use for the instance - will determine the AMI to use"
   default     = "rocky9"
   validation {
-    condition     = contains(["centos7", "rocky8", "rocky9", "rhel9"], var.instance_os)
-    error_message = "'instance_os' must be one of ('centos7', 'rocky8', 'rocky9', 'rhel9'). ${var.instance_os} is not supported"
+    condition     = contains(["rocky8", "rocky9", "rhel9"], var.instance_os)
+    error_message = "'instance_os' must be one of ('rocky8', 'rocky9', 'rhel9'). ${var.instance_os} is not supported"
   }
 }
