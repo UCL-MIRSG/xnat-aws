@@ -23,7 +23,7 @@ resource "aws_subnet" "xnat-public" {
   }
 }
 
-# Internet gateway 
+# Internet gateway
 resource "aws_internet_gateway" "xnat-internet-gateway" {
   vpc_id = aws_vpc.xnat.id
   tags = {
@@ -87,7 +87,7 @@ resource "aws_security_group" "xnat-web" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [module.get_my_ip.my_public_cidr]
+    cidr_blocks = var.public_cidr
   }
 
   tags = {
@@ -114,7 +114,7 @@ resource "aws_security_group" "xnat-db" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [module.get_my_ip.my_public_cidr]
+    cidr_blocks = var.public_cidr
   }
 
   # Allow connection to postgres port
@@ -149,7 +149,7 @@ resource "aws_security_group" "xnat-cserv" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [module.get_my_ip.my_public_cidr]
+    cidr_blocks = var.public_cidr
   }
 
   # Allow connection to Container Service port
