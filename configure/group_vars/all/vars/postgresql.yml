@@ -18,4 +18,4 @@ postgresql_install:
   disable_gpg_check: false
   rpm: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_facts['distribution_major_version'] }}-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
   yum_package: "postgresql{{ postgresql_version }}-server"
-  yum_contrib_package: "postgresql{{ postgresql_version }}-contrib" # required only on CentOS 7
+  yum_contrib_package: "postgresql{{ postgresql_version }}-contrib"
