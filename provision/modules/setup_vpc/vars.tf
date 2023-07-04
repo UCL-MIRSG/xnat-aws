@@ -1,5 +1,4 @@
 # VPC variables
-
 variable "cidr_blocks" {
   description = "CIDR block for the VPC and subnets"
   type        = map(any)
@@ -13,9 +12,4 @@ variable "availability_zone" {
   type        = string
   description = "AZ to use for deploying XNAT"
   default     = "eu-west-2a"
-}
-
-variable "public_cidr" {
-  type        = list(string)
-  description = "CIDR block for the public subnet"
 }
