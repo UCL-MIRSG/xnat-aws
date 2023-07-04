@@ -16,7 +16,6 @@ module "get_ami" {
 
 # Launch ec2 instance for the web server
 resource "aws_instance" "xnat_web" {
-  #ami           = data.aws_ami.centos7.id
   ami           = module.get_ami.amis[var.instance_os]
   instance_type = var.ec2_instance_types["xnat_web"]
 
@@ -33,7 +32,6 @@ resource "aws_instance" "xnat_web" {
 
 # Launch ec2 instance for the database
 resource "aws_instance" "xnat_db" {
-  #ami           = data.aws_ami.centos7.id
   ami           = module.get_ami.amis[var.instance_os]
   instance_type = var.ec2_instance_types["xnat_db"]
 
@@ -50,7 +48,6 @@ resource "aws_instance" "xnat_db" {
 
 # Launch ec2 instance for the database
 resource "aws_instance" "xnat_cserv" {
-  #ami           = data.aws_ami.centos7.id
   ami           = module.get_ami.amis[var.instance_os]
   instance_type = var.ec2_instance_types["xnat_cserv"]
 
