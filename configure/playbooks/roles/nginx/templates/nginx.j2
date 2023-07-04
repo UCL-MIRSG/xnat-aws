@@ -46,8 +46,8 @@ http {
     ssl_certificate_key {{ nginx.ssl_key_file }};
 
     # TLS 1.0 and TLS 1.1 should be disabled
-    # TLS 1.3 may not be supported by Centos7
-    ssl_protocols TLSv1.2;
+    # TLS 1.3 may not be supported by Red Hat 7
+    ssl_protocols TLSv1.3;
 
     ssl_dhparam {{ nginx.dh_params_file }};
     ssl_ecdh_curve secp384r1;
