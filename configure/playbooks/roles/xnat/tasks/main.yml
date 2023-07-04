@@ -3,8 +3,7 @@
   ansible.builtin.pip:
     name:
       - lxml
-  when: ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "8"
-
+  
 - name: Ensure dependencies are installed
   ansible.builtin.yum:
     name: ["postgresql{{ postgresql_version }}", "wget"]
