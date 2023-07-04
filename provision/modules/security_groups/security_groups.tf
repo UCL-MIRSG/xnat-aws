@@ -4,42 +4,9 @@ resource "aws_security_group" "xnat-web" {
   vpc_id      = var.vpc_id
   description = "security group for the web server"
 
-  # Allow incoming HTTP traffic
-  ingress {
-    from_port   = local.http_port
-    to_port     = local.http_port
-    protocol    = local.tcp_protocol
-    cidr_blocks = local.all_ips
-  }
-
-  # Allow incoming HTTPS traffic
-  ingress {
-    from_port   = local.https_port
-    to_port     = local.https_port
-    protocol    = local.any_protocol
-    cidr_blocks = local.all_ips
-  }
-
-  # Allow outgoing traffic
-  egress {
-    from_port   = local.any_port
-    to_port     = local.any_port
-    protocol    = local.any_protocol
-    cidr_blocks = local.all_ips
-  }
-
-  # Allow SSH into the instance
-  ingress {
-    from_port   = local.ssh_port
-    to_port     = local.ssh_port
-    protocol    = local.tcp_protocol
-    cidr_blocks = var.public_cidr
-  }
-
   tags = {
     Name = "xnat-web"
   }
-
 }
 
 resource "aws_security_group" "xnat-db" {
@@ -110,6 +77,47 @@ resource "aws_security_group" "xnat-cserv" {
     Name = "xnat-cserv"
   }
 
+}
+
+# Set up security group rules
+resource "aws_security_group_rule" "allow_http_incoming" {
+  type              = "ingress"
+  security_group_id = aws_security_group.xnat-web.id
+
+  from_port   = local.http_port
+  to_port     = local.http_port
+  protocol    = local.tcp_protocol
+  cidr_blocks = local.all_ips
+}
+
+resource "aws_security_group_rule" "allow_https_incoming" {
+  type              = "ingress"
+  security_group_id = aws_security_group.xnat-web.id
+
+  from_port   = local.https_port
+  to_port     = local.https_port
+  protocol    = local.any_protocol
+  cidr_blocks = local.all_ips
+}
+
+resource "aws_security_group_rule" "allow_ssh_incoming" {
+  type              = "ingress"
+  security_group_id = aws_security_group.xnat-web.id
+
+  from_port   = local.ssh_port
+  to_port     = local.ssh_port
+  protocol    = local.tcp_protocol
+  cidr_blocks = var.public_cidr
+}
+
+resource "aws_security_group_rule" "allow_all_outgoing" {
+  type              = "egress"
+  security_group_id = aws_security_group.xnat-web.id
+
+  from_port   = local.any_port
+  to_port     = local.any_port
+  protocol    = local.any_protocol
+  cidr_blocks = local.all_ips
 }
 
 locals {
