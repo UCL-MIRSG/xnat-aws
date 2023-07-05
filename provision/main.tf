@@ -16,27 +16,35 @@ module "setup_vpc" {
   availability_zone = var.availability_zone
 }
 
+# Launch ec2 instances for the web server (main + container)
+module "web_server" {
+  source = "./modules/web-server"
+
+  names = {
+    "main"      = "xnat_web"
+    "container" = "xnat_cserv"
+  }
+
+  instance_types = {
+    "main"      = "t2.small"
+    "container" = "t2.micro"
+  }
+
+  vpc_id            = module.setup_vpc.vpc_id
+  ami               = module.get_ami.amis[var.instance_os]
+  availability_zone = var.availability_zone
+  subnet_id         = module.setup_vpc.public_subnet_id
+  private_ips       = var.instance_private_ips
+  ssh_key_name      = local.ssh_key_name
+  public_cidr       = [module.get_my_ip.my_public_cidr]
+}
+
 # Copy public key to AWS
 resource "aws_key_pair" "key_pair" {
   key_name   = local.ssh_key_name
   public_key = file(local.ssh_public_key_filename)
 }
 
-# Launch ec2 instance for the web server
-resource "aws_instance" "xnat_web" {
-  ami           = module.get_ami.amis[var.instance_os]
-  instance_type = var.ec2_instance_types["xnat_web"]
-
-  availability_zone      = var.availability_zone
-  subnet_id              = aws_subnet.xnat-public.id
-  private_ip             = var.instance_private_ips["xnat_web"]
-  vpc_security_group_ids = [aws_security_group.xnat-web.id]
-  key_name               = local.ssh_key_name
-
-  tags = {
-    Name = "xnat_web"
-  }
-}
 
 # Launch ec2 instance for the database
 resource "aws_instance" "xnat_db" {
@@ -51,22 +59,6 @@ resource "aws_instance" "xnat_db" {
 
   tags = {
     Name = "xnat_db"
-  }
-}
-
-# Launch ec2 instance for the database
-resource "aws_instance" "xnat_cserv" {
-  ami           = module.get_ami.amis[var.instance_os]
-  instance_type = var.ec2_instance_types["xnat_cserv"]
-
-  availability_zone      = var.availability_zone
-  subnet_id              = aws_subnet.xnat-public.id
-  private_ip             = var.instance_private_ips["xnat_cserv"]
-  vpc_security_group_ids = [aws_security_group.xnat-cserv.id]
-  key_name               = local.ssh_key_name
-
-  tags = {
-    Name = "xnat_cserv"
   }
 }
 
