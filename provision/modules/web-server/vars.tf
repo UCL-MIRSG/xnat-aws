@@ -40,10 +40,6 @@ variable "subnet_id" {
 variable "private_ips" {
   type        = map(string)
   description = "The private IPs to use for the EC2 instances"
-  default = {
-    "main"      = "192.168.56.10"
-    "container" = "192.168.56.14"
-  }
 }
 
 variable "ssh_key_name" {
