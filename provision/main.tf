@@ -3,6 +3,11 @@ module "get_my_ip" {
   source = "./modules/get_my_ip"
 }
 
+# Determine which AMI to use
+module "get_ami" {
+  source = "./modules/get_ami"
+}
+
 # Copy public key to AWS
 resource "aws_key_pair" "key_pair" {
   key_name   = local.ssh_key_name
