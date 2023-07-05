@@ -87,3 +87,14 @@ resource "aws_security_group_rule" "allow_https_incoming" {
   protocol    = local.any_protocol
   cidr_blocks = local.all_ips
 }
+
+# Container service specific rules
+resource "aws_security_group_rule" "allow_container_incoming" {
+  type              = "ingress"
+  security_group_id = aws_security_group.sg["container"].id
+
+  from_port   = local.container_port
+  to_port     = local.container_port
+  protocol    = local.tcp_protocol
+  cidr_blocks = var.public_cidr
+}
