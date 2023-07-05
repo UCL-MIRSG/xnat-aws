@@ -39,27 +39,24 @@ module "web_server" {
   public_cidr       = [module.get_my_ip.my_public_cidr]
 }
 
+module "database" {
+  source = "./modules/database"
+
+  name              = "xnat_db"
+  vpc_id            = module.setup_vpc.vpc_id
+  ami               = module.get_ami.amis[var.instance_os]
+  availability_zone = var.availability_zone
+  subnet_id         = module.setup_vpc.public_subnet_id
+  private_ip        = var.instance_private_ips["xnat_db"]
+  ssh_key_name      = local.ssh_key_name
+  public_cidr       = [module.get_my_ip.my_public_cidr]
+  webserver_sg_id   = module.web_server.webserver_sg_id
+}
+
 # Copy public key to AWS
 resource "aws_key_pair" "key_pair" {
   key_name   = local.ssh_key_name
   public_key = file(local.ssh_public_key_filename)
-}
-
-
-# Launch ec2 instance for the database
-resource "aws_instance" "xnat_db" {
-  ami           = module.get_ami.amis[var.instance_os]
-  instance_type = var.ec2_instance_types["xnat_db"]
-
-  availability_zone      = var.availability_zone
-  subnet_id              = aws_subnet.xnat-public.id
-  private_ip             = var.instance_private_ips["xnat_db"]
-  vpc_security_group_ids = [aws_security_group.xnat-db.id]
-  key_name               = local.ssh_key_name
-
-  tags = {
-    Name = "xnat_db"
-  }
 }
 
 # Write the ansible hosts file
