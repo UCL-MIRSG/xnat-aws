@@ -29,6 +29,7 @@ variable "instance_types" {
 variable "availability_zone" {
   type        = string
   description = "The AZ to use for the EC2 instance"
+  default     = "eu-west-2a"
 }
 
 variable "subnet_id" {
