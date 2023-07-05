@@ -8,15 +8,18 @@ module "get_ami" {
   source = "./modules/get_ami"
 }
 
+# Set up the VPC
+module "setup_vpc" {
+  source = "./modules/setup_vpc"
+
+  cidr_blocks       = var.cidr_blocks
+  availability_zone = var.availability_zone
+}
+
 # Copy public key to AWS
 resource "aws_key_pair" "key_pair" {
   key_name   = local.ssh_key_name
   public_key = file(local.ssh_public_key_filename)
-}
-
-# Determine which AMI to use
-module "get_ami" {
-  source = "./modules/get_ami"
 }
 
 # Launch ec2 instance for the web server
