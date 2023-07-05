@@ -64,16 +64,16 @@ resource "local_file" "ansible-hosts" {
   content = templatefile("templates/ansible_hosts.yml.tftpl", {
     ssh_key_filename      = local.ssh_private_key_filename,
     ssh_user              = local.ansible_ssh_user[var.instance_os],
-    xnat_web_hostname     = aws_instance.xnat_web.public_dns,
-    xnat_web_public_ip    = aws_instance.xnat_web.public_ip,
-    xnat_web_private_ip   = aws_instance.xnat_web.private_ip,
+    xnat_web_hostname     = module.web_server.xnat_web_hostname,
+    xnat_web_public_ip    = module.web_server.xnat_web_public_ip,
+    xnat_web_private_ip   = module.web_server.xnat_web_private_ip,
     xnat_web_smtp_ip      = var.smtp_private_ip,
-    xnat_db_hostname      = aws_instance.xnat_db.public_dns,
-    xnat_db_public_ip     = aws_instance.xnat_db.public_ip,
-    xnat_db_private_ip    = aws_instance.xnat_db.private_ip,
-    xnat_cserv_hostname   = aws_instance.xnat_cserv.public_dns,
-    xnat_cserv_public_ip  = aws_instance.xnat_cserv.public_ip,
-    xnat_cserv_private_ip = aws_instance.xnat_cserv.private_ip,
+    xnat_db_hostname      = module.database.xnat_db_hostname,
+    xnat_db_public_ip     = module.database.xnat_db_public_ip,
+    xnat_db_private_ip    = module.database.xnat_db_private_ip,
+    xnat_cserv_hostname   = module.web_server.xnat_cserv_hostname,
+    xnat_cserv_public_ip  = module.web_server.xnat_cserv_public_ip,
+    xnat_cserv_private_ip = module.web_server.xnat_cserv_private_ip
   })
   filename        = "../configure/hosts.yml"
   file_permission = "0644"
