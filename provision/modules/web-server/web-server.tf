@@ -1,5 +1,4 @@
 locals {
-  server_names   = ["main", "container"]
   http_port      = 80
   https_port     = 443
   ssh_port       = 22
@@ -12,31 +11,31 @@ locals {
 
 # EC2 instances
 resource "aws_instance" "servers" {
-  for_each = toset(local.server_names)
+  for_each = var.names
 
   ami               = var.ami
-  instance_type     = var.instance_types[each.value]
+  instance_type     = var.instance_types[each.key]
   availability_zone = var.availability_zone
   subnet_id         = var.subnet_id
   private_ip        = var.private_ips[each.value]
   key_name          = var.ssh_key_name
 
-  vpc_security_group_ids = [aws_security_group.sg[each.value].id]
+  vpc_security_group_ids = [aws_security_group.sg[each.key].id]
 
   tags = {
-    Name = var.names[each.value]
+    Name = var.names[each.key]
   }
 }
 
 # Security groups
 resource "aws_security_group" "sg" {
-  for_each    = toset(local.server_names)
-  name        = "${var.names[each.value]}-sg"
+  for_each    = var.names
+  name        = "${var.names[each.key]}-sg"
   vpc_id      = var.vpc_id
-  description = "Security group for the ${each.value} server"
+  description = "Security group for the ${each.key} server"
 
   tags = {
-    Name = var.names[each.value]
+    Name = var.names[each.key]
   }
 }
 
