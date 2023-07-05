@@ -1,3 +1,11 @@
+terraform {
+  required_version = ">=0.15"
+}
+
+provider "aws" {
+  region = var.aws_region
+}
+
 # Get IP address for this machine
 module "get_my_ip" {
   source = "./modules/get_my_ip"
