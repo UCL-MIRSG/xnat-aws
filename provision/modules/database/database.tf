@@ -24,6 +24,12 @@ resource "aws_db_instance" "db" {
   vpc_security_group_ids = [aws_security_group.db.id]
 }
 
+resource "random_password" "db_credentials" {
+  length           = 24
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
 # Database parameter group, enable logging
 resource "aws_db_parameter_group" "db" {
   name = var.name
