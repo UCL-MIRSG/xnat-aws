@@ -1,11 +1,17 @@
 output "xnat_db_hostname" {
-  value = aws_instance.db.public_dns
+  description = "RDS instance hostname"
+  value = aws_db_instance.db.address
+  sensitive = true
 }
 
-output "xnat_db_public_ip" {
-  value = aws_instance.db.public_ip
+output "xnat_db_port" {
+  description = "RDS instance port"
+  value = aws_db_instance.db.port
+  sensitive = true
 }
 
-output "xnat_db_private_ip" {
-  value = aws_instance.db.private_ip
+output "xnat_db_username" {
+  description = "RDS instance root username"
+  value = aws_db_instance.db.username
+  sensitive = true
 }
