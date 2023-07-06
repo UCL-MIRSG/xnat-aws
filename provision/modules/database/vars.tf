@@ -49,5 +49,5 @@ variable "public_cidr" {
 
 variable "webserver_sg_id" {
   type        = string
-  description = "The ID of the security group for the web server"
+  description = "The ID of the security group for the web server. To allow access to the database from the web server only."
 }
