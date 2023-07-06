@@ -3,12 +3,7 @@ output "ansible_install_xnat" {
   value       = "./install_xnat.sh"
 }
 
-
-
-
-
-
 output "xnat_web_url" {
   description = "Once XNAT has been installed and configured, the web server will be accessible at this URL."
-  value       = "http://${aws_instance.xnat_web.public_dns}"
+  value       = "http://${module.web_server.xnat_web_hostname}"
 }
