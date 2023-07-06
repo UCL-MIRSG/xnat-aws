@@ -32,7 +32,7 @@ resource "aws_security_group_rule" "allow_ssh_incoming" {
   from_port   = local.ssh_port
   to_port     = local.ssh_port
   protocol    = local.tcp_protocol
-  cidr_blocks = var.public_cidr
+  cidr_blocks = var.ssh_cidr
 }
 
 resource "aws_security_group_rule" "allow_postgres_incoming" {
