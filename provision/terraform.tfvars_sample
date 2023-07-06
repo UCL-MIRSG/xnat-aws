@@ -1,11 +1,12 @@
 # General AWS
-aws_region        = "eu-west-2"
-availability_zone = "eu-west-2a"
+aws_region         = "eu-west-2"
+availability_zones = ["eu-west-2a", "eu-west-2b"]
 
-# VPC
-cidr_blocks = {
-  "vpc"           = "192.168.0.0/16"  # 192.168.0.0 to 	192.168.255.255
-  "public-subnet" = "192.168.56.0/24" # 192.168.56.0 to 192.168.56.255
+# CIDR blocks
+vpc_cidr_block = "192.168.0.0/16" # 192.168.0.0 to 	192.168.255.255
+subnet_cidr_blocks = {
+    "public"  = ["192.168.56.0/24"] # 192.168.56.0 to 192.168.56.255
+    "private" = ["192.168.100.0/24", "192.168.101.0/24"]
 }
 
 # EC2 private IPs
