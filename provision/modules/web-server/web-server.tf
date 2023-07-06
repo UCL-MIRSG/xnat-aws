@@ -95,5 +95,5 @@ resource "aws_security_group_rule" "allow_container_incoming" {
   from_port   = local.container_port
   to_port     = local.container_port
   protocol    = local.tcp_protocol
-  cidr_blocks = var.public_cidr
+  source_security_group_id = aws_security_group.sg["main"].id # only allow connection from web server
 }
