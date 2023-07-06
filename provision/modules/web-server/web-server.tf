@@ -91,6 +91,9 @@ resource "aws_security_group_rule" "allow_https_incoming" {
   cidr_blocks = var.https_cidr
 }
 
+# TODO: might have to add another rule to allow incoming traffic from the RDS database
+# See https://dev.to/rolfstreefkerk/how-to-setup-a-basic-vpc-with-ec2-and-rds-using-terraform-3jij#ec2-security-group
+
 # Container service specific rules
 resource "aws_security_group_rule" "allow_container_incoming" {
   type              = "ingress"
