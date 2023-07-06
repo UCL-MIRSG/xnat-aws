@@ -1,21 +1,27 @@
-# Launch ec2 instance for the database
-resource "aws_instance" "db" {
-  ami           = var.ami
-  instance_type = var.instance_type
-
-  availability_zone      = var.availability_zone
-  subnet_id              = var.subnet_id
-  private_ip             = var.private_ip
-  vpc_security_group_ids = [aws_security_group.db.id]
-  key_name               = var.ssh_key_name
-
-  root_block_device {
-    volume_size = var.root_block_device_size
-  }
-
+resource "aws_db_subnet_group" "default" {
+  name       = var.name
+  subnet_ids = [var.subnet_id]
   tags = {
-    Name = var.name
+    Name = "DB subnet group for ${var.name}"
   }
+}
+
+resource "aws_db_instance" "db" {
+  db_name = var.name
+  # TODO: do we need storage autoscaling? Can be set using `max_allocated_storage`
+  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#storage-autoscaling
+  instance_class    = "db.${var.instance_type}"
+  allocated_storage = 10
+  engine            = "postgres"
+  engine_version    = "12.5"
+
+  username = local.db_username
+  # TODO: should we use Secrets Manager to store the password?
+  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#managed-master-passwords-via-secrets-manager-default-kms-key
+  password = random_password.db_credentials.result
+
+  db_subnet_group_name   = aws_db_subnet_group.default.name
+  vpc_security_group_ids = [aws_security_group.db.id]
 }
 
 # Security group for the database
