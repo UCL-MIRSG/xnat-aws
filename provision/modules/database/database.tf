@@ -7,13 +7,12 @@ resource "aws_db_subnet_group" "default" {
 }
 
 resource "aws_db_instance" "db" {
-  db_name = var.name
-  # TODO: do we need storage autoscaling? Can be set using `max_allocated_storage`
-  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#storage-autoscaling
-  instance_class    = "db.${var.instance_type}"
-  allocated_storage = 10
-  engine            = "postgres"
-  engine_version    = "14"
+  db_name               = var.name
+  instance_class        = "db.${var.instance_type}"
+  allocated_storage     = 15
+  max_allocated_storage = 30
+  engine                = "postgres"
+  engine_version        = "14"
 
   username = local.db_username
   # TODO: should we use Secrets Manager to store the password?
