@@ -21,11 +21,6 @@ variable "root_block_device_size" {
   default     = 30
 }
 
-variable "private_ip" {
-  type        = string
-  description = "The private IP to use for the database EC2 instance"
-}
-
 variable "availability_zone" {
   type        = string
   description = "The AZ to use for the EC2 instance"
