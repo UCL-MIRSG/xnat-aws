@@ -96,8 +96,7 @@ resource "local_file" "ansible-hosts" {
     xnat_web_private_ip   = module.web_server.xnat_web_private_ip,
     xnat_web_smtp_ip      = var.smtp_private_ip,
     xnat_db_hostname      = module.database.xnat_db_hostname,
-    xnat_db_public_ip     = module.database.xnat_db_public_ip,
-    xnat_db_private_ip    = module.database.xnat_db_private_ip,
+    xnat_db_username      = module.database.xnat_db_username,
     xnat_cserv_hostname   = module.web_server.xnat_cserv_hostname,
     xnat_cserv_public_ip  = module.web_server.xnat_cserv_public_ip,
     xnat_cserv_private_ip = module.web_server.xnat_cserv_private_ip

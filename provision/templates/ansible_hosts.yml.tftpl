@@ -9,8 +9,7 @@ all:
       smtp_ip: ${xnat_web_smtp_ip}
     xnat_db:
       ansible_host: ${xnat_db_hostname}
-      ansible_ip: ${xnat_db_public_ip}
-      private_ip: ${xnat_db_private_ip}
+      ansible_username: ${xnat_db_username}
     xnat_cserv:
       ansible_host: ${xnat_cserv_hostname}
       ansible_ip: ${xnat_cserv_public_ip}
