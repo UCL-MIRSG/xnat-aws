@@ -96,8 +96,8 @@ locals {
 
   # Ansible user for connecting to the instance
   ansible_ssh_user = {
-    "rocky8"  = "rocky"
-    "rocky9"  = "rocky"
-    "rhel9"   = "ec2-user"
+    "rocky8" = "rocky"
+    "rocky9" = "rocky"
+    "rhel9"  = "ec2-user"
   }
 }
