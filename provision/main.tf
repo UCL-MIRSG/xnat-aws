@@ -18,10 +18,23 @@ module "get_ami" {
 
 # Set up the VPC
 module "setup_vpc" {
-  source = "./modules/setup_vpc"
+  source = "terraform-aws-modules/vpc/aws"
 
-  cidr_blocks       = var.cidr_blocks
-  availability_zone = var.availability_zone
+  name = "xnat-vpc"
+  cidr = var.vpc_cidr_block
+
+  azs             = var.availability_zones
+  private_subnets = var.subnet_cidr_blocks["private"]
+  public_subnets  = var.subnet_cidr_blocks["public"]
+
+  enable_nat_gateway     = true
+  single_nat_gateway     = true
+  one_nat_gateway_per_az = false
+
+  tags = {
+    Terraform = "true"
+    Name = "VPC for XNAT"
+  }
 }
 
 # Launch ec2 instances for the web server (main + container)
