@@ -49,5 +49,15 @@ variable "ssh_key_name" {
 
 variable "ssh_cidr" {
   type        = list(string)
-  description = "The CIDR block for allowing ssh access from the public subnet"
+  description = "The CIDR blocks to permit SSH access from"
+}
+
+variable "http_cidr" {
+  type        = list(string)
+  description = "The CIDR block to grant HTTP access to the web server"
+}
+
+variable "https_cidr" {
+  type        = list(string)
+  description = "The CIDR block to grant HTTSP access to the web server"
 }

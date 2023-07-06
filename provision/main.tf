@@ -45,6 +45,8 @@ module "web_server" {
   private_ips       = var.instance_private_ips
   ssh_key_name      = local.ssh_key_name
   ssh_cidr          = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
+  http_cidr         = concat([module.get_my_ip.my_public_cidr], var.extend_http_cidr)
+  https_cidr        = concat([module.get_my_ip.my_public_cidr], var.extend_https_cidr)
 }
 
 module "database" {

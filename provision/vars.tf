@@ -38,10 +38,22 @@ variable "smtp_private_ip" {
   default     = "192.168.56.101"
 }
 
-# CIDR blocks to allow access to
+# CIDR blocks to add to whitelist (in addition to your own IP)
 variable "extend_ssh_cidr" {
   type        = list(string)
-  description = "CIDR blocks servers should permit ssh access, in addition to your own public IP address."
+  description = "CIDR blocks servers should permit SHH access from, in addition to your own IP address"
+  default     = []
+}
+
+variable "extend_http_cidr" {
+  type        = list(string)
+  description = "The CIDR blocks to grant HTTP access to the web server, in addition to your own IP address"
+  default     = []
+}
+
+variable "extend_https_cidr" {
+  type        = list(string)
+  description = "The CIDR blocks to grant HTTSP access to the web server, in addition to your own IP address"
   default     = []
 }
 
