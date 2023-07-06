@@ -34,8 +34,8 @@ module "web_server" {
   }
 
   instance_types = {
-    "main"      = "t2.small"
-    "container" = "t2.micro"
+    "main"      = var.ec2_instance_types["xnat_web"]
+    "container" = var.ec2_instance_types["xnat_cserv"]
   }
 
   vpc_id            = module.setup_vpc.vpc_id
@@ -53,6 +53,7 @@ module "database" {
   name              = "xnat_db"
   vpc_id            = module.setup_vpc.vpc_id
   ami               = module.get_ami.amis[var.instance_os]
+  instance_type     = var.ec2_instance_types["xnat_db"]
   availability_zone = var.availability_zone
   subnet_id         = module.setup_vpc.public_subnet_id
   private_ip        = var.instance_private_ips["xnat_db"]
