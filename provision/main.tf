@@ -74,7 +74,6 @@ module "database" {
   vpc_id                 = module.setup_vpc.vpc_id
   ami                    = module.get_ami.amis[var.instance_os]
   instance_type          = var.ec2_instance_types["xnat_db"]
-  root_block_device_size = var.root_block_device_size["xnat_db"]
   availability_zone      = var.availability_zones[0]
   subnet_id              = module.setup_vpc.private_subnets[0]
   private_ip             = var.db_private_ip
