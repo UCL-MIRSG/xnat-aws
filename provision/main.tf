@@ -33,7 +33,7 @@ module "setup_vpc" {
 
   tags = {
     Terraform = "true"
-    Name = "VPC for XNAT"
+    Name      = "VPC for XNAT"
   }
 }
 
@@ -57,8 +57,8 @@ module "web_server" {
 
   vpc_id            = module.setup_vpc.vpc_id
   ami               = module.get_ami.amis[var.instance_os]
-  availability_zone = var.availability_zone
-  subnet_id         = module.setup_vpc.public_subnet_id
+  availability_zone = var.availability_zones[0]
+  subnet_id         = module.setup_vpc.public_subnets[0]
   private_ips       = var.instance_private_ips
   ssh_key_name      = local.ssh_key_name
   ssh_cidr          = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
@@ -75,7 +75,7 @@ module "database" {
   instance_type          = var.ec2_instance_types["xnat_db"]
   root_block_device_size = var.root_block_device_size["xnat_db"]
   availability_zone      = var.availability_zone
-  subnet_id              = module.setup_vpc.public_subnet_id
+  subnet_id              = module.setup_vpc.private_subnets[0]
   private_ip             = var.instance_private_ips["xnat_db"]
   ssh_key_name           = local.ssh_key_name
   ssh_cidr               = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
