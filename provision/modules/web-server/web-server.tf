@@ -74,7 +74,7 @@ resource "aws_security_group_rule" "allow_http_incoming" {
   from_port   = local.http_port
   to_port     = local.http_port
   protocol    = local.tcp_protocol
-  cidr_blocks = local.all_ips
+  cidr_blocks = var.http_cidr
 }
 
 resource "aws_security_group_rule" "allow_https_incoming" {
@@ -84,7 +84,7 @@ resource "aws_security_group_rule" "allow_https_incoming" {
   from_port   = local.https_port
   to_port     = local.https_port
   protocol    = local.any_protocol
-  cidr_blocks = local.all_ips
+  cidr_blocks = var.https_cidr
 }
 
 # Container service specific rules
