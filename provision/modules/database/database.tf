@@ -13,7 +13,7 @@ resource "aws_db_instance" "db" {
   instance_class    = "db.${var.instance_type}"
   allocated_storage = 10
   engine            = "postgres"
-  engine_version    = "12.5"
+  engine_version    = "14"
 
   username = local.db_username
   # TODO: should we use Secrets Manager to store the password?
