@@ -16,10 +16,15 @@ instance_private_ips = {
 }
 smtp_private_ip = "192.168.56.101"
 
+# CIDR blocks to add to whitelist (in addition to your own IP)
+extend_ssh_cidr   = []
+extend_http_cidr  = []
+extend_https_cidr = []
+
 # EC2 instance types
 ec2_instance_types = {
-  "xnat_web"   = "t2.small" # XNAT needs more RAM than available in t2.micro
-  "xnat_db"    = "t2.micro"
+  "xnat_web"   = "t3.medium" # XNAT needs more RAM than available in t2.micro
+  "xnat_db"    = "t3.medium"
   "xnat_cserv" = "t2.micro"
 }
 
@@ -27,4 +32,3 @@ ec2_instance_types = {
 # - which AMI to use
 # - the user Ansible will use to log into the instance (ansible_ssh_user)
 instance_os = "rocky9"
-
