@@ -32,7 +32,7 @@ resource "random_password" "db_credentials" {
 
 # Database parameter group, enable logging
 resource "aws_db_parameter_group" "db" {
-  name = var.name
+  name   = var.name
   family = "postgres14"
 
   parameter {
@@ -73,6 +73,7 @@ resource "aws_security_group_rule" "allow_all_outgoing" {
 }
 
 locals {
+  db_username   = "xnat"
   postgres_port = 5432
   any_port      = 0
   tcp_protocol  = "tcp"
