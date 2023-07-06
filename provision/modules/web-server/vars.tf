@@ -47,7 +47,7 @@ variable "ssh_key_name" {
   description = "The name of the SSH key to use for the EC2 instance"
 }
 
-variable "public_cidr" {
+variable "ssh_cidr" {
   type        = list(string)
   description = "The CIDR block for allowing ssh access from the public subnet"
 }

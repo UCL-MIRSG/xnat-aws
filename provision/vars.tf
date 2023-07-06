@@ -38,6 +38,13 @@ variable "smtp_private_ip" {
   default     = "192.168.56.101"
 }
 
+# CIDR blocks to allow access to
+variable "extend_ssh_cidr" {
+  type        = list(string)
+  description = "CIDR blocks servers should permit ssh access, in addition to your own public IP address."
+  default     = []
+}
+
 # EC2 instance types
 variable "ec2_instance_types" {
   type        = map(any)

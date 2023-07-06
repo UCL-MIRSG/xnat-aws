@@ -44,7 +44,7 @@ module "web_server" {
   subnet_id         = module.setup_vpc.public_subnet_id
   private_ips       = var.instance_private_ips
   ssh_key_name      = local.ssh_key_name
-  public_cidr       = [module.get_my_ip.my_public_cidr]
+  ssh_cidr          = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
 }
 
 module "database" {
@@ -58,7 +58,7 @@ module "database" {
   subnet_id         = module.setup_vpc.public_subnet_id
   private_ip        = var.instance_private_ips["xnat_db"]
   ssh_key_name      = local.ssh_key_name
-  public_cidr       = [module.get_my_ip.my_public_cidr]
+  ssh_cidr          = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
   webserver_sg_id   = module.web_server.webserver_sg_id
 }
 
