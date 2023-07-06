@@ -77,8 +77,6 @@ module "database" {
   availability_zone      = var.availability_zones[0]
   subnet_id              = module.setup_vpc.private_subnets[0]
   private_ip             = var.db_private_ip
-  ssh_key_name           = local.ssh_key_name
-  ssh_cidr               = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
   webserver_sg_id        = module.web_server.webserver_sg_id
 }
 

@@ -1,7 +1,7 @@
 variable "name" {
   type        = string
   description = "The name for the database EC2 instance"
-  default     = "xnat_db"
+  default     = "xnat-db"
 }
 
 variable "vpc_id" {
