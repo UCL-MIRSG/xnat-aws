@@ -74,9 +74,9 @@ module "database" {
   ami                    = module.get_ami.amis[var.instance_os]
   instance_type          = var.ec2_instance_types["xnat_db"]
   root_block_device_size = var.root_block_device_size["xnat_db"]
-  availability_zone      = var.availability_zone
+  availability_zone      = var.availability_zones[0]
   subnet_id              = module.setup_vpc.private_subnets[0]
-  private_ip             = var.instance_private_ips["xnat_db"]
+  private_ip             = var.db_private_ip
   ssh_key_name           = local.ssh_key_name
   ssh_cidr               = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
   webserver_sg_id        = module.web_server.webserver_sg_id
