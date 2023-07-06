@@ -35,16 +35,6 @@ resource "aws_security_group" "db" {
 }
 
 # Security group rules
-resource "aws_security_group_rule" "allow_ssh_incoming" {
-  type              = "ingress"
-  security_group_id = aws_security_group.db.id
-
-  from_port   = local.ssh_port
-  to_port     = local.ssh_port
-  protocol    = local.tcp_protocol
-  cidr_blocks = var.ssh_cidr
-}
-
 resource "aws_security_group_rule" "allow_postgres_incoming" {
   type              = "ingress"
   security_group_id = aws_security_group.db.id
@@ -66,7 +56,6 @@ resource "aws_security_group_rule" "allow_all_outgoing" {
 }
 
 locals {
-  ssh_port      = 22
   postgres_port = 5432
   any_port      = 0
   tcp_protocol  = "tcp"
