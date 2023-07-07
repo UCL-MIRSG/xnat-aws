@@ -24,11 +24,13 @@ module "setup_vpc" {
   cidr = var.vpc_cidr_block
 
   azs                          = var.availability_zones
-  private_subnets              = var.subnet_cidr_blocks["private"]
   public_subnets               = var.subnet_cidr_blocks["public"]
-  map_public_ip_on_launch      = true # Assign public IP address to subnet
-  database_subnets             = var.subnet_cidr_blocks["private"]
+  # NOTE: database subnets only without private subnets doesn't work
+  # cfr. https://github.com/terraform-aws-modules/terraform-aws-vpc/issues/944
+  private_subnets              = var.subnet_cidr_blocks["private"]
+  database_subnets             = var.subnet_cidr_blocks["database"]
   create_database_subnet_group = true
+  map_public_ip_on_launch      = true # Assign public IP address to subnet
 
   enable_nat_gateway     = true
   single_nat_gateway     = true
