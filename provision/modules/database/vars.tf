@@ -17,7 +17,7 @@ variable "ami" {
 variable "instance_type" {
   type        = string
   description = "The type of EC2 instance to launch"
-  default     = "t2.micro"
+  default     = "t3.medium"
 }
 
 variable "private_ip" {
