@@ -15,3 +15,9 @@ output "xnat_db_username" {
   value = aws_db_instance.db.username
   sensitive = true
 }
+
+output "xnat_db_sg_id" {
+  description = "RDS instance security group ID"
+  value = aws_security_group.db.id
+  sensitive = true
+}
