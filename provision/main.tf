@@ -37,6 +37,10 @@ module "web_server" {
     "main"      = var.ec2_instance_types["xnat_web"]
     "container" = var.ec2_instance_types["xnat_cserv"]
   }
+  root_block_device_size = {
+    "main"      = var.root_block_device_size["xnat_web"]
+    "container" = var.root_block_device_size["xnat_cserv"]
+  }
 
   vpc_id            = module.setup_vpc.vpc_id
   ami               = module.get_ami.amis[var.instance_os]
@@ -52,16 +56,17 @@ module "web_server" {
 module "database" {
   source = "./modules/database"
 
-  name              = "xnat_db"
-  vpc_id            = module.setup_vpc.vpc_id
-  ami               = module.get_ami.amis[var.instance_os]
-  instance_type     = var.ec2_instance_types["xnat_db"]
-  availability_zone = var.availability_zone
-  subnet_id         = module.setup_vpc.public_subnet_id
-  private_ip        = var.instance_private_ips["xnat_db"]
-  ssh_key_name      = local.ssh_key_name
-  ssh_cidr          = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
-  webserver_sg_id   = module.web_server.webserver_sg_id
+  name                   = "xnat_db"
+  vpc_id                 = module.setup_vpc.vpc_id
+  ami                    = module.get_ami.amis[var.instance_os]
+  instance_type          = var.ec2_instance_types["xnat_db"]
+  root_block_device_size = var.root_block_device_size["xnat_db"]
+  availability_zone      = var.availability_zone
+  subnet_id              = module.setup_vpc.public_subnet_id
+  private_ip             = var.instance_private_ips["xnat_db"]
+  ssh_key_name           = local.ssh_key_name
+  ssh_cidr               = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
+  webserver_sg_id        = module.web_server.webserver_sg_id
 }
 
 # Copy public key to AWS

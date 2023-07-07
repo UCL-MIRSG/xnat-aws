@@ -68,6 +68,17 @@ variable "ec2_instance_types" {
   }
 }
 
+# EC2 root block device volume size
+variable "root_block_device_size" {
+  type        = map(any)
+  description = "Storage space on the root block device (GB)"
+  default = {
+    "xnat_web"   = 30
+    "xnat_db"    = 30
+    "xnat_cserv" = 10
+  }
+}
+
 # EC2 instance OS
 variable "instance_os" {
   type        = string
