@@ -23,10 +23,12 @@ module "setup_vpc" {
   name = "xnat-vpc"
   cidr = var.vpc_cidr_block
 
-  azs                     = var.availability_zones
-  private_subnets         = var.subnet_cidr_blocks["private"]
-  public_subnets          = var.subnet_cidr_blocks["public"]
-  map_public_ip_on_launch = true # Assign public IP address to subnet
+  azs                          = var.availability_zones
+  private_subnets              = var.subnet_cidr_blocks["private"]
+  public_subnets               = var.subnet_cidr_blocks["public"]
+  map_public_ip_on_launch      = true # Assign public IP address to subnet
+  database_subnets             = var.subnet_cidr_blocks["private"]
+  create_database_subnet_group = true
 
   enable_nat_gateway     = true
   single_nat_gateway     = true
