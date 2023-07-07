@@ -9,6 +9,10 @@ resource "aws_instance" "db" {
   vpc_security_group_ids = [aws_security_group.db.id]
   key_name               = var.ssh_key_name
 
+  root_block_device {
+    volume_size = var.root_block_device_size
+  }
+
   tags = {
     Name = var.name
   }

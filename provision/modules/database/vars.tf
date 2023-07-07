@@ -20,6 +20,12 @@ variable "instance_type" {
   default     = "t3.medium"
 }
 
+variable "root_block_device_size" {
+  type        = string
+  description = "Storage space on the root block device (GB)"
+  default     = 30
+}
+
 variable "private_ip" {
   type        = string
   description = "The private IP to use for the database EC2 instance"
