@@ -22,6 +22,10 @@ resource "aws_instance" "servers" {
 
   vpc_security_group_ids = [aws_security_group.sg[each.key].id]
 
+  root_block_device {
+    volume_size = var.root_block_device_size[each.key]
+  }
+
   tags = {
     Name = var.names[each.key]
   }
