@@ -27,10 +27,10 @@ variable "instance_types" {
 }
 
 variable "root_block_device_size" {
-  type        = map
+  type        = map(any)
   description = "Storage space on the root block device (GB)"
   default = {
-    "main" = 30
+    "main"      = 30
     "container" = 10
   }
 }
