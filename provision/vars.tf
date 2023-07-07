@@ -62,8 +62,8 @@ variable "ec2_instance_types" {
   type        = map(any)
   description = "Instance type to use for each server"
   default = {
-    "xnat_web"   = "t2.small"
-    "xnat_db"    = "t2.micro"
+    "xnat_web"   = "t3.medium"
+    "xnat_db"    = "t3.medium"
     "xnat_cserv" = "t2.micro"
   }
 }

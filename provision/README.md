@@ -14,7 +14,7 @@ A single, **public** subnet is created in the VPC. This is to make is straightfo
 
 ## Usage
 
-First set the necessary variables. Copy the file `xnat-aws/provision/terraform.tfvars_sample` to `xnat-aws/provision/terraform.tfvars`. You shouldn't need to change any values but may do so if you wish to e.g. use a `t2.large` EC2 instance for the web server.
+First set the necessary variables. Copy the file `xnat-aws/provision/terraform.tfvars_sample` to `xnat-aws/provision/terraform.tfvars`. You shouldn't need to change any values but may do so if you wish to e.g. use a `t3.large` EC2 instance for the web server.
 
 Then, to create the infrastructure on AWS run the following commands from within the `xnat-aws/provision` directory:
 
