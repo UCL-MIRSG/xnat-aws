@@ -13,6 +13,10 @@ resource "aws_db_instance" "db" {
 
   db_subnet_group_name   = var.db_subnet_group_name
   vpc_security_group_ids = [aws_security_group.db.id]
+
+  tags = {
+    Name = var.name
+  }
 }
 
 resource "random_password" "db_credentials" {
