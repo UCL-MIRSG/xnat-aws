@@ -25,5 +25,5 @@ tomcat:
 # You may want to increase the heap space if you have enough RAM available
 java_mem:
   Xms: "512M"
-  Xmx: "1G"
+  Xmx: "2G"
   MetaspaceSize: "300M"
