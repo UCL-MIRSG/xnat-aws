@@ -23,8 +23,8 @@ module "setup_vpc" {
   name = "xnat-vpc"
   cidr = var.vpc_cidr_block
 
-  azs                          = var.availability_zones
-  public_subnets               = var.subnet_cidr_blocks["public"]
+  azs            = var.availability_zones
+  public_subnets = var.subnet_cidr_blocks["public"]
   # NOTE: database subnets only without private subnets doesn't work
   # cfr. https://github.com/terraform-aws-modules/terraform-aws-vpc/issues/944
   private_subnets              = var.subnet_cidr_blocks["private"]
