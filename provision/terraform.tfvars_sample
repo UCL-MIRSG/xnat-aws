@@ -28,6 +28,13 @@ ec2_instance_types = {
   "xnat_cserv" = "t2.micro"
 }
 
+# EC2 root block device volume size
+root_block_device_size = {
+  "xnat_web" = 30
+  "xnat_db" = 30
+  "xnat_cserv" = 10
+}
+
 # EC2 instance OS - this will be used to determine:
 # - which AMI to use
 # - the user Ansible will use to log into the instance (ansible_ssh_user)
