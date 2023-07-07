@@ -1,4 +1,5 @@
 resource "aws_db_instance" "db" {
+  identifier_prefix     = "xnat-db" # for some reason, this doesn't work with `var.name`
   db_name               = var.name
   instance_class        = "db.${var.instance_type}"
   allocated_storage     = 15
