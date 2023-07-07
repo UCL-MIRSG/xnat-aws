@@ -70,3 +70,13 @@ variable "https_cidr" {
   type        = list(string)
   description = "The CIDR block to grant HTTSP access to the web server"
 }
+
+variable "db_port" {
+  type        = number
+  description = "The port to allow connections from the RDS database instance"
+}
+
+variable "db_sg_id" {
+  type        = string
+  description = "The security group ID of the RDS database instance, to allow connections from"
+}
