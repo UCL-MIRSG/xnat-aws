@@ -21,17 +21,6 @@ resource "random_password" "db_credentials" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-# Database parameter group, enable logging
-resource "aws_db_parameter_group" "db" {
-  name   = var.name
-  family = "postgres14"
-
-  parameter {
-    name  = "log_connections"
-    value = "1"
-  }
-}
-
 # Security group for the database
 resource "aws_security_group" "db" {
   vpc_id      = var.vpc_id
