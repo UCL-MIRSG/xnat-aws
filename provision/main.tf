@@ -74,11 +74,9 @@ module "database" {
 
   name                 = "xnat_db"
   vpc_id               = module.setup_vpc.vpc_id
-  ami                  = module.get_ami.amis[var.instance_os]
   instance_type        = var.ec2_instance_types["xnat_db"]
   availability_zone    = var.availability_zones[0]
   db_subnet_group_name = module.setup_vpc.database_subnet_group_name
-  private_ip           = var.db_private_ip
   webserver_sg_id      = module.web_server.webserver_sg_id
 }
 
