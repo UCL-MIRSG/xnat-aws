@@ -69,8 +69,6 @@ module "web_server" {
   ssh_cidr          = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
   http_cidr         = concat([module.get_my_ip.my_public_cidr], var.extend_http_cidr)
   https_cidr        = concat([module.get_my_ip.my_public_cidr], var.extend_https_cidr)
-  db_port           = module.database.xnat_db_port
-  db_sg_id          = module.database.xnat_db_sg_id
 }
 
 module "database" {

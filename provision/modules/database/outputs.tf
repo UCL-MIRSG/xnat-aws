@@ -26,9 +26,3 @@ output "postgres_version" {
   description = "Version of postgresql we're using"
   value = aws_db_instance.db.engine_version
 }
-
-output "xnat_db_sg_id" {
-  description = "RDS instance security group ID"
-  value = aws_security_group.db.id
-  sensitive = true
-}
