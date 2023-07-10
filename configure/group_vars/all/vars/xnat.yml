@@ -8,11 +8,11 @@ xnat_web_server:
 
 # database server VM
 xnat_db:
-  host: "{{ hostvars['xnat_db']['ansible_host'] }}"
-  port: 5432
+  host: "{{ hostvars['xnat_web']['database_hostname'] }}"
+  port: "{{ hostvars['xnat_web']['database_port'] }}"
   listen_addresses: "*"
-  postgres_xnat_database: "xnat"
-  postgres_xnat_user: "xnat"
+  postgres_xnat_database: "{{ hostvars['xnat_web']['database_name'] }}"
+  postgres_xnat_user: "{{ hostvars['xnat_web']['database_user'] }}"
   postgres_xnat_password: "{{ vault_postgres_xnat_password }}"
   storage_dir: "{{ EXTERNAL_STORAGE_DRIVE }}/pgsql"
   data_dir: "{{ EXTERNAL_STORAGE_DRIVE }}/pgsql/{{ postgresql_version }}/data"
