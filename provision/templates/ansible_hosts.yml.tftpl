@@ -6,10 +6,11 @@ all:
       ansible_host: ${xnat_web_hostname}
       ansible_ip: ${xnat_web_public_ip}
       private_ip: ${xnat_web_private_ip}
+      database_hostname: ${xnat_db_hostname}
+      database_port: ${xnat_db_port}
+      database_name: ${xnat_db_name}
+      database_user: ${xnat_db_username}
       smtp_ip: ${xnat_web_smtp_ip}
-    xnat_db:
-      ansible_host: ${xnat_db_hostname}
-      ansible_username: ${xnat_db_username}
     xnat_cserv:
       ansible_host: ${xnat_cserv_hostname}
       ansible_ip: ${xnat_cserv_public_ip}
