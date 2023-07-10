@@ -4,6 +4,7 @@
 postgresql_version: "14"
 
 # Generally this should be set to true
+# TODO: set back to `true` once we have SSL enabled for the database (#38)
 postgresql_use_ssl: false
 
 # Where to store ssl certificates in local cache
