@@ -4,7 +4,7 @@
 postgresql_version: "14"
 
 # Generally this should be set to true
-postgresql_use_ssl: true
+postgresql_use_ssl: false
 
 # Where to store ssl certificates in local cache
 database_server_certificate_cache_filename: "{{ ansible_cache_dir }}/pg_certificates/{{ xnat_db.host }}.pg.server.crt"
