@@ -1,7 +1,7 @@
 resource "aws_db_instance" "db" {
-  identifier_prefix     = "xnat-db" # for some reason, this doesn't work with `var.name`
-  db_name               = var.name
-  instance_class        = "db.${var.instance_type}"
+  identifier_prefix     = "${local.identifier_prefix}-"
+  db_name               = local.db_name
+  instance_class        = var.instance_type
   allocated_storage     = 15
   max_allocated_storage = 30
   engine                = "postgres"
@@ -15,6 +15,8 @@ resource "aws_db_instance" "db" {
   db_subnet_group_name   = var.db_subnet_group_name
   vpc_security_group_ids = [aws_security_group.db.id]
 
+  skip_final_snapshot = true
+
   tags = {
     Name = var.name
   }
@@ -24,6 +26,21 @@ resource "random_password" "db_credentials" {
   length           = 24
   special          = true
   override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+# Write the passwords to file and encrypt the vault
+resource "local_sensitive_file" "ansible-vault" {
+
+  content = templatefile("templates/ansible_vault.tftpl", {
+    postgres_xnat_password      = random_password.db_credentials.result
+  })
+  filename        = local.ansible_vault_file
+  file_permission = "0644"
+
+  provisioner "local-exec" {
+    command = "ansible-vault encrypt ${local.ansible_vault_file} --vault-password ${local.encryption_password_file}"
+  }
+
 }
 
 # Security group for the database
@@ -58,10 +75,14 @@ resource "aws_security_group_rule" "allow_all_outgoing" {
 }
 
 locals {
+  identifier_prefix = replace("${var.name}", "_", "-")
+  db_name = "xnat"
   db_username   = "xnat"
   postgres_port = 5432
   any_port      = 0
   tcp_protocol  = "tcp"
   any_protocol  = "-1"
   all_ips       = ["0.0.0.0/0"]
+  ansible_vault_file       = "../configure/group_vars/web/vault"
+  encryption_password_file = "../configure/.vault_password"
 }

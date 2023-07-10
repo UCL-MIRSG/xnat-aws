@@ -12,7 +12,11 @@ variable "vpc_id" {
 variable "instance_type" {
   type        = string
   description = "The type of EC2 instance to launch"
-  default     = "t3.medium"
+  default     = "db.t3.medium"
+  validation {
+    condition     = startswith(var.instance_type, "db.")
+    error_message = "'instance_type' must start with 'db.'"
+  }
 }
 
 variable "root_block_device_size" {
