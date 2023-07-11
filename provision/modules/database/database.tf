@@ -45,6 +45,7 @@ resource "local_sensitive_file" "ansible-vault" {
 
 # Security group for the database
 resource "aws_security_group" "db" {
+  name        = "${var.name}-sg"
   vpc_id      = var.vpc_id
   description = "security group for the database"
 

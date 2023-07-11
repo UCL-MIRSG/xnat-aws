@@ -23,23 +23,44 @@ module "setup_vpc" {
   name = "xnat-vpc"
   cidr = var.vpc_cidr_block
 
-  azs            = var.availability_zones
-  public_subnets = var.subnet_cidr_blocks["public"]
   # NOTE: database subnets only without private subnets doesn't work
   # cfr. https://github.com/terraform-aws-modules/terraform-aws-vpc/issues/944
+  azs            = var.availability_zones
+  public_subnets = var.subnet_cidr_blocks["public"]
   private_subnets              = var.subnet_cidr_blocks["private"]
   database_subnets             = var.subnet_cidr_blocks["database"]
+
+  # Assign public IP address to subnet
+  map_public_ip_on_launch      = true
+
+  # Don't use any of the default resources
+  manage_default_vpc         = false
+  manage_default_network_acl = false
+  manage_default_security_group = false
+  manage_default_route_table = false
+
+  public_dedicated_network_acl  = true
+  private_dedicated_network_acl = true
   create_database_subnet_group = true
-  map_public_ip_on_launch      = true # Assign public IP address to subnet
+  enable_nat_gateway     = false
+  enable_vpn_gateway =  false
 
-  enable_nat_gateway     = true
-  single_nat_gateway     = true
-  one_nat_gateway_per_az = false
+  # override default names of the resources
+  public_subnet_names = ["xnat-public"]
+  private_subnet_names = ["xnat-private-1", "xnat-private-2"]
+  database_subnet_names = ["xnat-db-1", "xnat-db-2"]
+  database_subnet_group_name = "xnat-db"
 
+  default_security_group_name = "default-xnat-sg"
+  default_vpc_name = "default-xnat-vpc"
+  default_network_acl_name = "default-xnat-acl"
+  default_route_table_name = "default-xnat-route-table"
+
+  # these tags will be applied to all resources
   tags = {
-    Terraform = "true"
-    Name      = "VPC for XNAT"
+    Name = "xnat"
   }
+
 }
 
 # Launch ec2 instances for the web server (main + container)
