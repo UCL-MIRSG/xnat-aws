@@ -10,7 +10,6 @@ locals {
   passwords = [
     "encryption",
     "ldap",
-    "postgres_xnat",
     "admin",
     "service_admin",
     "smtp"

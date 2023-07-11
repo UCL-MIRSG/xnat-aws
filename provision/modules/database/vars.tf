@@ -1,7 +1,7 @@
 variable "name" {
   type        = string
   description = "The name for the database EC2 instance"
-  default     = "xnat_db"
+  default     = "xnat-db"
 }
 
 variable "vpc_id" {
@@ -9,15 +9,14 @@ variable "vpc_id" {
   description = "The ID of the VPC"
 }
 
-variable "ami" {
-  type        = string
-  description = "The AMI to use for the EC2 instance"
-}
-
 variable "instance_type" {
   type        = string
   description = "The type of EC2 instance to launch"
-  default     = "t3.medium"
+  default     = "db.t3.medium"
+  validation {
+    condition     = startswith(var.instance_type, "db.")
+    error_message = "'instance_type' must start with 'db.'"
+  }
 }
 
 variable "root_block_device_size" {
@@ -26,31 +25,15 @@ variable "root_block_device_size" {
   default     = 30
 }
 
-variable "private_ip" {
-  type        = string
-  description = "The private IP to use for the database EC2 instance"
-  default     = "192.168.56.11"
-}
-
 variable "availability_zone" {
   type        = string
   description = "The AZ to use for the EC2 instance"
   default     = "eu-west-2a"
 }
 
-variable "subnet_id" {
+variable "db_subnet_group_name" {
   type        = string
-  description = "The subnet ID to use for the EC2 instance"
-}
-
-variable "ssh_key_name" {
-  type        = string
-  description = "The name of the SSH key to use for the EC2 instance"
-}
-
-variable "ssh_cidr" {
-  type        = list(string)
-  description = "The CIDR block for allowing ssh access from the public subnet"
+  description = "The subnet ID to use for the RDS instance"
 }
 
 variable "webserver_sg_id" {

@@ -1,5 +1,5 @@
 ---
-- name: Create PostgreSQL client certificate
+- name: Install dependencies
   hosts: web
   become: true
   become_user: root
@@ -17,21 +17,7 @@
         ssl_certificate: "{{ postgresql_client_ssl_certificate }}"
       when: postgresql_use_ssl
 
-- name: Set up XNAT database
-  hosts: db
-  become: true
-  become_user: root
-  become_method: sudo
-  gather_facts: true
-
-  roles:
-    - { role: provision }
-    - { role: mirsg.install_python }
-    - { role: mirsg.postgresql }
-    - { role: setup_xnat_db }
-    #- { role: mirsg.firewalld }
-
-- name: Add PG server certificate to client
+- name: Install and configure XNAT
   hosts: web
   become: true
   become_user: root
@@ -41,5 +27,4 @@
   roles:
     - { role: add_pg_server_cert_to_client, when: postgresql_use_ssl }
     - { role: xnat }
-    #- { role: mirsg.firewalld }
     - { role: container_service_client, when: container_service_enabled }

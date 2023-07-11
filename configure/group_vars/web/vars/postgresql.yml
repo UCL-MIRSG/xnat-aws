@@ -1,4 +1,26 @@
 ---
+# XNAT supports PostgreSQL 10 - 14
+# See: https://groups.google.com/g/xnat_discussion/c/INKizGBktEQ/m/jauYgo8oAAAJ
+postgresql_version: "14"
+
+# Generally this should be set to true
+# TODO: set back to `true` once we have SSL enabled for the database (#38)
+postgresql_use_ssl: false
+
+# Where to store ssl certificates in local cache
+database_server_certificate_cache_filename: "{{ ansible_cache_dir }}/pg_certificates/{{ xnat_db.host }}.pg.server.crt"
+database_client_certificate_cache_filename: "{{ ansible_cache_dir }}/pg_certificates/{{ xnat_db.host }}.pg.client.crt"
+
+# For installing postgres
+postgresql_rpm_gpg_key_pgdg: "https://www.postgresql.org/download/keys/RPM-GPG-KEY-PGDG"
+
+# mirsg.postgresql - download and install - we need to do this on both the web server and the db
+postgresql_install:
+  disable_gpg_check: false
+  rpm: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_facts['distribution_major_version'] }}-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
+  yum_package: "postgresql{{ postgresql_version }}-server"
+  yum_contrib_package: "postgresql{{ postgresql_version }}-contrib"
+
 # mirsg.ssl_certificates
 postgresql_client_ssl_certificate:
   owner: "{{ tomcat.owner }}"

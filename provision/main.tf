@@ -18,10 +18,28 @@ module "get_ami" {
 
 # Set up the VPC
 module "setup_vpc" {
-  source = "./modules/setup_vpc"
+  source = "terraform-aws-modules/vpc/aws"
 
-  cidr_blocks       = var.cidr_blocks
-  availability_zone = var.availability_zone
+  name = "xnat-vpc"
+  cidr = var.vpc_cidr_block
+
+  azs            = var.availability_zones
+  public_subnets = var.subnet_cidr_blocks["public"]
+  # NOTE: database subnets only without private subnets doesn't work
+  # cfr. https://github.com/terraform-aws-modules/terraform-aws-vpc/issues/944
+  private_subnets              = var.subnet_cidr_blocks["private"]
+  database_subnets             = var.subnet_cidr_blocks["database"]
+  create_database_subnet_group = true
+  map_public_ip_on_launch      = true # Assign public IP address to subnet
+
+  enable_nat_gateway     = true
+  single_nat_gateway     = true
+  one_nat_gateway_per_az = false
+
+  tags = {
+    Terraform = "true"
+    Name      = "VPC for XNAT"
+  }
 }
 
 # Launch ec2 instances for the web server (main + container)
@@ -44,8 +62,8 @@ module "web_server" {
 
   vpc_id            = module.setup_vpc.vpc_id
   ami               = module.get_ami.amis[var.instance_os]
-  availability_zone = var.availability_zone
-  subnet_id         = module.setup_vpc.public_subnet_id
+  availability_zone = var.availability_zones[0]
+  subnet_id         = module.setup_vpc.public_subnets[0]
   private_ips       = var.instance_private_ips
   ssh_key_name      = local.ssh_key_name
   ssh_cidr          = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
@@ -56,17 +74,12 @@ module "web_server" {
 module "database" {
   source = "./modules/database"
 
-  name                   = "xnat_db"
-  vpc_id                 = module.setup_vpc.vpc_id
-  ami                    = module.get_ami.amis[var.instance_os]
-  instance_type          = var.ec2_instance_types["xnat_db"]
-  root_block_device_size = var.root_block_device_size["xnat_db"]
-  availability_zone      = var.availability_zone
-  subnet_id              = module.setup_vpc.public_subnet_id
-  private_ip             = var.instance_private_ips["xnat_db"]
-  ssh_key_name           = local.ssh_key_name
-  ssh_cidr               = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
-  webserver_sg_id        = module.web_server.webserver_sg_id
+  name                 = "xnat_db"
+  vpc_id               = module.setup_vpc.vpc_id
+  instance_type        = var.ec2_instance_types["xnat_db"]
+  availability_zone    = var.availability_zones[0]
+  db_subnet_group_name = module.setup_vpc.database_subnet_group_name
+  webserver_sg_id      = module.web_server.webserver_sg_id
 }
 
 # Copy public key to AWS
@@ -85,8 +98,9 @@ resource "local_file" "ansible-hosts" {
     xnat_web_private_ip   = module.web_server.xnat_web_private_ip,
     xnat_web_smtp_ip      = var.smtp_private_ip,
     xnat_db_hostname      = module.database.xnat_db_hostname,
-    xnat_db_public_ip     = module.database.xnat_db_public_ip,
-    xnat_db_private_ip    = module.database.xnat_db_private_ip,
+    xnat_db_username      = module.database.xnat_db_username,
+    xnat_db_port          = module.database.xnat_db_port,
+    xnat_db_name          = module.database.xnat_db_name,
     xnat_cserv_hostname   = module.web_server.xnat_cserv_hostname,
     xnat_cserv_public_ip  = module.web_server.xnat_cserv_public_ip,
     xnat_cserv_private_ip = module.web_server.xnat_cserv_private_ip

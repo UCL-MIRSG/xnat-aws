@@ -2,14 +2,10 @@
 collections:
   - community.general
   - ansible.posix
-  - community.postgresql
   - community.docker
   - community.crypto
 
 roles:
-  - src: https://github.com/UCL-MIRSG/ansible-role-firewalld.git
-    version: 2023.04.13.0
-    name: mirsg.firewalld
 
   - src: https://github.com/UCL-MIRSG/ansible-role-install-python.git
     version: 2023.02.9.0
@@ -18,7 +14,3 @@ roles:
   - src: https://github.com/UCL-MIRSG/ansible-role-ssl-certificates.git
     version: 2023.02.8.0
     name: mirsg.ssl_certificates
-
-  - src: https://github.com/UCL-MIRSG/ansible-role-postgresql.git
-    version: 2023.07.03.0
-    name: mirsg.postgresql

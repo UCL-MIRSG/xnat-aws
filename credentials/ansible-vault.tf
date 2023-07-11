@@ -19,7 +19,6 @@ resource "local_sensitive_file" "ansible-vault" {
 
   content = templatefile("templates/ansible_vault.tftpl", {
     ldap_password          = random_password.vault["ldap"].result,
-    postgres_xnat_password = random_password.vault["postgres_xnat"].result,
     admin_password         = random_password.vault["admin"].result,
     service_admin_password = random_password.vault["service_admin"].result,
     smtp_password          = random_password.vault["smtp"].result,
@@ -32,4 +31,3 @@ resource "local_sensitive_file" "ansible-vault" {
   }
 
 }
-

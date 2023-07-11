@@ -1,21 +1,46 @@
-# Launch ec2 instance for the database
-resource "aws_instance" "db" {
-  ami           = var.ami
-  instance_type = var.instance_type
+resource "aws_db_instance" "db" {
+  identifier_prefix     = "${local.identifier_prefix}-"
+  db_name               = local.db_name
+  instance_class        = var.instance_type
+  allocated_storage     = 15
+  max_allocated_storage = 30
+  engine                = "postgres"
+  engine_version        = "14"
 
-  availability_zone      = var.availability_zone
-  subnet_id              = var.subnet_id
-  private_ip             = var.private_ip
+  username = local.db_username
+  # TODO: should we use Secrets Manager to store the password?
+  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#managed-master-passwords-via-secrets-manager-default-kms-key
+  password = random_password.db_credentials.result
+
+  db_subnet_group_name   = var.db_subnet_group_name
   vpc_security_group_ids = [aws_security_group.db.id]
-  key_name               = var.ssh_key_name
 
-  root_block_device {
-    volume_size = var.root_block_device_size
-  }
+  skip_final_snapshot = true
 
   tags = {
     Name = var.name
   }
+}
+
+resource "random_password" "db_credentials" {
+  length           = 24
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+# Write the passwords to file and encrypt the vault
+resource "local_sensitive_file" "ansible-vault" {
+
+  content = templatefile("templates/ansible_vault.tftpl", {
+    postgres_xnat_password      = random_password.db_credentials.result
+  })
+  filename        = local.ansible_vault_file
+  file_permission = "0644"
+
+  provisioner "local-exec" {
+    command = "ansible-vault encrypt ${local.ansible_vault_file} --vault-password ${local.encryption_password_file}"
+  }
+
 }
 
 # Security group for the database
@@ -29,16 +54,6 @@ resource "aws_security_group" "db" {
 }
 
 # Security group rules
-resource "aws_security_group_rule" "allow_ssh_incoming" {
-  type              = "ingress"
-  security_group_id = aws_security_group.db.id
-
-  from_port   = local.ssh_port
-  to_port     = local.ssh_port
-  protocol    = local.tcp_protocol
-  cidr_blocks = var.ssh_cidr
-}
-
 resource "aws_security_group_rule" "allow_postgres_incoming" {
   type              = "ingress"
   security_group_id = aws_security_group.db.id
@@ -60,10 +75,14 @@ resource "aws_security_group_rule" "allow_all_outgoing" {
 }
 
 locals {
-  ssh_port      = 22
+  identifier_prefix = replace("${var.name}", "_", "-")
+  db_name = "xnat"
+  db_username   = "xnat"
   postgres_port = 5432
   any_port      = 0
   tcp_protocol  = "tcp"
   any_protocol  = "-1"
   all_ips       = ["0.0.0.0/0"]
+  ansible_vault_file       = "../configure/group_vars/web/vault"
+  encryption_password_file = "../configure/.vault_password"
 }

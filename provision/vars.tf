@@ -5,19 +5,26 @@ variable "aws_region" {
   default     = "eu-west-2"
 }
 
-variable "availability_zone" {
-  type        = string
-  description = "AZ to use for deploying XNAT"
-  default     = "eu-west-2a"
+variable "availability_zones" {
+  type        = list(string)
+  description = "AZs to use for deploying XNAT"
+  default     = ["eu-west-2a", "eu-west-2b"]
 }
 
 # VPC
-variable "cidr_blocks" {
+variable "vpc_cidr_block" {
+  type        = string
+  description = "CIDR block for the VPC"
+  default     = "192.168.0.0/16" # 192.168.0.0 to 	192.168.255.255
+}
+
+variable "subnet_cidr_blocks" {
   description = "CIDR block for the VPC and subnets"
   type        = map(any)
   default = {
-    "vpc"           = "192.168.0.0/16"  # 192.168.0.0 to 	192.168.255.255
-    "public-subnet" = "192.168.56.0/24" # 192.168.56.0 to 192.168.56.255
+    "public"   = ["192.168.56.0/24"] # 192.168.56.0 to 192.168.56.255
+    "private"  = ["192.168.100.0/24", "192.168.101.0/24"]
+    "database" = ["192.168.110.0/24", "192.168.120.0/24"]
   }
 }
 
@@ -27,7 +34,7 @@ variable "instance_private_ips" {
   description = "Private IP addresses for each instance"
   default = {
     "xnat_web"   = "192.168.56.10"
-    "xnat_db"    = "192.168.56.11"
+    "xnat_db"    = "192.168.100.11"
     "xnat_cserv" = "192.168.56.14"
   }
 }
@@ -63,7 +70,7 @@ variable "ec2_instance_types" {
   description = "Instance type to use for each server"
   default = {
     "xnat_web"   = "t3.medium"
-    "xnat_db"    = "t3.medium"
+    "xnat_db"    = "db.t3.medium"
     "xnat_cserv" = "t2.micro"
   }
 }
