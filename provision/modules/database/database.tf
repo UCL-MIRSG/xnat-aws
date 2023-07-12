@@ -78,7 +78,7 @@ resource "aws_security_group_rule" "allow_all_outgoing" {
 
 # Define Database parameter group to force connections to use SSL
 resource "aws_db_parameter_group" "db-parameters" {
-  name   = "${var.name}-db-parameters"
+  name   = "${local.db_name}-db-parameters"
   family = "postgres${local.postgres_version}"
 
   parameter {
