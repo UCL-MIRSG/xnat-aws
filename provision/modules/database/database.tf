@@ -6,7 +6,7 @@ resource "aws_db_instance" "db" {
   max_allocated_storage = 30
   engine                = "postgres"
   engine_version        = local.postgres_version
-  parameter_group_name  = aws_db_parameter_group.db-parameters
+  parameter_group_name  = aws_db_parameter_group.db-parameters.name
 
   username = local.db_username
   # TODO: should we use Secrets Manager to store the password?
