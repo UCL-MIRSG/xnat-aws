@@ -1,8 +1,0 @@
----
-- name: Get postgres server certificate from cache
-  ansible.builtin.copy:
-    src: "{{ database_server_certificate_cache_filename }}"
-    dest: "{{ postgresql_client.server_certificate_filename }}"
-    owner: "{{ postgresql_client_ssl_certificate.owner }}"
-    group: "{{ postgresql_client_ssl_certificate.group }}"
-    mode: 0600
