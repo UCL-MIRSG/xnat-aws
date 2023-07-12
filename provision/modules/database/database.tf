@@ -32,7 +32,7 @@ resource "random_password" "db_credentials" {
 resource "local_sensitive_file" "ansible-vault" {
 
   content = templatefile("templates/ansible_vault.tftpl", {
-    postgres_xnat_password      = random_password.db_credentials.result
+    postgres_xnat_password = random_password.db_credentials.result
   })
   filename        = local.ansible_vault_file
   file_permission = "0644"
