@@ -7,6 +7,7 @@ resource "aws_db_instance" "db" {
   engine                = "postgres"
   engine_version        = local.postgres_version
   parameter_group_name  = aws_db_parameter_group.db-parameters.name
+  apply_immediately     = true
 
   username = local.db_username
   # TODO: should we use Secrets Manager to store the password?
