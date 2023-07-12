@@ -25,7 +25,7 @@ extend_https_cidr = []
 
 # EC2 instance types
 ec2_instance_types = {
-  "xnat_web"   = "t3.medium"    # XNAT needs more RAM than available in t2.micro
+  "xnat_web"   = "t3.large"    # XNAT needs more RAM than available in t2.micro
   "xnat_db"    = "db.t3.medium" # XNAT needs more RAM than available in t2.micro
   "xnat_cserv" = "t2.micro"
 }
