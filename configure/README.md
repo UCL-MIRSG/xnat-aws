@@ -28,3 +28,33 @@ ansible-vault view group_vars/all/vault --vault-password .vault_password
 ```
 
 This will display the passwords used in the configuration. The one for the XNAT admin user is assigned to a variable called `vault_service_admin_password`.
+
+
+# Create a sample project and upload data
+
+`xnat-aws` was created for running a [workshop](https://healthbioscienceideas.github.io/MedICSS-Project-Repro-Pipelines/) on implementing reproducible medical image analysis pipelines with XNAT.
+
+The sample data can be downloaded from and AWS S3 bucket and then uploaded to our XNAT server.
+## Install dependencies
+
+First ensure all Python dependencies are installed. Activate your virtual environment, then type from the `xnat-aws/configure` directory type:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+This will install the dependencies listed in [requirements.txt](requirements.txt)
+
+## Set up sample project
+
+The project creation, data download form the S3 bucket, and data upload to XNAT is all handled by the script `xnat-aws/configure/setup_xnat_project.sh`. To run the script, go to the `xnat-aws/configure` directory and run the following command:
+
+```bash
+./setup_xnat_project.sh
+```
+
+## View the sample project
+
+Once the project has been created and data uploaded, you can log into the server by going to the [URL your server is running on](#check-the-url-of-the-web-server) and logging in with the username `profX` and the password `carlos1602`.
+
+This user is an owner of the project but is not a site-wide admin. This means the user can upload data for the project, and even delete the project, but cannot perform admin actions on the site. See [here](#check-the-xnat-admin-credentials) for logging in as an adminstrator.
