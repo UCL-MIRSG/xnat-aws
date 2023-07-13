@@ -5,8 +5,6 @@
     path: "{{ xnat_project_data.file }}"
   register: xnat_project_data_file
 
-- name: Download data from xnat_project_data.url if it does not exist
-
 - name: Download the data if we do not already have it
   ansible.builtin.get_url:
     url: "{{ xnat_project_data.url }}"
