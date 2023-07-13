@@ -21,13 +21,13 @@
   when: not xnat_project_data_directory.stat.exists
   block:
 
-    - name: Ensure the project data directory exists
+    - name: Create the data directory
       ansible.builtin.file:
         path: "{{ xnat_project_data.directory }}"
         state: directory
         mode: "0755"
 
-    - name: Unarchive the project data if it is not already
+    - name: Unarchive the project data
       ansible.builtin.unarchive:
         src: "{{ xnat_project_data.file }}"
         dest: "{{ xnat_project_data.directory }}"
