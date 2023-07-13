@@ -35,7 +35,7 @@ This will display the passwords used in the configuration. The one for the XNAT 
 `xnat-aws` was created for running a [workshop](https://healthbioscienceideas.github.io/MedICSS-Project-Repro-Pipelines/) on implementing reproducible medical image analysis pipelines with XNAT.
 
 The sample data can be downloaded from and AWS S3 bucket and then uploaded to our XNAT server.
-## Install dependencies
+## Install Python dependencies
 
 First ensure all Python dependencies are installed. Activate your virtual environment, then type from the `xnat-aws/configure` directory type:
 
