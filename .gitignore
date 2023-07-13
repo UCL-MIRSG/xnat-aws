@@ -1,5 +1,8 @@
 # SSH key for EC2 instancess
 ssh
 
+# Datasets to be uploaded to XNAT
+data
+
 .vscode
 
