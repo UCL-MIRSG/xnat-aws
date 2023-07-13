@@ -1,0 +1,25 @@
+---
+# Create project (and assign investigator)
+# Return 200 if created, 417 if already exists
+- name: "Create I-BASH project if it doesn't exist"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/data/projects/"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: POST
+    headers:
+      Content-Type: "application/xml"
+      Accept: "application/xml"
+    body: "{{ lookup('file', xnat_project.metadata_file) }}"
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: [200, 409]
+  register: xnat_project_created
+  changed_when: xnat_project_created.status == 200
+
+- name: Make the project public
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/data/projects/{{ xnat_project.id }}/accessibility/public"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: PUT
+    validate_certs: "{{ ssl.validate_certs }}"

@@ -1,0 +1,32 @@
+---
+# Create project owner
+# Returns 201 if created, 409 if already exists
+- name: "Create project owner"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/users/"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: POST
+    body_format: json
+    body:
+      admin: true
+      username: "{{ xnat_project_owner.username }}"
+      password: "{{ xnat_project_owner.password }}"
+      firstName: "{{ xnat_project_owner.firstName }}"
+      lastName: "{{ xnat_project_owner.lastName }}"
+      email: "{{ xnat_project_owner.email }}"
+      verified: true
+      enabled: true
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: [201, 409]
+  register: xnat_create_user
+  changed_when: xnat_create_user.status == 201
+
+# Set project owner
+- name: Make user owner of the project
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/data/projects/{{ xnat_project.id }}/users/Owners/{{ xnat_project_owner.username }}"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: PUT
+    validate_certs: "{{ ssl.validate_certs }}"
