@@ -3,6 +3,11 @@
   ansible.builtin.pip:
     name:
       - lxml
+  
+- name: Ensure dependencies are installed
+  ansible.builtin.yum:
+    name: ["postgresql{{ postgresql_version }}", "wget"]
+    state: installed
 
 - name: "Configure XNAT directories"
   include: directories.yml
