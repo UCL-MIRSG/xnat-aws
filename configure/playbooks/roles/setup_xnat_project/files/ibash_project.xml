@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectData 
+    ID="ibash"
+    secondary_ID="I-BASH"
+    name="I-BASH: The Imaging of Brain Anomalies in Super Heroes study"
+    description="The Imaging of Brain Anomalies in Super Heroes study (I-BASH) is a multicentre cohort of individuals with these powers as well as close family members or siblings without enhancement, who serve as a natural control group. "
+    keywords="super-heroes t1 t2 diffusion fMRI spin-labelling">
+    <PI firstname="Charles" lastname="Xavier"></PI>
+</ProjectData>
