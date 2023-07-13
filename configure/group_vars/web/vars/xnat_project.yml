@@ -1,0 +1,24 @@
+---
+# Variables for creating an XNAT project
+xnat_project:
+  id: ibash
+  metadata_file: 'ibash_project.xml'
+
+xnat_investigator:
+  title: "Prof"
+  firstname: "Charles"
+  lastname: "Xavier"
+  institution: "Xavier Institute For Higher Learning"
+
+xnat_project_owner:
+  username: "profX"
+  password: "carlos1602"
+  firstName: "Charles"
+  lastName: "Xavier"
+  email: "c.xavier@{{ hostvars['xnat_web']['ansible_host'] }}"
+
+xnat_project_data:
+  url: pass  # Where to download the data (zip file) from
+  file: "../../data/ibash.zip"  # Where to store the zip file
+  directory: "../../data/ibash"  # Where the zip file should be unpacked to
+  credentials_file: "../../data/.netrc"  # Where to store credentials for XNATPy
