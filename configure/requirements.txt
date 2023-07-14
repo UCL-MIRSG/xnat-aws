@@ -1,4 +1,5 @@
 ansible
+boto3
 tqdm
 typer[all]
 xnat

@@ -4,6 +4,7 @@ collections:
   - ansible.posix
   - community.docker
   - community.crypto
+  - amazon.aws
 
 roles:
 
