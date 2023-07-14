@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 echo "Install the required Ansible dependencies"
 ansible-galaxy install -r playbooks/roles/requirements.yml --force
