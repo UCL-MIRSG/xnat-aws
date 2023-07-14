@@ -8,10 +8,6 @@
     overwrite: different
   register: data_downloaded
 
-- name: Unzip the data if it was downloaded
-  ansible.builtin.debug:
-    var: data_downloaded
-
 - name: Check if project data directory exists
   ansible.builtin.stat:
     path: "{{ xnat_project_data.directory }}"
