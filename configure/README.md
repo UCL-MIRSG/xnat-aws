@@ -1,8 +1,20 @@
 # Configure AWS infrastrucre using Ansible
 
+## Install Python dependencies
+
+Before running the Ansible configuration, you will first need to install Ansible and other Python dependencies. Activate your virtual environment, then from the `xnat-aws/configure` directory type:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+This will install the dependencies listed in [requirements.txt](requirements.txt)
+
+## Run Ansible configuration
+
 To run the configuration with Ansible we will need to:
 
-- install Ansible requirements
+- install required Ansible roles and collection
 - run the `install_container_service.yml` and `install_xnat.yml` playbooks
 
 These steps are done in the script `xnat-aws/configure/install_xnat.sh`. To run the script, go to the `xnat-aws/configure` directory and run the following command:
@@ -29,21 +41,11 @@ ansible-vault view group_vars/all/vault --vault-password .vault_password
 
 This will display the passwords used in the configuration. The one for the XNAT admin user is assigned to a variable called `vault_service_admin_password`.
 
-
 # Create a sample project and upload data
 
 `xnat-aws` was created for running a [workshop](https://healthbioscienceideas.github.io/MedICSS-Project-Repro-Pipelines/) on implementing reproducible medical image analysis pipelines with XNAT.
 
 The sample data can be downloaded from and AWS S3 bucket and then uploaded to our XNAT server.
-## Install Python dependencies
-
-First ensure all Python dependencies are installed. Activate your virtual environment, then type from the `xnat-aws/configure` directory type:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-This will install the dependencies listed in [requirements.txt](requirements.txt)
 
 ## Set up sample project
 

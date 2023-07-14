@@ -10,7 +10,7 @@ Terraform is used to create the infrastructure on AWS and Ansible is then used t
 - AWS credentials stored locally using [`aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#:~:text=settings%20using%20commands.-,aws%20configure,-Run%20this%20command) (or [`aws configure sso`](https://docs.aws.amazon.com/cli/latest/userguide/sso-configure-profile-token.html))
 - [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) >= 0.15
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible) >= 2.15.0 - we recommend installing Ansible in a virtual environment, using either [Conda](https://docs.conda.io/en/latest/miniconda.html) or [Virtualenv](https://virtualenv.pypa.io/en/latest/)
-- \[Optional\] [Other Python dependencies](configure/README.md#install-python-dependencies) - these should be installed in the same virtual environment as Ansible. These dependencies are required if you would like to create a project and upload sample data to it.
+- [Other Python dependencies](configure/README.md#install-python-dependencies) - these should be installed in the same virtual environment as Ansible. These dependencies are required if you would like to create a project and upload sample data to it.
 
 # Quick start
 
@@ -36,7 +36,14 @@ This will create the infrastructure on AWS.
 
 **Note**, after the `terraform apply` have completed, you may need to wait 1-2 minutes before running the configuration. This is to allow time for the AWS instances to finish starting up.
 
-3. [Install XNAT](configure/README.md). From the `xnat-aws/configure` directory, type:
+3. [Install XNAT](configure/README.md). From the `xnat-aws/configure` directory,  first type:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+This will install Ansible and other Python dependencies. Then, from the same directory, type:
+
 
 ```bash
 ./install_xnat.sh
@@ -46,16 +53,12 @@ This will run several Ansible commands to install and configure XNAT.
 
 See [`Logging into the web server`](configure/README.md#logging-in-to-the-web-server) for notes on how to log into XNAT once it has been deployed.
 
-4. \[Optional\] [Create a sample project and upload data](configure/README.md#create-a-sample-project-and-upload-data). From the `xnat-aws/configure` directory, first ensure the necessary dependencies are installed:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-Then type:
+4. \[Optional\] [Create a sample project and upload data](configure/README.md#create-a-sample-project-and-upload-data). From the `xnat-aws/configure` directory, type:
 
 ```bash
 ./setup_xnat_project.sh
 ```
 
-This will create a project on your XNAT server and upload data to it. The sample data can be used for running a [workshop](https://healthbioscienceideas.github.io/MedICSS-Project-Repro-Pipelines/) on implementing reproducible medical image analysis pipelines with XNAT.
+This will create a project on your XNAT server and upload data to it.
+
+The sample data can be used for running a [workshop](https://healthbioscienceideas.github.io/MedICSS-Project-Repro-Pipelines/) on implementing reproducible medical image analysis pipelines with XNAT.
