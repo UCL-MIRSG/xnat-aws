@@ -3,11 +3,12 @@ import pathlib
 from typing_extensions import Annotated
 
 import typer
-from tqdm.auto import tqdm
+from tqdm.rich import tqdm
 import xnat
 
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
+from rich import print
 
 
 def _server_hostname(
