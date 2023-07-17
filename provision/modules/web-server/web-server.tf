@@ -69,7 +69,6 @@ resource "aws_security_group_rule" "allow_all_outgoing" {
   cidr_blocks = local.all_ips
 }
 
-
 # Main server specific rules
 resource "aws_security_group_rule" "allow_http_incoming" {
   type              = "ingress"
