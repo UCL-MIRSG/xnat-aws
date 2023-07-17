@@ -92,6 +92,16 @@ module "web_server" {
   https_cidr        = concat([module.get_my_ip.my_public_cidr], var.extend_https_cidr)
 }
 
+# Create EFS
+module "efs" {
+  source       = "./modules/efs"
+  vpc_id       = module.setup_vpc.vpc_id
+  subnet_id    = module.setup_vpc.public_subnets[0]
+  ingress_from = [module.web_server.webserver_sg_id, module.web_server.cserv_sg_id]
+}
+
+# Launch RDS instances for the database
+
 module "database" {
   source = "./modules/database"
 
@@ -124,7 +134,8 @@ resource "local_file" "ansible-hosts" {
     xnat_db_name          = module.database.xnat_db_name,
     xnat_cserv_hostname   = module.web_server.xnat_cserv_hostname,
     xnat_cserv_public_ip  = module.web_server.xnat_cserv_public_ip,
-    xnat_cserv_private_ip = module.web_server.xnat_cserv_private_ip
+    xnat_cserv_private_ip = module.web_server.xnat_cserv_private_ip,
+    efs_hostname          = module.efs.hostname,
   })
   filename        = "../configure/hosts.yml"
   file_permission = "0644"
