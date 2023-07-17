@@ -18,6 +18,10 @@
 - name: "Add or upgrade plugins"
   include: plugins.yml
 
+- name: "Add Container Service images"
+  include: "container_images.yml"
+  when: container_service_enabled
+
 - name: "Add or upgrade pipeline installer"
   include: pipelines.yml
   when: pipeline_engine_enabled

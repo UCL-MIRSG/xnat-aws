@@ -1,0 +1,18 @@
+---
+# Return 201 if added, 400 if already exists
+- name: Add images to Container Service
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/commands"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: POST
+    body: "{{ lookup('file', command_file) }}"
+    body_format: json
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: [201, 400]
+  register: xnat_commands_added
+  changed_when: xnat_commands_added.status == 201
+  loop_control:
+    loop_var: "command_file"
+  with_fileglob:
+    - "files/*-command.json"
