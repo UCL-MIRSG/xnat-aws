@@ -1,4 +1,10 @@
 ---
+- name: Ensure the download directory  exists
+  ansible.builtin.file:
+    path: "{{ xnat_project_data.file | dirname }}"
+    state: directory
+    mode: "0755"
+
 - name: Download the data if we do not have it or if it has changed
   amazon.aws.s3_object:
     bucket: "{{ xnat_project_data.s3_bucket }}"
