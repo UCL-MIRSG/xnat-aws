@@ -2,6 +2,10 @@ output "webserver_sg_id" {
   value = aws_security_group.sg["main"].id
 }
 
+output "cserv_sg_id" {
+  value = aws_security_group.sg["container"].id
+}
+
 output "xnat_web_hostname" {
   value = aws_instance.servers["main"].public_dns
 }
