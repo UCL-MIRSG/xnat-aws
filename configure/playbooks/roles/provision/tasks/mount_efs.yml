@@ -1,5 +1,5 @@
 ---
-- name: Ensure nfs-common is installed (for mounting EFS volume)
+- name: Ensure nfs-utils is installed (for mounting EFS volume)
   ansible.builtin.yum:
     name: nfs-utils
     state: present
