@@ -10,4 +10,4 @@ DATA=../data/ibash
 INVENTORY=hosts.yml
 HOST=xnat_web
 NETRC=../data/.netrc
-python scripts/upload_data.py --metadata $METADATA --data $DATA --inventory $INVENTORY --host $HOST --netrc $NETRC
+python scripts/upload_data.py $METADATA $DATA $INVENTORY $HOST $NETRC
