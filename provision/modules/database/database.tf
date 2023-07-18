@@ -27,7 +27,7 @@ resource "aws_db_instance" "db" {
 resource "random_password" "db_credentials" {
   length           = 24
   special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
+  override_special = "!#$%&*()-_=+[]<>:?"
 }
 
 # Write the passwords to file and encrypt the vault
