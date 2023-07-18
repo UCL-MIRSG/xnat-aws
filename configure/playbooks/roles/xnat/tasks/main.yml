@@ -3,7 +3,7 @@
   ansible.builtin.pip:
     name:
       - lxml
-  
+
 - name: Ensure dependencies are installed
   ansible.builtin.yum:
     name: ["postgresql{{ postgresql_version }}", "wget"]
@@ -17,10 +17,6 @@
 
 - name: "Add or upgrade plugins"
   include: plugins.yml
-
-- name: "Add Container Service images"
-  include: "container_images.yml"
-  when: container_service_enabled
 
 - name: "Add or upgrade pipeline installer"
   include: pipelines.yml
