@@ -1,5 +1,5 @@
 ansible
 boto3
 tqdm
-typer[all]
+typer[all]>=0.9
 xnat
