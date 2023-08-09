@@ -62,3 +62,14 @@ See [`Logging into the web server`](configure/README.md#logging-in-to-the-web-se
 This will create a project on your XNAT server and upload data to it.
 
 The sample data can be used for running a [workshop](https://healthbioscienceideas.github.io/MedICSS-Project-Repro-Pipelines/) on implementing reproducible medical image analysis pipelines with XNAT.
+
+# Important!
+
+Don't forget to destroy your infrastructure when you're finished! Otherwise you may end up with a large AWS bill at the end of the month.
+
+To destroy the infrastructure, go to the `xnat-aws/provision` directory and type:
+
+```bash
+terraform destroy
+```
+
