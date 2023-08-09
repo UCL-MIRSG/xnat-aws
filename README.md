@@ -81,5 +81,6 @@ This is assuming usage of 50 hours per week (10 hours per day times 5 days per w
   - web server: t3.large
   - Container Service server: t3.medium
   - database server: db.t3.medium
+  - up to 20 GB EFS storage
 
-Note, it is recommended that you [set a monthly budget](https://aws.amazon.com/aws-cost-management/aws-budgets/) to avoid accidentally
+Note, it is recommended that you [set a monthly budget](https://aws.amazon.com/aws-cost-management/aws-budgets/) to avoid unexpected large bills.
