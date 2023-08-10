@@ -3,7 +3,7 @@ Deploy XNAT on AWS using Terraform and Ansible.
 
 Terraform is used to create the infrastructure on AWS and Ansible is then used to configure the instances for XNAT deployment.
 
-Below is an overview of the infrastructure that will be created. See the [associated notes](xnat-aws-architecure.md) for a more detailed description.
+Below is an overview of the infrastructure that will be created. See the notes on [provisioning the infrastructure](provision/README.md) for a more detailed description.
 
 <p align="center" width="100%">
     <img src="assets/xnat-aws-architecture.png" alt="XNAT-AWS architecture" width="70%" >
