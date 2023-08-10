@@ -58,7 +58,7 @@
   failed_when: false
 
 - name: Upgrade/install Tomcat if needed
-  include: tasks/upgrade.yml
+  import_tasks: tasks/upgrade.yml
   when: "not tomcat_check.stat.exists or tomcat_version not in tomcat_check_version.stdout"
 
 - name: Copy tomcat service file

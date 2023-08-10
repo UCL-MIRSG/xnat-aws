@@ -1,9 +1,9 @@
 ---
 - name: "Update packages"
-  include: package_update.yml
+  import_tasks: package_update.yml
 
 - name: "Set locale"
-  include: locale.yml
+  import_tasks: locale.yml
 
 - name: "Mount EFS volume"
   ansible.builtin.include_tasks: "mount_efs.yml"

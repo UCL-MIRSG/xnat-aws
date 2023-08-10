@@ -10,24 +10,24 @@
     state: installed
 
 - name: "Configure XNAT directories"
-  include: directories.yml
+  import_tasks: directories.yml
 
 - name: "Add or upgrade XNAT code"
-  include: upgrade_xnat.yml
+  import_tasks: upgrade_xnat.yml
 
 - name: "Add or upgrade plugins"
-  include: plugins.yml
+  import_tasks: plugins.yml
 
 - name: "Add or upgrade pipeline installer"
-  include: pipelines.yml
+  import_tasks: pipelines.yml
   when: pipeline_engine_enabled
 
 - name: "Configure XNAT settings files"
-  include: settings_files.yml
+  import_tasks: settings_files.yml
 
 - name: "Configure LDAP for XNAT"
-  include: ldap.yml
+  import_tasks: ldap.yml
   when: ldap.enabled
 
 - name: "XNAT site configuration"
-  include: configure.yml
+  import_tasks: configure.yml
