@@ -69,9 +69,9 @@ variable "ec2_instance_types" {
   type        = map(any)
   description = "Instance type to use for each server"
   default = {
-    "xnat_web"   = "t3.medium"
+    "xnat_web"   = "t3.large"
     "xnat_db"    = "db.t3.medium"
-    "xnat_cserv" = "t2.micro"
+    "xnat_cserv" = "t2.medium"
   }
 }
 
@@ -80,8 +80,8 @@ variable "root_block_device_size" {
   type        = map(any)
   description = "Storage space on the root block device (GB)"
   default = {
-    "xnat_web"   = 30
-    "xnat_db"    = 30
+    "xnat_web"   = 10
+    "xnat_db"    = 10
     "xnat_cserv" = 10
   }
 }
