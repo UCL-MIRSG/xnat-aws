@@ -14,6 +14,7 @@ resource "aws_db_instance" "db" {
   # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#managed-master-passwords-via-secrets-manager-default-kms-key
   password = random_password.db_credentials.result
 
+  availability_zone      = var.availability_zone
   db_subnet_group_name   = var.db_subnet_group_name
   vpc_security_group_ids = [aws_security_group.db.id]
 
