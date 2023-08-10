@@ -22,9 +22,8 @@ variable "subnet_cidr_blocks" {
   description = "CIDR block for the VPC and subnets"
   type        = map(any)
   default = {
-    "public"   = ["192.168.56.0/24"] # 192.168.56.0 to 192.168.56.255
-    "private"  = ["192.168.100.0/24", "192.168.101.0/24"]
-    "database" = ["192.168.110.0/24", "192.168.120.0/24"]
+    "public"  = ["192.168.56.0/24"] # 192.168.56.0 to 192.168.56.255
+    "private" = ["192.168.100.0/24", "192.168.101.0/24"]
   }
 }
 

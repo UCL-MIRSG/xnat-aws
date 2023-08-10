@@ -1,3 +1,12 @@
+resource "aws_db_subnet_group" "xnat-db" {
+  name       = "xnat-db"
+  subnet_ids = var.subnet_ids
+
+  tags = {
+    Name = var.name
+  }
+}
+
 resource "aws_db_instance" "db" {
   identifier_prefix     = "${local.identifier_prefix}-"
   db_name               = local.db_name
@@ -15,7 +24,7 @@ resource "aws_db_instance" "db" {
   password = random_password.db_credentials.result
 
   availability_zone      = var.availability_zone
-  db_subnet_group_name   = var.db_subnet_group_name
+  db_subnet_group_name   = aws_db_subnet_group.xnat-db.name
   vpc_security_group_ids = [aws_security_group.db.id]
 
   skip_final_snapshot = true

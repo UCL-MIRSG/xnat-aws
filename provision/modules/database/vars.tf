@@ -31,9 +31,9 @@ variable "availability_zone" {
   default     = "eu-west-2a"
 }
 
-variable "db_subnet_group_name" {
-  type        = string
-  description = "The subnet ID to use for the RDS instance"
+variable "subnet_ids" {
+  type = list(string)
+  description = "List of subnet ids to deploy RDS instances in"
 }
 
 variable "webserver_sg_id" {
