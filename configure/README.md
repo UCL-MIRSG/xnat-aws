@@ -63,6 +63,9 @@ This user is an owner of the project but is not a site-wide admin. This means th
 
 ## Enable the XNAT Container Service images
 
+> **Note:** make sure you are logged in as administrator (not as a regular user) before performing
+> the steps below.
+
 The XNAT Container Service (XNAT-CS) allows you to run containerised image analysis pipelines on
 your XNAT server. The Ansible configuration uploads a set of images the server, but they still need
 to be enabled manually. To do this, log into the server and go to the **Administer** tab. Then,
