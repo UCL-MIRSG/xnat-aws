@@ -25,10 +25,9 @@ module "setup_vpc" {
 
   # NOTE: database subnets only without private subnets doesn't work
   # cfr. https://github.com/terraform-aws-modules/terraform-aws-vpc/issues/944
-  azs              = var.availability_zones
-  public_subnets   = var.subnet_cidr_blocks["public"]
-  private_subnets  = var.subnet_cidr_blocks["private"]
-  database_subnets = var.subnet_cidr_blocks["database"]
+  azs             = var.availability_zones
+  public_subnets  = var.subnet_cidr_blocks["public"]
+  private_subnets = var.subnet_cidr_blocks["private"]
 
   # Assign public IP address to subnet
   map_public_ip_on_launch = true
@@ -39,17 +38,17 @@ module "setup_vpc" {
   manage_default_security_group = false
   manage_default_route_table    = false
 
-  public_dedicated_network_acl  = true
-  private_dedicated_network_acl = true
-  create_database_subnet_group  = true
-  enable_nat_gateway            = false
-  enable_vpn_gateway            = false
+  public_dedicated_network_acl           = true
+  private_dedicated_network_acl          = true
+  create_database_subnet_group           = false
+  create_database_subnet_route_table     = false
+  create_database_internet_gateway_route = false
+  enable_nat_gateway                     = false
+  enable_vpn_gateway                     = false
 
   # override default names of the resources
-  public_subnet_names        = ["xnat-public"]
-  private_subnet_names       = ["xnat-private-1", "xnat-private-2"]
-  database_subnet_names      = ["xnat-db-1", "xnat-db-2"]
-  database_subnet_group_name = "xnat-db"
+  public_subnet_names  = ["xnat-public"]
+  private_subnet_names = ["xnat-private-1", "xnat-private-2"]
 
   default_security_group_name = "default-xnat-sg"
   default_vpc_name            = "default-xnat-vpc"
@@ -105,12 +104,12 @@ module "efs" {
 module "database" {
   source = "./modules/database"
 
-  name                 = "xnat_db"
-  vpc_id               = module.setup_vpc.vpc_id
-  instance_type        = var.ec2_instance_types["xnat_db"]
-  availability_zone    = var.availability_zones[0]
-  db_subnet_group_name = module.setup_vpc.database_subnet_group_name
-  webserver_sg_id      = module.web_server.webserver_sg_id
+  name              = "xnat_db"
+  vpc_id            = module.setup_vpc.vpc_id
+  instance_type     = var.ec2_instance_types["xnat_db"]
+  availability_zone = var.availability_zones[0]
+  subnet_ids        = module.setup_vpc.private_subnets
+  webserver_sg_id   = module.web_server.webserver_sg_id
 }
 
 # Copy public key to AWS
