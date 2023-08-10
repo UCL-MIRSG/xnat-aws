@@ -5,7 +5,8 @@ The Terraform scripts will create the following:
 - a Virtual Private Cloud (VPC) with one public subnet, 2 private subnets and required security groups
 - two EC2 instances - `xnat_web` and `xnat_cserv` for the web server and [XNAT Container Service](https://wiki.xnat.org/container-service/), respectively
 - an RDS instance - `xnat_db` - for the PostgreSQL database
-- an EFS instance used to mount the images for the container service
+- an EFS instance used to store data uploaded to xnat, this volume is shared beetween the web server
+  and container service
 
 ## Warning
 
