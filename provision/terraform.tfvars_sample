@@ -13,7 +13,6 @@ subnet_cidr_blocks = {
 # EC2 private IPs
 instance_private_ips = {
   "xnat_web"   = "192.168.56.10"
-  "xnat_db"    = "192.168.56.11"
   "xnat_cserv" = "192.168.56.14"
 }
 smtp_private_ip = "192.168.56.101"

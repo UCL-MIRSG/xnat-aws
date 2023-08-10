@@ -34,7 +34,6 @@ variable "instance_private_ips" {
   description = "Private IP addresses for each instance"
   default = {
     "xnat_web"   = "192.168.56.10"
-    "xnat_db"    = "192.168.100.11"
     "xnat_cserv" = "192.168.56.14"
   }
 }
