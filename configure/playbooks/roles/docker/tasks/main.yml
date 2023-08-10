@@ -61,7 +61,7 @@
   notify: reload docker
 
 - name: Generate container server certificate
-  include: create_docker_server_cert.yml
+  import_tasks: create_docker_server_cert.yml
   notify: restart docker
 
 - name: "Ensure docker service configuraiton is reloaded before restarting the service"
