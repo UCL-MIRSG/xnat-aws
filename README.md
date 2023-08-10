@@ -3,7 +3,7 @@ Deploy XNAT on AWS using Terraform and Ansible.
 
 Terraform is used to create the infrastructure on AWS and Ansible is then used to configure the instances for XNAT deployment.
 
-# Requirements
+## Requirements
 
 - An [AWS account](https://portal.aws.amazon.com/billing/signup?refid=em_127222&redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start/email)
 - [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
@@ -12,7 +12,7 @@ Terraform is used to create the infrastructure on AWS and Ansible is then used t
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible) >= 2.15.0 - we recommend installing Ansible in a virtual environment, using either [Conda](https://docs.conda.io/en/latest/miniconda.html) or [Virtualenv](https://virtualenv.pypa.io/en/latest/)
 - [Other Python dependencies](configure/README.md#install-python-dependencies) - these should be installed in the same virtual environment as Ansible. These dependencies are required if you would like to create a project and upload sample data to it.
 
-# Quick start
+## Quick start
 
 Once you have installed and set up the requirements, there are three steps to deploying XNAT on AWS:
 
@@ -34,7 +34,8 @@ terraform apply
 
 This will create the infrastructure on AWS.
 
-**Note**, after the `terraform apply` have completed, you may need to wait 1-2 minutes before running the configuration. This is to allow time for the AWS instances to finish starting up.
+> **Note**: after the `terraform apply` steps have completed, you may need to wait 1-2 minutes
+> before running the configuration. This is to allow time for the AWS instances to finish starting up.
 
 3. [Install XNAT](configure/README.md). From the `xnat-aws/configure` directory,  first type:
 
@@ -63,7 +64,7 @@ This will create a project on your XNAT server and upload data to it.
 
 The sample data can be used for running a [workshop](https://healthbioscienceideas.github.io/MedICSS-Project-Repro-Pipelines/) on implementing reproducible medical image analysis pipelines with XNAT.
 
-# Important!
+## Important!
 
 Don't forget to destroy your infrastructure when you're finished! Otherwise you may end up with a large AWS bill at the end of the month.
 
