@@ -3,6 +3,12 @@ Deploy XNAT on AWS using Terraform and Ansible.
 
 Terraform is used to create the infrastructure on AWS and Ansible is then used to configure the instances for XNAT deployment.
 
+Below is an overview of the infrastructure that will be created. See the [associated notes](xnat-aws-architecure.md) for a more detailed description.
+
+<p align="center" width="100%">
+    <img src="assets/xnat-aws-architecture.png" alt="XNAT-AWS architecture" width="70%" >
+</p>
+
 ## Requirements
 
 - An [AWS account](https://portal.aws.amazon.com/billing/signup?refid=em_127222&redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start/email)
@@ -74,7 +80,7 @@ To destroy the infrastructure, go to the `xnat-aws/provision` directory and type
 terraform destroy
 ```
 
-# AWS cost estimate
+## AWS cost estimate
 
 [It is estimated](provision/aws-cost-estimate.pdf) the AWS resources will cost approximately $90 USD per month.
 
