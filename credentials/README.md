@@ -19,3 +19,5 @@ The generated private and public SSH keys will be saved in `xnat-aws/ssh/aws-rsa
 The generated passwords are used to create and encrypt an Ansible vault. The vault is saved in `xnat-aws/configure/group_vars/all/vault` and the password to decrypt it is in `xnat-aws/configure/.vault_password`.
 
 Once you have generated these credentials, you can [create the infrastructure on AWS](../provision/README.md).
+
+Note, you only need to generate these credentials once - you can then create and destroy infrastructure on AWS re-using the same set of credentials.
