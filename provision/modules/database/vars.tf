@@ -19,12 +19,6 @@ variable "instance_type" {
   }
 }
 
-variable "root_block_device_size" {
-  type        = string
-  description = "Storage space on the root block device (GB)"
-  default     = 30
-}
-
 variable "availability_zone" {
   type        = string
   description = "The AZ to use for the EC2 instance"

@@ -79,7 +79,6 @@ variable "root_block_device_size" {
   description = "Storage space on the root block device (GB)"
   default = {
     "xnat_web"   = 10
-    "xnat_db"    = 10
     "xnat_cserv" = 10
   }
 }

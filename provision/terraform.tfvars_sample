@@ -31,7 +31,6 @@ ec2_instance_types = {
 # EC2 root block device volume size
 root_block_device_size = {
   "xnat_web"   = 10
-  "xnat_db"    = 10
   "xnat_cserv" = 10
 }
 
