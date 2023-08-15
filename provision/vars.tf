@@ -69,7 +69,7 @@ variable "ec2_instance_types" {
   default = {
     "xnat_web"   = "t3.large"
     "xnat_db"    = "db.t3.medium"
-    "xnat_cserv" = "t2.medium"
+    "xnat_cserv" = "g4ad.xlarge"  # Use GPU instance for XNAT container service
   }
 }
 
