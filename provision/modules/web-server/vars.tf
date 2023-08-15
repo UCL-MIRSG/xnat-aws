@@ -27,12 +27,9 @@ variable "instance_types" {
 }
 
 variable "root_block_device_size" {
-  type        = map(any)
+  type        = number
   description = "Storage space on the root block device (GB)"
-  default = {
-    "main"      = 30
-    "container" = 10
-  }
+  default     = 30
 }
 
 variable "availability_zone" {

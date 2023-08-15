@@ -73,10 +73,8 @@ module "web_server" {
     "main"      = var.ec2_instance_types["xnat_web"]
     "container" = var.ec2_instance_types["xnat_cserv"]
   }
-  root_block_device_size = {
-    "main"      = var.root_block_device_size["xnat_web"]
-    "container" = var.root_block_device_size["xnat_cserv"]
-  }
+
+  root_block_device_size = var.root_block_device_size
 
   vpc_id            = module.setup_vpc.vpc_id
   ami               = module.get_ami.amis[var.instance_os]
