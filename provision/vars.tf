@@ -78,8 +78,8 @@ variable "root_block_device_size" {
   type        = map(any)
   description = "Storage space on the root block device (GB)"
   default = {
-    "xnat_web"   = 10
-    "xnat_cserv" = 10
+    "xnat_web"   = 30
+    "xnat_cserv" = 30
   }
 }
 

@@ -31,7 +31,7 @@ variable "root_block_device_size" {
   description = "Storage space on the root block device (GB)"
   default = {
     "main"      = 30
-    "container" = 10
+    "container" = 30
   }
 }
 
