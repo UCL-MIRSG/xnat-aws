@@ -21,8 +21,8 @@ variable "instance_types" {
   type        = map(string)
   description = "The instance type to use for the EC2 instances"
   default = {
-    "main"      = "t3.medium"
-    "container" = "t2.micro"
+    "main"      = "t3.large"
+    "container" = "t3.large"
   }
 }
 

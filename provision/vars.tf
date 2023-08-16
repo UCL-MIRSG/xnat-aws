@@ -68,8 +68,8 @@ variable "ec2_instance_types" {
   description = "Instance type to use for each server"
   default = {
     "xnat_web"   = "t3.large"
-    "xnat_db"    = "db.t3.medium"
-    "xnat_cserv" = "t2.medium"
+    "xnat_db"    = "db.t3.large"
+    "xnat_cserv" = "t3.large"
   }
 }
 
