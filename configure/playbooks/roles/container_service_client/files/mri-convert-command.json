@@ -16,7 +16,7 @@
     "limit-cpu": "1.5",
     "override-entrypoint": true,
     "environment-variables": {
-        "FS_LICENSE":"/fs60/license.txt"
+        "FS_LICENSE": "/fs60/license.txt"
     },
     "mounts": [
         {
