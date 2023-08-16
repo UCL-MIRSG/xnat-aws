@@ -9,7 +9,7 @@
   "type": "docker",
   "index": "https://index.docker.io/v1/",
   "working-directory": "",
-  "command-line": "/fastsurfer/run_fastsurfer_xnat.sh /input #SESSION_LABEL# #SCAN_ID# #FASTSURF_ARGS#",
+  "command-line": "/fastsurfer/run_fastsurfer_xnat.sh /input #SESSION_LABEL# #SCAN_ID# #FASTSURF_ARGS# --device cpu",
   "override-entrypoint": true,
   "mounts": [
     {
@@ -24,7 +24,7 @@
     }
   ],
   "environment-variables": {
-    "NVIDIA_VISIBLE_DEVICES": "all"
+      "FS_LICENSE": "/fs60/license.txt"
   },
   "ports": {},
   "inputs": [
