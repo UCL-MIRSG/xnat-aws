@@ -1,0 +1,223 @@
+{
+  "name": "run_fastsurfer_gpu",
+  "label": "FastSurfer",
+  "description": "Runs the entire Fastsurfer pipeline on a GPU-enabled machine",
+  "version": "1.0",
+  "schema-version": "1.0",
+  "info-url": "https://github.com/Deep-MI/FastSurfer",
+  "image": "healthbioscienceideas/fastsurfer:gpu-xnat",
+  "type": "docker",
+  "index": "https://index.docker.io/v1/",
+  "working-directory": "",
+  "command-line": "/fastsurfer/run_fastsurfer_xnat.sh /input #SESSION_LABEL# #SCAN_ID# #FASTSURF_ARGS#",
+  "override-entrypoint": true,
+  "mounts": [
+    {
+      "name": "mgz-in",
+      "writable": false,
+      "path": "/input"
+    },
+    {
+      "name": "recon-out",
+      "writable": true,
+      "path": "/output"
+    }
+  ],
+  "environment-variables": {
+    "NVIDIA_VISIBLE_DEVICES": "all"
+  },
+  "ports": {},
+  "inputs": [
+    {
+      "name": "SCAN_ID",
+      "label": null,
+      "description": "Scan ID for file naming purposes",
+      "type": "string",
+      "matcher": null,
+      "default-value": null,
+      "required": true,
+      "replacement-key": null,
+      "sensitive": null,
+      "command-line-flag": null,
+      "command-line-separator": null,
+      "true-value": null,
+      "false-value": null,
+      "select-values": [],
+      "multiple-delimiter": null
+    },
+    {
+      "name": "SESSION_LABEL",
+      "label": null,
+      "description": "Session ID for purposes of naming output",
+      "type": "string",
+      "matcher": null,
+      "default-value": null,
+      "required": true,
+      "replacement-key": null,
+      "sensitive": null,
+      "command-line-flag": "",
+      "command-line-separator": null,
+      "true-value": null,
+      "false-value": null,
+      "select-values": [],
+      "multiple-delimiter": null
+    },
+    {
+      "name": "FASTSURF_ARGS",
+      "label": null,
+      "description": "Any additional arguments for fastsurfer",
+      "type": "string",
+      "matcher": null,
+      "default-value": null,
+      "required": false,
+      "replacement-key": "",
+      "sensitive": null,
+      "command-line-flag": "",
+      "command-line-separator": null,
+      "true-value": null,
+      "false-value": null,
+      "select-values": [],
+      "multiple-delimiter": null
+    }
+  ],
+  "outputs": [
+    {
+      "name": "fs-out",
+      "description": "Output from recon-all",
+      "required": true,
+      "mount": "recon-out",
+      "path": null,
+      "glob": null
+    }
+  ],
+  "xnat": [
+    {
+      "name": "Run FastSurfer pipeline on a conformed T1 MGZ - GPU",
+      "label": null,
+      "description": "Run FastSurfer pipeline on a conformed T1 MGZ - GPU",
+      "contexts": [
+        "xnat:mrSessionData"
+      ],
+      "external-inputs": [
+        {
+          "name": "session",
+          "label": null,
+          "description": "Session running recon-all-gpu",
+          "type": "Session",
+          "matcher": null,
+          "default-value": null,
+          "required": true,
+          "replacement-key": null,
+          "sensitive": null,
+          "provides-value-for-command-input": null,
+          "provides-files-for-command-mount": null,
+          "via-setup-command": null,
+          "user-settable": null,
+          "load-children": true
+        }
+      ],
+      "derived-inputs": [
+        {
+          "name": "session_label",
+          "label": null,
+          "description": "Session label for file naming purposes",
+          "type": "string",
+          "matcher": null,
+          "default-value": null,
+          "required": true,
+          "replacement-key": null,
+          "sensitive": null,
+          "provides-value-for-command-input": "SESSION_LABEL",
+          "provides-files-for-command-mount": null,
+          "user-settable": null,
+          "load-children": true,
+          "derived-from-wrapper-input": "session",
+          "derived-from-xnat-object-property": "label",
+          "via-setup-command": null,
+          "multiple": false,
+          "parser": null
+        },
+        {
+          "name": "scan",
+          "label": null,
+          "description": "Scan containing input to deface",
+          "type": "Scan",
+          "matcher": "@.scan-type  =~ /(t1)/i",
+          "default-value": null,
+          "required": true,
+          "replacement-key": null,
+          "sensitive": null,
+          "provides-value-for-command-input": null,
+          "provides-files-for-command-mount": null,
+          "user-settable": null,
+          "load-children": true,
+          "derived-from-wrapper-input": "session",
+          "derived-from-xnat-object-property": null,
+          "via-setup-command": null,
+          "multiple": false,
+          "parser": null
+        },
+        {
+          "name": "scan_id",
+          "label": null,
+          "description": "Scan ID for file naming purposes",
+          "type": "string",
+          "matcher": null,
+          "default-value": null,
+          "required": true,
+          "replacement-key": null,
+          "sensitive": null,
+          "provides-value-for-command-input": "SCAN_ID",
+          "provides-files-for-command-mount": null,
+          "user-settable": null,
+          "load-children": true,
+          "derived-from-wrapper-input": "scan",
+          "derived-from-xnat-object-property": "id",
+          "via-setup-command": null,
+          "multiple": false,
+          "parser": null
+        },
+        {
+          "name": "resource",
+          "label": null,
+          "description": "Resource containing conformed MGZ files",
+          "type": "Resource",
+          "matcher": "@.label  =~ /(MGZ)/i",
+          "default-value": null,
+          "required": true,
+          "replacement-key": null,
+          "sensitive": null,
+          "provides-value-for-command-input": null,
+          "provides-files-for-command-mount": "mgz-in",
+          "user-settable": true,
+          "load-children": true,
+          "derived-from-wrapper-input": "scan",
+          "derived-from-xnat-object-property": "label",
+          "via-setup-command": null,
+          "multiple": false,
+          "parser": null
+        }
+      ],
+      "output-handlers": [
+        {
+          "name": "fastsurfer-resource",
+          "accepts-command-output": "fs-out",
+          "via-wrapup-command": null,
+          "as-a-child-of": "session",
+          "type": "Resource",
+          "label": "FASTSURFER",
+          "format": null,
+          "description": null,
+          "content": null,
+          "tags": []
+        }
+      ]
+    }
+  ],
+  "reserve-memory": 2048,
+  "limit-memory": 4096,
+  "limit-cpu": 4,
+  "container-labels": {},
+  "generic-resources": {},
+  "ulimits": {}
+}
