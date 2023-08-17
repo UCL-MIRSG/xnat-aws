@@ -5,7 +5,7 @@
     "version": "1.0",
     "schema-version": "1.0",
     "info-url": "https://github.com/Deep-MI/FastSurfer",
-    "image": "healthbioscienceideas/fastsurfer:cpu-xnat",
+    "image": "healthbioscienceideas/fastsurfer:gpu-xnat",
     "type": "docker",
     "index": "https://index.docker.io/v1/",
     "working-directory": "",
@@ -24,6 +24,7 @@
       }
     ],
     "environment-variables": {
+      "FS_LICENSE": "/fs60/license.txt",
       "NVIDIA_VISIBLE_DEVICES": "all"
     },
     "ports": {},

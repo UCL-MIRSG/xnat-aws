@@ -24,6 +24,7 @@
     }
   ],
   "environment-variables": {
+    "FS_LICENSE": "/fs60/license.txt",
     "NVIDIA_VISIBLE_DEVICES": "all"
   },
   "ports": {},
