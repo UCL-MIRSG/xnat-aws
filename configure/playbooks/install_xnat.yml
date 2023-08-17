@@ -1,4 +1,11 @@
 ---
+- name: Wait until instance is running
+  hosts: web
+  gather_facts: false
+
+  roles:
+    - { role: wait_until_running }
+
 - name: Install dependencies
   hosts: web
   become: true

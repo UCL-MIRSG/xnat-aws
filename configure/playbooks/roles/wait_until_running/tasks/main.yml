@@ -1,0 +1,7 @@
+---
+- name: Wait until AWS instance is running
+  ansible.builtin.wait_for_connection:
+    delay: 5
+    timeout: 600
+    sleep: 5
+    connect_timeout: 5
