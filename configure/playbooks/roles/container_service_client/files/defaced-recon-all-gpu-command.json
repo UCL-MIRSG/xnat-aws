@@ -217,7 +217,7 @@
     ],
     "reserve-memory": 2048,
     "limit-memory": 4096,
-    "limit-cpu": 4,
+    "limit-cpu": 2,
     "container-labels": {},
     "generic-resources": {},
     "ulimits": {}
