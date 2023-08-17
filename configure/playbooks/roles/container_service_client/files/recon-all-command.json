@@ -92,9 +92,9 @@
   ],
   "xnat": [
     {
-      "name": "Run FastSurfer pipeline on a conformed T1 MGZ",
+      "name": "Run FastSurfer pipeline on a conformed T1 MGZ - CPU",
       "label": null,
-      "description": "Run FastSurfer pipeline on a conformed T1 MGZ",
+      "description": "Run FastSurfer pipeline on a conformed T1 MGZ - CPU",
       "contexts": [
         "xnat:mrSessionData"
       ],

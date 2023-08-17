@@ -92,9 +92,9 @@
     ],
     "xnat": [
       {
-        "name": "DEFACED DATA - Run FastSurfer pipeline on a defaced conformed T1 MGZ",
+        "name": "DEFACED DATA - Run FastSurfer pipeline on a defaced conformed T1 MGZ - CPU",
         "label": null,
-        "description": "DEFACED DATA - Run FastSurfer pipeline on a defaced conformed T1 MGZ",
+        "description": "DEFACED DATA - Run FastSurfer pipeline on a defaced conformed T1 MGZ - CPU",
         "contexts": [
           "xnat:mrSessionData"
         ],
