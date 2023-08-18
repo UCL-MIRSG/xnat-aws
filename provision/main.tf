@@ -84,7 +84,7 @@ module "container_service" {
 
   vpc_id             = module.setup_vpc.vpc_id
   availability_zones = [var.availability_zones[0]]
-  subnet_ids         = [module.setp_vpc.public_subnets[0]]
+  subnet_ids         = [module.setup_vpc.public_subnets[0]]
   ssh_key_name       = local.ssh_key_name
   ssh_cidr           = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
   webserver_sg_id    = module.web_server.sg_id
