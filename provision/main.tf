@@ -60,7 +60,7 @@ module "setup_vpc" {
 
 }
 
-# Launch ec2 instances for the web server (main + container)
+# Launch ec2 instances for the web server
 module "web_server" {
   source = "./modules/web-server"
 
@@ -76,6 +76,19 @@ module "web_server" {
   ssh_cidr          = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
   http_cidr         = concat([module.get_my_ip.my_public_cidr], var.extend_http_cidr)
   https_cidr        = concat([module.get_my_ip.my_public_cidr], var.extend_https_cidr)
+}
+
+# Set up EKS for running the Container Service
+module "container_service" {
+  source = "./modules/container-service"
+
+  vpc_id             = module.setup_vpc.vpc_id
+  availability_zones = [var.availability_zones[0]]
+  subnet_ids         = [module.setp_vpc.public_subnets[0]]
+  ssh_key_name       = local.ssh_key_name
+  ssh_cidr           = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
+  webserver_sg_id    = module.web_server.sg_id
+
 }
 
 # Create EFS
