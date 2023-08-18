@@ -1,12 +1,3 @@
-variable "names" {
-  type        = map(string)
-  description = "The names for the EC2 instances"
-  default = {
-    "main"      = "xnat_web"
-    "container" = "xnat_cserv"
-  }
-}
-
 variable "vpc_id" {
   type        = string
   description = "The ID of the VPC"
@@ -17,13 +8,10 @@ variable "ami" {
   description = "The AMI to use for the EC2 instance"
 }
 
-variable "instance_types" {
-  type        = map(string)
-  description = "The instance type to use for the EC2 instances"
-  default = {
-    "main"      = "t3.large"
-    "container" = "t3.large"
-  }
+variable "instance_type" {
+  type        = string
+  description = "The instance type to use for the EC2 instance"
+  default     = "t3.large"
 }
 
 variable "root_block_device_size" {
@@ -43,9 +31,9 @@ variable "subnet_id" {
   description = "The subnet ID to use for the EC2 instance"
 }
 
-variable "private_ips" {
-  type        = map(string)
-  description = "The private IPs to use for the EC2 instances"
+variable "private_ip" {
+  type        = string
+  description = "The private IP to use for the EC2 instance"
 }
 
 variable "ssh_key_name" {

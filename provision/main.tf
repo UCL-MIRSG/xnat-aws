@@ -64,23 +64,14 @@ module "setup_vpc" {
 module "web_server" {
   source = "./modules/web-server"
 
-  names = {
-    "main"      = "xnat_web"
-    "container" = "xnat_cserv"
-  }
-
-  instance_types = {
-    "main"      = var.ec2_instance_types["xnat_web"]
-    "container" = var.ec2_instance_types["xnat_cserv"]
-  }
-
+  instance_type          = var.ec2_instance_types["xnat_web"]
   root_block_device_size = var.root_block_device_size
 
   vpc_id            = module.setup_vpc.vpc_id
   ami               = module.get_ami.amis[var.instance_os]
   availability_zone = var.availability_zones[0]
   subnet_id         = module.setup_vpc.public_subnets[0]
-  private_ips       = var.instance_private_ips
+  private_ip        = var.instance_private_ips["xnat_web"]
   ssh_key_name      = local.ssh_key_name
   ssh_cidr          = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
   http_cidr         = concat([module.get_my_ip.my_public_cidr], var.extend_http_cidr)
@@ -92,11 +83,10 @@ module "efs" {
   source       = "./modules/efs"
   vpc_id       = module.setup_vpc.vpc_id
   subnet_id    = module.setup_vpc.public_subnets[0]
-  ingress_from = [module.web_server.webserver_sg_id, module.web_server.cserv_sg_id]
+  ingress_from = [module.web_server.sg_id]
 }
 
 # Launch RDS instances for the database
-
 module "database" {
   source = "./modules/database"
 
@@ -105,7 +95,7 @@ module "database" {
   instance_type     = var.ec2_instance_types["xnat_db"]
   availability_zone = var.availability_zones[0]
   subnet_ids        = module.setup_vpc.private_subnets
-  webserver_sg_id   = module.web_server.webserver_sg_id
+  webserver_sg_id   = module.web_server.sg_id
 }
 
 # Copy public key to AWS
@@ -117,20 +107,17 @@ resource "aws_key_pair" "key_pair" {
 # Write the ansible hosts file
 resource "local_file" "ansible-hosts" {
   content = templatefile("templates/ansible_hosts.yml.tftpl", {
-    ssh_key_filename      = local.ssh_private_key_filename,
-    ssh_user              = local.ansible_ssh_user[var.instance_os],
-    xnat_web_hostname     = module.web_server.xnat_web_hostname,
-    xnat_web_public_ip    = module.web_server.xnat_web_public_ip,
-    xnat_web_private_ip   = module.web_server.xnat_web_private_ip,
-    xnat_web_smtp_ip      = var.smtp_private_ip,
-    xnat_db_hostname      = module.database.xnat_db_hostname,
-    xnat_db_username      = module.database.xnat_db_username,
-    xnat_db_port          = module.database.xnat_db_port,
-    xnat_db_name          = module.database.xnat_db_name,
-    xnat_cserv_hostname   = module.web_server.xnat_cserv_hostname,
-    xnat_cserv_public_ip  = module.web_server.xnat_cserv_public_ip,
-    xnat_cserv_private_ip = module.web_server.xnat_cserv_private_ip,
-    efs_hostname          = module.efs.hostname,
+    ssh_key_filename    = local.ssh_private_key_filename,
+    ssh_user            = local.ansible_ssh_user[var.instance_os],
+    xnat_web_hostname   = module.web_server.hostname,
+    xnat_web_public_ip  = module.web_server.public_ip,
+    xnat_web_private_ip = module.web_server.private_ip,
+    xnat_web_smtp_ip    = var.smtp_private_ip,
+    xnat_db_hostname    = module.database.xnat_db_hostname,
+    xnat_db_username    = module.database.xnat_db_username,
+    xnat_db_port        = module.database.xnat_db_port,
+    xnat_db_name        = module.database.xnat_db_name,
+    efs_hostname        = module.efs.hostname,
   })
   filename        = "../configure/hosts.yml"
   file_permission = "0644"
