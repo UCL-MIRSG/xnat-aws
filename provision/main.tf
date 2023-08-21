@@ -83,8 +83,8 @@ module "container_service" {
   source = "./modules/container-service"
 
   vpc_id             = module.setup_vpc.vpc_id
-  availability_zones = [var.availability_zones[0]]
-  subnet_ids         = [module.setup_vpc.public_subnets[0]]
+  availability_zones = var.availability_zones
+  subnet_ids         = module.setup_vpc.public_subnets
   ssh_key_name       = local.ssh_key_name
   ssh_cidr           = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
   webserver_sg_id    = module.web_server.sg_id
@@ -96,7 +96,7 @@ module "efs" {
   source       = "./modules/efs"
   vpc_id       = module.setup_vpc.vpc_id
   subnet_id    = module.setup_vpc.public_subnets[0]
-  ingress_from = [module.web_server.sg_id]
+  ingress_from = [module.web_server.sg_id, module.container_service.sg_id]
 }
 
 # Launch RDS instances for the database

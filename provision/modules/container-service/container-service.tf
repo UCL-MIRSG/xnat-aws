@@ -51,9 +51,13 @@ module "eks" {
   # TODO: only allow access from the web server
   cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
 
+  cluster_endpoint_private_access = true
+
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
-    instance_types = ["t3.large", "c7g.xlarge"]
+    instance_types = ["t3.large", "c5n.xlarge"]
+    # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/compute-optimized-instances.html
+    # https://aws.amazon.com/ec2/instance-types/c5/
 
     # We are using the IRSA created below for permissions
     # However, we have to deploy with the policy attached FIRST (when creating a fresh cluster)
@@ -73,7 +77,7 @@ module "eks" {
 
       min_size     = 0
       max_size     = 6
-      desired_size = 0
+      desired_size = 1
 
       ami_id               = data.aws_ami.eks_default.image_id
       capacity_type        = "SPOT"
