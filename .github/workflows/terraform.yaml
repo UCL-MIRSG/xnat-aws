@@ -37,7 +37,7 @@ jobs:
       - name: Terraform Credentials
         run: |
           terraform init
-          terraform apply
+          terraform apply -auto-approve
         working-directory: ./credentials
 
       # Initialize a new or existing Terraform working directory by
