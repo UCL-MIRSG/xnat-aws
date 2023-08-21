@@ -57,8 +57,3 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
         working-directory: ./provision
-
-      # Run terraform plan
-      - name: Terraform Plan
-        run: terraform plan
-        working-directory: ./provision
