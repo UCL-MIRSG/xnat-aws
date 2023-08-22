@@ -162,7 +162,7 @@ terraform destroy
 |------|-------------|------|---------|:--------:|
 | <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | AZs to use for deploying XNAT | `list(string)` | <pre>[<br>  "eu-west-2a",<br>  "eu-west-2b"<br>]</pre> | no |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to use for deploying XNAT | `string` | `"eu-west-2"` | no |
-| <a name="input_ec2_instance_types"></a> [ec2\_instance\_types](#input\_ec2\_instance\_types) | Instance type to use for each server | `map(any)` | <pre>{<br>  "xnat_cserv": "t3.large",<br>  "xnat_db": "db.t3.large",<br>  "xnat_web": "t3.large"<br>}</pre> | no |
+| <a name="input_ec2_instance_types"></a> [ec2\_instance\_types](#input\_ec2\_instance\_types) | Instance type to use for each server | `map(any)` | <pre>{<br>  "xnat_cserv": "m4.xlarge",<br>  "xnat_db": "db.t3.large",<br>  "xnat_web": "t3.large"<br>}</pre> | no |
 | <a name="input_extend_http_cidr"></a> [extend\_http\_cidr](#input\_extend\_http\_cidr) | The CIDR blocks to grant HTTP access to the web server, in addition to your own IP address | `list(string)` | `[]` | no |
 | <a name="input_extend_https_cidr"></a> [extend\_https\_cidr](#input\_extend\_https\_cidr) | The CIDR blocks to grant HTTSP access to the web server, in addition to your own IP address | `list(string)` | `[]` | no |
 | <a name="input_extend_ssh_cidr"></a> [extend\_ssh\_cidr](#input\_extend\_ssh\_cidr) | CIDR blocks servers should permit SHH access from, in addition to your own IP address | `list(string)` | `[]` | no |
