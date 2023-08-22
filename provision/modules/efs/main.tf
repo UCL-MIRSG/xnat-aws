@@ -52,11 +52,3 @@ resource "aws_efs_mount_target" "mount" {
   security_groups = [aws_security_group.efs_security_group.id]
 
 }
-
-# Store the hostname
-output "hostname" {
-  description = "DNS hostnames of the EFS file system"
-  value       = aws_efs_file_system.efs.dns_name
-}
-
-
