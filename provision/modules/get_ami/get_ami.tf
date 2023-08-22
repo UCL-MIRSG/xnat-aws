@@ -59,6 +59,6 @@ output "amis" {
   value = {
     "rocky8" = data.aws_ami.rocky8.id
     "rocky9" = data.aws_ami.rocky9.id
-    "rhel9" = data.aws_ami.rhel9.id
+    "rhel9"  = data.aws_ami.rhel9.id
   }
 }
