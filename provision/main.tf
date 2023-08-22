@@ -42,10 +42,11 @@ module "setup_vpc" {
   create_database_subnet_route_table     = false
   create_database_internet_gateway_route = false
   enable_nat_gateway                     = false
+  single_nat_gateway                     = false
   enable_vpn_gateway                     = false
 
   # override default names of the resources
-  public_subnet_names  = ["xnat-public"]
+  public_subnet_names  = ["xnat-public-1", "xnat-public-2"]
   private_subnet_names = ["xnat-private-1", "xnat-private-2"]
 
   default_security_group_name = "default-xnat-sg"
