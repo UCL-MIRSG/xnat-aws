@@ -16,15 +16,18 @@ The Terraform scripts will create the following infrastructure on AWS:
 
 ### Instance types
 
-The smallest instance types (`t2.nano`) do not provide enough RAM for running XNAT. We have found that we need to use `t3.large` instances for the Container Service and database, and `t3.large` instances for the web server, to prevent the site from crashing when uploading data or running containers.
+The smallest instance types (`t2.nano`) do not provide enough RAM for running XNAT. We have found
+that we need to use a `db.t3.medium` instance the database, a `m4.xlarge` instance for the container
+service, and a `t3.large` instance for the web server, to prevent the site from crashing when
+uploading data or running containers.
 
 You can change the instance type used by setting `ec2_instance_type` in your `xnat-aws/provision/terraform.tfvars` file, e.g.:
 
 ```terraform
 ec2_instance_types = {
   "xnat_web"   = "t3.large"
-  "xnat_db"    = "db.t3.large"
-  "xnat_cserv" = "t3.large"
+  "xnat_db"    = "db.t3.medium"
+  "xnat_cserv" = "m4.xlarge"
 }
 ```
 
@@ -159,7 +162,7 @@ terraform destroy
 |------|-------------|------|---------|:--------:|
 | <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | AZs to use for deploying XNAT | `list(string)` | <pre>[<br>  "eu-west-2a",<br>  "eu-west-2b"<br>]</pre> | no |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to use for deploying XNAT | `string` | `"eu-west-2"` | no |
-| <a name="input_ec2_instance_types"></a> [ec2\_instance\_types](#input\_ec2\_instance\_types) | Instance type to use for each server | `map(any)` | <pre>{<br>  "xnat_cserv": "t3.large",<br>  "xnat_db": "db.t3.large",<br>  "xnat_web": "t3.large"<br>}</pre> | no |
+| <a name="input_ec2_instance_types"></a> [ec2\_instance\_types](#input\_ec2\_instance\_types) | Instance type to use for each server | `map(any)` | <pre>{<br>  "xnat_cserv": "m4.xlarge",<br>  "xnat_db": "db.t3.large",<br>  "xnat_web": "t3.large"<br>}</pre> | no |
 | <a name="input_extend_http_cidr"></a> [extend\_http\_cidr](#input\_extend\_http\_cidr) | The CIDR blocks to grant HTTP access to the web server, in addition to your own IP address | `list(string)` | `[]` | no |
 | <a name="input_extend_https_cidr"></a> [extend\_https\_cidr](#input\_extend\_https\_cidr) | The CIDR blocks to grant HTTSP access to the web server, in addition to your own IP address | `list(string)` | `[]` | no |
 | <a name="input_extend_ssh_cidr"></a> [extend\_ssh\_cidr](#input\_extend\_ssh\_cidr) | CIDR blocks servers should permit SHH access from, in addition to your own IP address | `list(string)` | `[]` | no |

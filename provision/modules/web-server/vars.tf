@@ -22,7 +22,7 @@ variable "instance_types" {
   description = "The instance type to use for the EC2 instances"
   default = {
     "main"      = "t3.large"
-    "container" = "t3.large"
+    "container" = "m4.xlarge"
   }
 }
 
