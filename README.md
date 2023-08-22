@@ -1,4 +1,7 @@
 # xnat-aws
+
+[![Terraform](https://github.com/UCL-MIRSG/xnat-aws/actions/workflows/terraform.yaml/badge.svg)](https://github.com/UCL-MIRSG/xnat-aws/actions/workflows/terraform.yaml)
+
 Deploy XNAT on AWS using Terraform and Ansible.
 
 Terraform is used to create the infrastructure on AWS and Ansible is then used to configure the instances for XNAT deployment.
