@@ -90,3 +90,10 @@ variable "instance_os" {
     error_message = "'instance_os' must be one of ('rocky8', 'rocky9', 'rhel9'). ${var.instance_os} is not supported"
   }
 }
+
+# EKS
+variable "eks_cluster_name" {
+  type        = string
+  description = "Name to use for both the EKS cluster and the kubernetes namespace"
+  default     = "container-service"
+}
