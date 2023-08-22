@@ -72,12 +72,12 @@ module "setup_vpc" {
 
   public_subnet_tags = {
     "kubernetes.io/roles/elb"                   = 1
-    "kubernetes.io/cluster/${eks_cluster_name}" = "shared"
+    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
   }
 
   private_subnet_tags = {
     "kubernetes.io/roles/internal-elb"          = 1
-    "kubernetes.io/cluster/${eks_cluster_name}" = "shared"
+    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
   }
 
   # these tags will be applied to all resources
@@ -112,7 +112,6 @@ module "eks" {
   cluster_name       = var.eks_cluster_name
   vpc_id             = module.setup_vpc.vpc_id
   availability_zones = var.availability_zones
-  #subnet_ids         = module.setup_vpc.public_subnets
   subnet_ids      = concat([module.setup_vpc.public_subnets, module.setup_vpc.private_subnets])
   ssh_key_name    = local.ssh_key_name
   ssh_cidr        = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
@@ -140,7 +139,7 @@ module "fargate" {
 
 # Patch kubernetes
 data "aws_eks_cluster_auth" "eks" {
-  name = module.eks.cluster.cluster_id
+  name = module.eks.cluster_id
 }
 
 resource "null_resource" "k8s_patcher" {
@@ -179,7 +178,7 @@ module "efs" {
   source       = "./modules/efs"
   vpc_id       = module.setup_vpc.vpc_id
   subnet_id    = module.setup_vpc.public_subnets[0]
-  ingress_from = [module.web_server.sg_id, module.eks.sg_id]
+  ingress_from = [module.web_server.sg_id]  # TODO: all ingress from EKS / fargate
 }
 
 # Launch RDS instances for the database
