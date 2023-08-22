@@ -1,3 +1,8 @@
+variable "cluster_name" {
+  type        = string
+  description = "Name of the EKS cluster"
+}
+
 variable "vpc_id" {
   type        = string
   description = "The ID of the VPC"
@@ -6,7 +11,7 @@ variable "vpc_id" {
 variable "availability_zones" {
   type        = list(string)
   description = "The AZs to use for the EKS"
-  default     = ["eu-west-2a"]
+  default     = ["eu-west-2a", "eu-west-2b"]
 }
 
 variable "subnet_ids" {
