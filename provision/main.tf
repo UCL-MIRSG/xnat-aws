@@ -112,7 +112,7 @@ module "eks" {
   cluster_name       = var.eks_cluster_name
   vpc_id             = module.setup_vpc.vpc_id
   availability_zones = var.availability_zones
-  subnet_ids      = concat([module.setup_vpc.public_subnets, module.setup_vpc.private_subnets])
+  subnet_ids      = concat(module.setup_vpc.public_subnets, module.setup_vpc.private_subnets)
   ssh_key_name    = local.ssh_key_name
   ssh_cidr        = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
   webserver_sg_id = module.web_server.sg_id
