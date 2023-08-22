@@ -16,15 +16,18 @@ The Terraform scripts will create the following infrastructure on AWS:
 
 ### Instance types
 
-The smallest instance types (`t2.nano`) do not provide enough RAM for running XNAT. We have found that we need to use `t3.large` instances for the Container Service and database, and `t3.large` instances for the web server, to prevent the site from crashing when uploading data or running containers.
+The smallest instance types (`t2.nano`) do not provide enough RAM for running XNAT. We have found
+that we need to use a `db.t3.medium` instance the database, a `m4.xlarge` instance for the container
+service, and a `t3.large` instance for the web server, to prevent the site from crashing when
+uploading data or running containers.
 
 You can change the instance type used by setting `ec2_instance_type` in your `xnat-aws/provision/terraform.tfvars` file, e.g.:
 
 ```terraform
 ec2_instance_types = {
   "xnat_web"   = "t3.large"
-  "xnat_db"    = "db.t3.large"
-  "xnat_cserv" = "t3.large"
+  "xnat_db"    = "db.t3.medium"
+  "xnat_cserv" = "m4.xlarge"
 }
 ```
 

@@ -25,7 +25,7 @@ extend_https_cidr = []
 ec2_instance_types = {
   "xnat_web"   = "t3.large"    # XNAT needs more RAM than available in t2.micro
   "xnat_db"    = "db.t3.medium" # XNAT needs more RAM than available in t2.micro
-  "xnat_cserv" = "t3.large"
+  "xnat_cserv" = "m4.xlarge"
 }
 
 # EC2 root block device volume size
