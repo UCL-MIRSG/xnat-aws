@@ -214,7 +214,7 @@
       ]
     }
   ],
-  "reserve-memory": 4096,
+  "reserve-memory": 512,
   "limit-memory": 14336,
   "limit-cpu": 4,
   "container-labels": {},
