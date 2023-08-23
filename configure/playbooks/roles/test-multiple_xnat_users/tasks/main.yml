@@ -7,7 +7,7 @@
 
 - name: "Set up XNAT users and their projects"
   ansible.builtin.include_tasks: setup_single_testuser.yml
-  loop: "{{ range(1, n_users + 1) | list }}"
+  loop: "{{ range(1, n_users | int + 1) | list }}"
   loop_control:
     loop_var: user_id
   vars:
@@ -37,7 +37,7 @@
       --inventory ../hosts.yml --host xnat_web --netrc {{ netrc_file }}
   register: upload_data
   changed_when: upload_data.failed != false
-  loop: "{{ range(1, n_users + 1) | list }}"
+  loop: "{{ range(1, n_users | int + 1) | list }}"
   loop_control:
     loop_var: user_id
   vars:
