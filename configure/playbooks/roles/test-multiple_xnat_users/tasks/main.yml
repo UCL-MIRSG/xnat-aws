@@ -49,15 +49,17 @@
     netrc_file: "{{ project_data_dir }}/.netrc-{{ user_name }}"
 
 - name: "Check upload data status"
+  delegate_to: localhost
   ansible.builtin.async_status:
-    jid: "{{ upload_data.ansible_job_id }}"
+    jid: "{{ item.ansible_job_id }}"
+  loop: "{{ upload_data.results }}"
   register: upload_data_status
   until: upload_data_status.finished
   retries: 180
-  delay: 60
+  delay: 5
 
 - name: "Print upload data stdout"
   ansible.builtin.debug:
-    msg: "{{ item.stdout }}"
-  loop: "{{ upload_data.results }}"
+    msg: "{{ item.stdout_lines }}"
+  loop: "{{ upload_data_status.results }}"
   when: item.stdout != ""
