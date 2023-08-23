@@ -124,8 +124,8 @@
 
 - name: "Upload data for each user - concurrently"
   delegate_to: localhost
-  # poll: 0
-  # async: 10800 # allow up to 3 hours for the data upload
+  poll: 0
+  async: 10800 # allow up to 3 hours for the data upload
   vars:
     metadata: "{{ '../../data/ibash/ibash-sessions-%02x.csv' | format(item) }}"
     data: ../../data/ibash
