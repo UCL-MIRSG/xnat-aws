@@ -23,7 +23,40 @@
     project_id: "ibash-{{ '%02x' | format(user_id) }}"
     project_name: "Test project for {{ user_name }}"
     project_data_dir: "../../data"
+    project_data: "{{ project_data_dir }}/ibash"
     project_xml_file: "{{ project_data_dir }}/{{ project_id }}_project.xml"
+    project_metadata: "{{ project_data }}/{{ project_id }}-sessions.csv"
+    netrc_file: "{{ project_data_dir }}/.netrc-{{ user_name }}"
+
+- name: "Upload data for each user - concurrently"
+  delegate_to: localhost
+  poll: 0
+  async: 10800  # allow up to 3 hours for this task to complete  necessary when uploading large data
+  ansible.builtin.command:
+    python ../scripts/upload_data.py --metadata {{ project_metadata }} --data {{ project_data }} \
+      --inventory ../hosts.yml --host xnat_web --netrc {{ netrc_file }}
+  register: upload_data
+  changed_when: upload_data.failed != false
+  loop: "{{ range(1, n_users + 1) | list }}"
+  loop_control:
+    loop_var: user_id
+  vars:
+    project_id: "ibash-{{ '%02x' | format(user_id) }}"
+    project_data_dir: "../../data"
     project_data: "{{ project_data_dir }}/ibash"
     project_metadata: "{{ project_data }}/{{ project_id }}-sessions.csv"
     netrc_file: "{{ project_data_dir }}/.netrc-{{ user_name }}"
+
+- name: "Check upload data status"
+  ansible.builtin.async_status:
+    jid: "{{ upload_data.ansible_job_id }}"
+  register: upload_data_status
+  until: upload_data_status.finished
+  retries: 180
+  delay: 60
+
+- name: "Print upload data stdout"
+  ansible.builtin.debug:
+    msg: "{{ item.stdout }}"
+  loop: "{{ upload_data.results }}"
+  when: item.stdout != ""
