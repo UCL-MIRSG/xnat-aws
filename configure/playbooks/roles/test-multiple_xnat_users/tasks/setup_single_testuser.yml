@@ -1,0 +1,137 @@
+---
+- ansible.builtin.debug:
+    msg: "Creating {{ 'testuser%02x' | format(user_id) }}"
+
+- name: "Create XNAT user {{ 'testuser%02x' | format(user_id) }}"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/investigators/"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: POST
+    body_format: json
+    body:
+      title: "{{ 'testuser%02x' | format(user_id) }}"
+      firstname: "testuser"
+      lastname: "{{ '%02x' | format(user_id) }}"
+      institution: "Test"
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: [200, 409]
+  register: xnat_create_investigator
+  changed_when: xnat_create_investigator.status == 200
+
+- name: Ensure the data directory  exists
+  delegate_to: localhost
+  ansible.builtin.file:
+    path: "../../data"
+    state: directory
+    mode: "0755"
+
+- name: "Create project XML file for {{ 'testuser%02x' | format(user_id) }}"
+  delegate_to: localhost
+  ansible.builtin.template:
+    src: "ibash_project.xml.j2"
+    dest: "../../data/ibash_project-{{ 'testuser%02x' | format(user_id) }}.xml"
+    mode: "0600"
+  vars:
+    project_id: "ibash-{{ '%02x' | format(user_id) }}"
+    project_name: "Test project for {{ 'testuser%02x' | format(user_id) }}"
+
+- name: "Create I-BASH project for {{ 'testuser%02x' | format(user_id) }}"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/data/projects/"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: POST
+    headers:
+      Content-Type: "application/xml"
+      Accept: "application/xml"
+    body: "{{ lookup('file', '../../data/ibash_project-testuser%02x.xml' | format(user_id)) }}"
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: [200, 409]
+  register: xnat_project_created
+  changed_when: xnat_project_created.status == 200
+
+- name: "Create owner for the project"
+  vars:
+    username: "{{ 'testuser%02x' | format(user_id) }}"
+    password: "{{ 'carlos1602%02x' | format(user_id) }}"
+    first_name: "testuser"
+    last_name: "{{ '%02x' | format(user_id) }}"
+    email: "testuser{{ '%02x' | format(user_id) }}@ibash.org"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/xapi/users/"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: POST
+    body_format: json
+    body:
+      admin: true
+      username: "{{ username }}"
+      password: "{{ password }}"
+      firstName: "{{ first_name }}"
+      lastName: "{{ last_name }}"
+      email: "{{ email }}"
+      verified: true
+      enabled: true
+    validate_certs: "{{ ssl.validate_certs }}"
+    status_code: [201, 409]
+  register: xnat_create_user
+  changed_when: xnat_create_user.status == 201
+
+- name: "Make user owner of their project"
+  vars:
+    project_id: "ibash-{{ '%02x' | format(user_id) }}"
+    username: "{{ 'testuser%02x' | format(user_id) }}"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_server.url }}/data/projects/{{ project_id }}/users/Owners/{{ username }}"
+    user: "{{ xnat_service_admin.username }}"
+    password: "{{ xnat_service_admin.password }}"
+    method: PUT
+    validate_certs: "{{ ssl.validate_certs }}"
+
+- name: "Download data and create credentials file for upload"
+  delegate_to: localhost
+  block:
+    # FIXME: this should be run only once
+    - name: "Download project data if we do not have a local copy"
+      ansible.builtin.include_tasks: ./roles/setup_xnat_project/tasks/download_data.yml
+
+    - name: "Create credentials file for use by XNATPy"
+      vars:
+        username: "{{ 'testuser%02x' | format(user_id) }}"
+        password: "{{ 'carlos1602%02x' | format(user_id) }}"
+        dest: "{{ '../../data/.netrc-testuser%02x' | format(user_id) }}"
+      ansible.builtin.template:
+        src: ".netrc-testuser.j2"
+        dest: "{{ dest }}"
+        mode: "0600"
+        force: true
+
+- name: "Generate ibash-sessions csv for {{ 'testuser%02x' | format(user_id) }}"
+  delegate_to: localhost
+  vars:
+    id: "{{ '%02x' | format(user_id) }}"
+  ansible.builtin.template:
+    src: "ibash-sessions.csv.j2"
+    dest: "{{ '../../data/ibash/ibash-sessions-%02x.csv' | format(user_id) }}"
+    mode: "0600"
+
+- name: "Upload data for {{ 'testuser%02x' | format(user_id) }}"
+  delegate_to: localhost
+  poll: 0
+  async: 10800 # allow up to 3 hours for the data upload
+  vars:
+    metadata: "{{ '../../data/ibash/ibash-sessions-%02x.csv' | format(user_id) }}"
+    data: ../../data/ibash
+    inventory: ../hosts.yml
+    host: xnat_web
+    netrc: "{{ '../../data/.netrc-testuser%02x' | format(user_id) }}"
+  ansible.builtin.command:
+    python ../scripts/upload_data.py --metadata {{ metadata }} --data {{ data }} \
+      --inventory {{ inventory }} --host {{ host }} --netrc {{ netrc }}
+  register: upload_data
+  changed_when: upload_data.failed != false
+
+- name: "Print upload data results"
+  ansible.builtin.debug:
+    msg: "{{ upload_data.results }}"
