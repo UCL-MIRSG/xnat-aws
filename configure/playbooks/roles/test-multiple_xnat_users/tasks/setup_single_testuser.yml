@@ -74,19 +74,13 @@
     method: PUT
     validate_certs: "{{ ssl_certs }}"
 
-- name: "Download data and create credentials file for upload"
+- name: "Create credentials file for use by XNATPy"
   delegate_to: localhost
-  block:
-    # FIXME: this should be run only once
-    - name: "Download project data if we do not have a local copy"
-      ansible.builtin.include_tasks: ./roles/setup_xnat_project/tasks/download_data.yml
-
-    - name: "Create credentials file for use by XNATPy"
-      ansible.builtin.template:
-        src: ".netrc-testuser.j2"
-        dest: "{{ netrc_file }}"
-        mode: "0600"
-        force: true
+  ansible.builtin.template:
+    src: ".netrc-testuser.j2"
+    dest: "{{ netrc_file }}"
+    mode: "0600"
+    force: true
 
 - name: "Generate ibash-sessions csv for {{ user_name }}"
   delegate_to: localhost
