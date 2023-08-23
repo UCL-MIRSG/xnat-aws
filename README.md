@@ -94,3 +94,17 @@ This is assuming usage of 50 hours per week (10 hours per day times 5 days per w
   - up to 20 GB EFS storage
 
 Note, it is recommended that you [set a monthly budget](https://aws.amazon.com/aws-cost-management/aws-budgets/) to avoid unexpected large bills.
+
+## Testing
+
+To test the infrastructure setup with multiple XNAT users, go to the `xnat-aws/configure` directory and type:
+
+```bash
+./run_tests.sh <number of users>
+```
+
+This will create the specified number of users on the XNAT server, each with their own project and
+some example data. This can be useful to test whether the infrastructure can handle multiple users
+running various tasks simultaneously.
+
+See [`Testing with multiple users`](configure/README.md#testing-with-multiple-users) for more details.
