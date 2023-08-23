@@ -69,7 +69,7 @@ variable "ec2_instance_types" {
   default = {
     "xnat_web"   = "t3.large"
     "xnat_db"    = "db.t3.large"
-    "xnat_cserv" = "t3.large"
+    "xnat_cserv" = "m4.xlarge"
   }
 }
 

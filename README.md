@@ -89,7 +89,7 @@ terraform destroy
 
 This is assuming usage of 50 hours per week (10 hours per day times 5 days per week) with the following resources:
   - web server: t3.large
-  - Container Service server: t3.large
+  - Container Service server: m4.xlarge
   - database server: db.t3.medium
   - up to 20 GB EFS storage
 
