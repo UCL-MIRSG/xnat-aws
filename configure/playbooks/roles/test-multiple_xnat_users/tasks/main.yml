@@ -1,6 +1,4 @@
 ---
-# TODO: Collect repeated variables into a single place
-
 - name: "Set up XNAT users and their projects"
   ansible.builtin.include_tasks: setup_single_testuser.yml
   loop: "{{ range(1, n_users + 1) | list }}"
