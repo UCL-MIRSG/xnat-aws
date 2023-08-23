@@ -6,3 +6,20 @@
   loop: "{{ range(1, n_users + 1) | list }}"
   loop_control:
     loop_var: user_id
+  vars:
+    xnat_web_url: "{{ xnat_web_server.url }}"
+    admin_username: "{{ xnat_service_admin.username }}"
+    admin_password: "{{ xnat_service_admin.password }}"
+    ssl_certs: "{{ ssl.validate_certs }}"
+    user_name: "{{ 'testuser%02x' | format(user_id) }}"
+    user_password: "{{ 'carlos1602%02x' | format(user_id) }}"
+    user_firstname: "testuser"
+    user_lastname: "{{ '%02x' | format(user_id) }}"
+    user_email: "{{ user_name }}@ibash.org"
+    project_id: "ibash-{{ '%02x' | format(user_id) }}"
+    project_name: "Test project for {{ user_name }}"
+    project_data_dir: "../../data"
+    project_xml_file: "{{ project_data_dir }}/{{ project_id }}_project.xml"
+    project_data: "{{ project_data_dir }}/ibash"
+    project_metadata: "{{ project_data }}/{{ project_id }}-sessions.csv"
+    netrc_file: "{{ project_data_dir }}/.netrc-{{ user_name }}"
