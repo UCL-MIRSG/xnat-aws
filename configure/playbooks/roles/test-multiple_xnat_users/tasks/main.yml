@@ -41,6 +41,7 @@
   loop_control:
     loop_var: user_id
   vars:
+    user_name: "{{ 'testuser%02x' | format(user_id) }}"
     project_id: "ibash-{{ '%02x' | format(user_id) }}"
     project_data_dir: "../../data"
     project_data: "{{ project_data_dir }}/ibash"
