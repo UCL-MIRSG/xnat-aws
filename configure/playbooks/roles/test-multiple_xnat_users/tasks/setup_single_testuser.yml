@@ -1,7 +1,4 @@
 ---
-- ansible.builtin.debug:
-    msg: "Creating {{ 'testuser%02x' | format(user_id) }}"
-
 - name: "Create XNAT user {{ 'testuser%02x' | format(user_id) }}"
   ansible.builtin.uri:
     url: "{{ xnat_web_server.url }}/xapi/investigators/"
