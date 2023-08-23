@@ -133,12 +133,12 @@
     host: xnat_web
     netrc: "{{ '../../data/.netrc-testuser%02x' | format(item) }}"
   ansible.builtin.command:
-    python ../scripts/upload_data.py --metadata {{ metadata }} --data {{ data }} --inventory {{ inventory }} --host {{ host }} --netrc {{ netrc }}
+    python ../scripts/upload_data.py --metadata {{ metadata }} --data {{ data }} \
+      --inventory {{ inventory }} --host {{ host }} --netrc {{ netrc }}
   loop: "{{ range(1, n_users + 1, 1) | list }}"
   register: upload_data
   changed_when: upload_data.failed != false
 
-- name: "Print upload data stdout"
+- name: "Print upload data results"
   ansible.builtin.debug:
-    msg: "{{ item.stdout }}"
-  loop: "{{ upload_data.results }}"
+    msg: "{{ upload_data.results }}"
