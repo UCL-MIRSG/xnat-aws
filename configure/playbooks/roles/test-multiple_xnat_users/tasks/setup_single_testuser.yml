@@ -103,6 +103,6 @@
   register: upload_data
   changed_when: upload_data.failed != false
 
-- name: "Print upload data results"
+- name: "Print upload data results for {{ user_name }}"
   ansible.builtin.debug:
-    msg: "{{ upload_data.results }}"
+    msg: "{{ upload_data.stdout }}"
