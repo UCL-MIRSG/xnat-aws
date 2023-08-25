@@ -1,0 +1,90 @@
+---
+- name: "Create XNAT user {{ user_name }}"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_url }}/xapi/investigators/"
+    user: "{{ admin_username }}"
+    password: "{{ admin_password }}"
+    method: POST
+    body_format: json
+    body:
+      title: "{{ user_name }}"
+      firstname: "{{ user_firstname }}"
+      lastname: "{{ user_lastname }}"
+      institution: "Test"
+    validate_certs: "{{ ssl_certs }}"
+    status_code: [200, 409]
+  register: xnat_create_investigator
+  changed_when: xnat_create_investigator.status == 200
+
+- name: Ensure the data directory exists
+  delegate_to: localhost
+  ansible.builtin.file:
+    path: "../../data"
+    state: directory
+    mode: "0755"
+
+- name: "Create project XML file for {{ user_name }}"
+  delegate_to: localhost
+  ansible.builtin.template:
+    src: "ibash_project.xml.j2"
+    dest: "{{ project_xml_file }}"
+    mode: "0600"
+
+- name: "Create I-BASH project for {{ user_name }}"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_url }}/data/projects/"
+    user: "{{ admin_username }}"
+    password: "{{ admin_password }}"
+    method: POST
+    headers:
+      Content-Type: "application/xml"
+      Accept: "application/xml"
+    body: "{{ lookup('file', project_xml_file) }}"
+    validate_certs: "{{ ssl_certs }}"
+    status_code: [200, 409]
+  register: xnat_project_created
+  changed_when: xnat_project_created.status == 200
+
+- name: "Create owner for the project"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_url }}/xapi/users/"
+    user: "{{ admin_username }}"
+    password: "{{ admin_password }}"
+    method: POST
+    body_format: json
+    body:
+      admin: true
+      username: "{{ user_name }}"
+      password: "{{ user_password }}"
+      firstName: "{{ user_firstname }}"
+      lastName: "{{ user_lastname }}"
+      email: "{{ user_email }}"
+      verified: true
+      enabled: true
+    validate_certs: "{{ ssl_certs }}"
+    status_code: [201, 409]
+  register: xnat_create_user
+  changed_when: xnat_create_user.status == 201
+
+- name: "Make user owner of their project"
+  ansible.builtin.uri:
+    url: "{{ xnat_web_url }}/data/projects/{{ project_id }}/users/Owners/{{ user_name }}"
+    user: "{{ admin_username }}"
+    password: "{{ admin_password }}"
+    method: PUT
+    validate_certs: "{{ ssl_certs }}"
+
+- name: "Create credentials file for use by XNATPy"
+  delegate_to: localhost
+  ansible.builtin.template:
+    src: ".netrc-testuser.j2"
+    dest: "{{ netrc_file }}"
+    mode: "0600"
+    force: true
+
+- name: "Generate ibash-sessions csv for {{ user_name }}"
+  delegate_to: localhost
+  ansible.builtin.template:
+    src: "ibash-sessions.csv.j2"
+    dest: "{{ project_metadata }}"
+    mode: "0600"
