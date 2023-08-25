@@ -108,3 +108,8 @@ some example data. This can be useful to test whether the infrastructure can han
 running various tasks simultaneously.
 
 See [`Testing with multiple users`](configure/README.md#testing-with-multiple-users) for more details.
+
+## Acknowledgement
+
+This work was funded by [Health and Bioscience IDEAS](https://healthbioscienceideas.github.io/), a project supported by the UKRI Innovation Scholars: Data Science Training in Health and Bioscience (MR/V03863X/1).
+
