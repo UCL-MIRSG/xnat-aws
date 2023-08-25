@@ -94,3 +94,8 @@ This is assuming usage of 50 hours per week (10 hours per day times 5 days per w
   - up to 20 GB EFS storage
 
 Note, it is recommended that you [set a monthly budget](https://aws.amazon.com/aws-cost-management/aws-budgets/) to avoid unexpected large bills.
+
+## Acknowledgement
+
+This work was funded by [Health and Bioscience IDEAS](https://healthbioscienceideas.github.io/), a project supported by the UKRI Innovation Scholars: Data Science Training in Health and Bioscience (MR/V03863X/1).
+
