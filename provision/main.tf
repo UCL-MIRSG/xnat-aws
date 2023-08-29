@@ -124,7 +124,7 @@ module "appstream" {
   fleet_name           = "IDEAS-fleet"
   fleet_display_name   = "IDEAS fleet"
   fleet_subnet_ids     = module.setup_vpc.private_subnets
-  image_name           = "IDEAS-FSL-image-2023-08-25"
+  image_name           = "IDEAS-FSL-AmazonLinux2-EFSMount-2023-08-29"
   stack_description    = "IDEAS stack"
   stack_display_name   = "IDEAS stack"
   stack_name           = "IDEAS-stack"
