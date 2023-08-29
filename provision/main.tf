@@ -117,6 +117,8 @@ module "database" {
 module "appstream" {
   source = "github.com/HealthBioscienceIDEAS/terraform-aws-IDEAS-appstream"
 
+  count = var.create_appstream ? 1 : 0
+
   vpc_id               = module.setup_vpc.vpc_id
   instance_type        = "stream.standard.medium"
   desired_instance_num = 1

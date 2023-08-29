@@ -90,3 +90,9 @@ variable "instance_os" {
     error_message = "'instance_os' must be one of ('rocky8', 'rocky9', 'rhel9'). ${var.instance_os} is not supported"
   }
 }
+
+# Create AppStream image?
+variable "create_appstream" {
+  type        = bool
+  description = "Whether to create an AppStream image"
+}
