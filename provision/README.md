@@ -124,6 +124,23 @@ To destroy the infrastructure, type:
 terraform destroy
 ```
 
+## AppStream
+
+As part of the setup, we provide an [AppStream 2.0](https://aws.amazon.com/appstream2/) instance to
+access the files stored on the EFS volume. This allows exploring the files used and generaged by
+XNAT and run external software on the data. By default, the [AppStream image](https://github.com/HealthBioscienceIDEAS/terraform-aws-IDEAS-appstream) has
+[**FSL**](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/) installed.
+
+The AppStream image is only created if the `create_appstream` variable is set to `true`. When
+running `terraform apply`, the user will be prompted to enter a value for this variable.
+Alternatively, you can use
+
+```bash
+terraform apply -var 'create_appstream=true'
+```
+
+to skip the prompt.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
