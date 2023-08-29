@@ -113,6 +113,23 @@ module "database" {
   webserver_sg_id   = module.web_server.webserver_sg_id
 }
 
+# Appstream
+module "appstream" {
+  source = "github.com/HealthBioscienceIDEAS/terraform-aws-IDEAS-appstream"
+
+  vpc_id               = module.setup_vpc.vpc_id
+  instance_type        = "stream.standard.medium"
+  desired_instance_num = 1
+  fleet_description    = "IDEAS fleet"
+  fleet_name           = "IDEAS-fleet"
+  fleet_display_name   = "IDEAS fleet"
+  fleet_subnet_ids     = module.setup_vpc.private_subnets
+  image_name           = "IDEAS-FSL-image-2023-08-25"
+  stack_description    = "IDEAS stack"
+  stack_display_name   = "IDEAS stack"
+  stack_name           = "IDEAS-stack"
+}
+
 # Copy public key to AWS
 resource "aws_key_pair" "key_pair" {
   key_name   = local.ssh_key_name
