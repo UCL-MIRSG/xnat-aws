@@ -102,7 +102,6 @@ module "efs" {
 }
 
 # Launch RDS instances for the database
-
 module "database" {
   source = "./modules/database"
 
