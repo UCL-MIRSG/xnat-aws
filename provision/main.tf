@@ -123,13 +123,13 @@ module "appstream" {
   count = var.create_appstream ? 1 : 0
 
   vpc_id               = module.setup_vpc.vpc_id
-  instance_type        = "stream.standard.medium"
-  desired_instance_num = 1
+  instance_type        = var.as2_instance_type
+  desired_instance_num = var.as2_desired_instance_num
   fleet_description    = "IDEAS fleet"
   fleet_name           = "IDEAS-fleet"
   fleet_display_name   = "IDEAS fleet"
   fleet_subnet_ids     = module.setup_vpc.private_subnets
-  image_name           = "IDEAS-FSL-AmazonLinux2-EFSMount-2023-08-30"
+  image_name           = var.as2_image_name
   stack_description    = "IDEAS stack"
   stack_display_name   = "IDEAS stack"
   stack_name           = "IDEAS-stack"
