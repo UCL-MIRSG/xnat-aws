@@ -177,6 +177,21 @@ resource "local_file" "ansible-hosts" {
   file_permission = "0644"
 }
 
+# Instance scheduler; automatically stop the EC2 and RDS instances every day at 6pm
+module "stop_scheduler" {
+  source                         = "diodonfrost/lambda-scheduler-stop-start/aws"
+  name                           = "ec2_stop"
+  cloudwatch_schedule_expression = var.schedule_expression
+  schedule_action                = "stop"
+  ec2_schedule                   = "true"
+  rds_schedule                   = "true"
+
+  scheduler_tag = {
+    key   = "scheduled"
+    value = "true"
+  }
+}
+
 locals {
   # AWS
   ssh_key_name             = "aws-rsa"
