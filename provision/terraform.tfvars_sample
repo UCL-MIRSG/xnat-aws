@@ -40,3 +40,6 @@ instance_os = "rocky9"
 as2_image_name           = "IDEAS-FSL-AmazonLinux2-EFSMount-2023-08-31"
 as2_instance_type        = "stream.standard.medium"
 as2_desired_instance_num = 1
+
+# Scheduler
+schedule_expression = "cron(0 0 18 * * *)"
