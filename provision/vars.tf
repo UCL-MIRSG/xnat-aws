@@ -90,3 +90,27 @@ variable "instance_os" {
     error_message = "'instance_os' must be one of ('rocky8', 'rocky9', 'rhel9'). ${var.instance_os} is not supported"
   }
 }
+
+# Create AppStream image?
+variable "create_appstream" {
+  type        = bool
+  description = "Whether to create an AppStream image"
+}
+
+variable "as2_instance_type" {
+  type        = string
+  description = "Instance type to use for the AppStream image"
+  default     = "stream.standard.medium"
+}
+
+variable "as2_desired_instance_num" {
+  type        = number
+  description = "Number of instances to use for the AppStream image"
+  default     = 1
+}
+
+variable "as2_image_name" {
+  type        = string
+  description = "Name of the AppStream image"
+  default     = "IDEAS-FSL-AmazonLinux2-EFSMount-2023-08-30"
+}

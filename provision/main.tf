@@ -95,10 +95,12 @@ module "web_server" {
 
 # Create EFS
 module "efs" {
-  source       = "./modules/efs"
-  vpc_id       = module.setup_vpc.vpc_id
-  subnet_id    = module.setup_vpc.public_subnets[0]
-  ingress_from = [module.web_server.webserver_sg_id, module.web_server.cserv_sg_id]
+  source    = "./modules/efs"
+  vpc_id    = module.setup_vpc.vpc_id
+  subnet_id = module.setup_vpc.public_subnets[0]
+
+  # Use concat as module.appstream.sg_id might be an empty list
+  ingress_from = concat([module.web_server.webserver_sg_id, module.web_server.cserv_sg_id], module.appstream[*].sg_id)
 }
 
 # Launch RDS instances for the database
@@ -111,6 +113,40 @@ module "database" {
   availability_zone = var.availability_zones[0]
   subnet_ids        = module.setup_vpc.private_subnets
   webserver_sg_id   = module.web_server.webserver_sg_id
+}
+
+# Appstream
+module "appstream" {
+  source = "github.com/HealthBioscienceIDEAS/terraform-aws-IDEAS-appstream"
+
+  # Use count to create the appstream only if required
+  # note that this causes module.appstream to be a list of length 1
+  count = var.create_appstream ? 1 : 0
+
+  vpc_id               = module.setup_vpc.vpc_id
+  instance_type        = var.as2_instance_type
+  desired_instance_num = var.as2_desired_instance_num
+  fleet_description    = "IDEAS fleet"
+  fleet_name           = "IDEAS-fleet"
+  fleet_display_name   = "IDEAS fleet"
+  fleet_subnet_ids     = module.setup_vpc.private_subnets
+  image_name           = var.as2_image_name
+  stack_description    = "IDEAS stack"
+  stack_display_name   = "IDEAS stack"
+  stack_name           = "IDEAS-stack"
+}
+
+# Security group rule to allow outgoing traffic from AppStream
+resource "aws_security_group_rule" "appstream_allow_all_outgoing" {
+  count = var.create_appstream ? 1 : 0
+
+  type              = "egress"
+  security_group_id = module.appstream[0].sg_id
+
+  from_port   = 0
+  to_port     = 0
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
 }
 
 # Copy public key to AWS
