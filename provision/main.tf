@@ -95,9 +95,10 @@ module "web_server" {
 
 # Create EFS
 module "efs" {
-  source       = "./modules/efs"
-  vpc_id       = module.setup_vpc.vpc_id
-  subnet_id    = module.setup_vpc.public_subnets[0]
+  source    = "./modules/efs"
+  vpc_id    = module.setup_vpc.vpc_id
+  subnet_id = module.setup_vpc.public_subnets[0]
+
   # Use concat as module.appstream.sg_id might be an empty list
   ingress_from = concat([module.web_server.webserver_sg_id, module.web_server.cserv_sg_id], module.appstream[*].sg_id)
 }
