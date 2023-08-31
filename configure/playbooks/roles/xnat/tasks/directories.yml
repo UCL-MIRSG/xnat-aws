@@ -5,7 +5,7 @@
     owner: "{{ xnat.owner }}"
     group: "{{ xnat.group }}"
     state: directory
-    mode: '777'
+    mode: 0700
   when: xnat_create_data_directory and EXTERNAL_STORAGE_DRIVE is defined
 
 - name: Ensure there is a symbolic link from {{ xnat_data_dir }} to external storage {{ xnat_web_server.storage_dir }}
@@ -21,7 +21,7 @@
     owner: "{{ xnat.owner }}"
     group: "{{ xnat.group }}"
     state: directory
-    mode: '777'
+    mode: 0755
   with_items:
     - "{{ xnat_root_dir }}"
     - "{{ xnat_archive_dir }}"
@@ -42,5 +42,5 @@
     state: directory
     owner: "{{ xnat.owner }}"
     group: "{{ xnat.group }}"
-    mode: '777'
+    mode: 0755
   notify: restart tomcat
