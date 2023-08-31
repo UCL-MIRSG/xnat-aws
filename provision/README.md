@@ -152,13 +152,14 @@ to skip the prompt.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.2.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.14.0 |
 | <a name="provider_local"></a> [local](#provider\_local) | 2.4.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_appstream"></a> [appstream](#module\_appstream) | github.com/HealthBioscienceIDEAS/terraform-aws-IDEAS-appstream | n/a |
 | <a name="module_database"></a> [database](#module\_database) | ./modules/database | n/a |
 | <a name="module_efs"></a> [efs](#module\_efs) | ./modules/efs | n/a |
 | <a name="module_get_ami"></a> [get\_ami](#module\_get\_ami) | ./modules/get_ami | n/a |
@@ -171,14 +172,19 @@ to skip the prompt.
 | Name | Type |
 |------|------|
 | [aws_key_pair.key_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
+| [aws_security_group_rule.appstream_allow_all_outgoing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [local_file.ansible-hosts](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_as2_desired_instance_num"></a> [as2\_desired\_instance\_num](#input\_as2\_desired\_instance\_num) | Number of instances to use for the AppStream image | `number` | `1` | no |
+| <a name="input_as2_image_name"></a> [as2\_image\_name](#input\_as2\_image\_name) | Name of the AppStream image | `string` | `"IDEAS-FSL-AmazonLinux2-EFSMount-2023-08-30"` | no |
+| <a name="input_as2_instance_type"></a> [as2\_instance\_type](#input\_as2\_instance\_type) | Instance type to use for the AppStream image | `string` | `"stream.standard.medium"` | no |
 | <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | AZs to use for deploying XNAT | `list(string)` | <pre>[<br>  "eu-west-2a",<br>  "eu-west-2b"<br>]</pre> | no |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to use for deploying XNAT | `string` | `"eu-west-2"` | no |
+| <a name="input_create_appstream"></a> [create\_appstream](#input\_create\_appstream) | Whether to create an AppStream image | `bool` | n/a | yes |
 | <a name="input_ec2_instance_types"></a> [ec2\_instance\_types](#input\_ec2\_instance\_types) | Instance type to use for each server | `map(any)` | <pre>{<br>  "xnat_cserv": "m4.xlarge",<br>  "xnat_db": "db.t3.large",<br>  "xnat_web": "t3.large"<br>}</pre> | no |
 | <a name="input_extend_http_cidr"></a> [extend\_http\_cidr](#input\_extend\_http\_cidr) | The CIDR blocks to grant HTTP access to the web server, in addition to your own IP address | `list(string)` | `[]` | no |
 | <a name="input_extend_https_cidr"></a> [extend\_https\_cidr](#input\_extend\_https\_cidr) | The CIDR blocks to grant HTTSP access to the web server, in addition to your own IP address | `list(string)` | `[]` | no |
