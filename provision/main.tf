@@ -91,6 +91,7 @@ module "web_server" {
   ssh_cidr          = concat([module.get_my_ip.my_public_cidr], var.extend_ssh_cidr)
   http_cidr         = concat([module.get_my_ip.my_public_cidr], var.extend_http_cidr)
   https_cidr        = concat([module.get_my_ip.my_public_cidr], var.extend_https_cidr)
+  scheduled         = true
 }
 
 # Create EFS
@@ -113,6 +114,7 @@ module "database" {
   availability_zone = var.availability_zones[0]
   subnet_ids        = module.setup_vpc.private_subnets
   webserver_sg_id   = module.web_server.webserver_sg_id
+  scheduled         = true
 }
 
 # Appstream

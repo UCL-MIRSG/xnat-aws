@@ -4,6 +4,7 @@ resource "aws_db_subnet_group" "xnat-db" {
 
   tags = {
     Name = var.name
+    scheduled = var.scheduled
   }
 }
 

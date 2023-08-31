@@ -27,7 +27,8 @@ resource "aws_instance" "servers" {
   }
 
   tags = {
-    Name = var.names[each.key]
+    Name      = var.names[each.key]
+    scheduled = var.scheduled
   }
 }
 
