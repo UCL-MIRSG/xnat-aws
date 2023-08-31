@@ -165,6 +165,7 @@ to skip the prompt.
 | <a name="module_get_ami"></a> [get\_ami](#module\_get\_ami) | ./modules/get_ami | n/a |
 | <a name="module_get_my_ip"></a> [get\_my\_ip](#module\_get\_my\_ip) | ./modules/get_my_ip | n/a |
 | <a name="module_setup_vpc"></a> [setup\_vpc](#module\_setup\_vpc) | terraform-aws-modules/vpc/aws | n/a |
+| <a name="module_stop_scheduler"></a> [stop\_scheduler](#module\_stop\_scheduler) | diodonfrost/lambda-scheduler-stop-start/aws | n/a |
 | <a name="module_web_server"></a> [web\_server](#module\_web\_server) | ./modules/web-server | n/a |
 
 ## Resources
@@ -192,6 +193,7 @@ to skip the prompt.
 | <a name="input_instance_os"></a> [instance\_os](#input\_instance\_os) | OS to use for the instance - will determine the AMI to use | `string` | `"rocky9"` | no |
 | <a name="input_instance_private_ips"></a> [instance\_private\_ips](#input\_instance\_private\_ips) | Private IP addresses for each instance | `map(any)` | <pre>{<br>  "xnat_cserv": "192.168.56.14",<br>  "xnat_web": "192.168.56.10"<br>}</pre> | no |
 | <a name="input_root_block_device_size"></a> [root\_block\_device\_size](#input\_root\_block\_device\_size) | Storage space on the root block device (GB) | `number` | `30` | no |
+| <a name="input_schedule_expression"></a> [schedule\_expression](#input\_schedule\_expression) | cron expression to determine when the EC2 and RDS instances are scheduled to stop. | `string` | `"cron(0 0 18 * * *)"` | no |
 | <a name="input_smtp_private_ip"></a> [smtp\_private\_ip](#input\_smtp\_private\_ip) | Private IP address to use to the SMTP mail server | `string` | `"192.168.56.101"` | no |
 | <a name="input_subnet_cidr_blocks"></a> [subnet\_cidr\_blocks](#input\_subnet\_cidr\_blocks) | CIDR block for the VPC and subnets | `map(any)` | <pre>{<br>  "private": [<br>    "192.168.100.0/24",<br>    "192.168.101.0/24"<br>  ],<br>  "public": [<br>    "192.168.56.0/24"<br>  ]<br>}</pre> | no |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | CIDR block for the VPC | `string` | `"192.168.0.0/16"` | no |
