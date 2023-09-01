@@ -6,12 +6,10 @@
     mode: "0755"
 
 - name: Download the data if we do not have it or if it has changed
-  amazon.aws.s3_object:
-    bucket: "{{ xnat_project_data.s3_bucket }}"
-    object: "{{ xnat_project_data.s3_object }}"
-    dest: "{{ xnat_project_data.file }}"
-    mode: get
-    overwrite: different
+  ansible.builtin.get_url:
+    url: "{{ xnat_project_data.url }}"
+    dest: "{{ xnat_project_data.zip_file }}"
+    mode: "0644"
   register: data_downloaded
 
 - name: Check if project data directory exists
