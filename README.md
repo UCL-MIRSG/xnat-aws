@@ -27,65 +27,63 @@ Once you have installed and set up the requirements, there are three steps to de
 
 1. [Generate credentials](credentials/README.md). From the `xnat-aws/credentials` directory, type:
 
-```bash
-terraform init
-terraform apply
-```
+    ```bash
+    terraform init
+    terraform apply
+    ```
 
-This will will create and SSH key and various passwords that will be used for accessing the AWS
-servers and configuring XNAT.
+    This will will create and SSH key and various passwords that will be used for accessing the AWS
+    servers and configuring XNAT.
 
 2. [Set the necessary Terraform variables](provision/README.md#usage). From the `xnat-aws/provision`
    directory:
 
-   First copy the `terraform.tfvars.example` file to `terraform.tfvars`:
+    First copy the `terraform.tfvars.example` file to `terraform.tfvars`:
 
-   ```bash
-   cp terraform.tfvars.example terraform.tfvars
-   ```
+    ```bash
+    cp terraform.tfvars.example terraform.tfvars
+    ```
 
-   Then edit the `terraform.tfvars` file to change any variables as necessary. In particular, you
-   may
-   want to change the [EC2 instance types](provision/README.md#instance-types).
+    Then edit the `terraform.tfvars` file to change any variables as necessary. In particular, you
+    may want to change the [EC2 instance types](provision/README.md#instance-types).
 
 3. [Create the AWS instances](provision/README.md#usage). From the `xnat-aws/provision` directory, type:
 
-```bash
-terraform init
-terraform apply
-```
+    ```bash
+    terraform init
+    terraform apply
+    ```
 
-This will create the infrastructure on AWS.
+    This will create the infrastructure on AWS.
 
-> **Note**: after the `terraform apply` steps have completed, you may need to wait 1-2 minutes
-> before running the configuration. This is to allow time for the AWS instances to finish starting up.
+    > **Note**: after the `terraform apply` steps have completed, you may need to wait 1-2 minutes
+    > before running the configuration. This is to allow time for the AWS instances to finish starting up.
 
 4. [Install XNAT](configure/README.md). From the `xnat-aws/configure` directory,  first type:
 
-```bash
-python -m pip install -r requirements.txt
-```
+    ```bash
+    python -m pip install -r requirements.txt
+    ```
 
-This will install Ansible and other Python dependencies. Then, from the same directory, type:
+    This will install Ansible and other Python dependencies. Then, from the same directory, type:
 
+    ```bash
+    ./install_xnat.sh
+    ```
 
-```bash
-./install_xnat.sh
-```
+    This will run several Ansible commands to install and configure XNAT.
 
-This will run several Ansible commands to install and configure XNAT.
-
-See [`Logging into the web server`](configure/README.md#logging-in-to-the-web-server) for notes on how to log into XNAT once it has been deployed.
+    See [`Logging into the web server`](configure/README.md#logging-in-to-the-web-server) for notes on how to log into XNAT once it has been deployed.
 
 5. \[Optional\] [Create a sample project and upload data](configure/README.md#create-a-sample-project-and-upload-data). From the `xnat-aws/configure` directory, type:
 
-```bash
-./setup_xnat_project.sh
-```
+    ```bash
+    ./setup_xnat_project.sh
+    ```
 
-This will create a project on your XNAT server and upload data to it.
+    This will create a project on your XNAT server and upload data to it.
 
-The sample data can be used for running a [workshop](https://healthbioscienceideas.github.io/MedICSS-Project-Repro-Pipelines/) on implementing reproducible medical image analysis pipelines with XNAT.
+    The sample data can be used for running a [workshop](https://healthbioscienceideas.github.io/MedICSS-Project-Repro-Pipelines/) on implementing reproducible medical image analysis pipelines with XNAT.
 
 ## Important!
 
