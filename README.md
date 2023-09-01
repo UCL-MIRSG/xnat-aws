@@ -32,9 +32,23 @@ terraform init
 terraform apply
 ```
 
-This will will create and SSH key and various passwords that will be used for accessing the AWS servers and configuring XNAT.
+This will will create and SSH key and various passwords that will be used for accessing the AWS
+servers and configuring XNAT.
 
-2. [Create the AWS instances](provision/README.md). From the `xnat-aws/provision` directory, type:
+2. [Set the necessary Terraform variables](provision/README.md#usage). From the `xnat-aws/provision`
+   directory:
+
+   First copy the `terraform.tfvars.example` file to `terraform.tfvars`:
+
+   ```bash
+   cp terraform.tfvars.example terraform.tfvars
+   ```
+
+   Then edit the `terraform.tfvars` file to change any variables as necessary. In particular, you
+   may
+   want to change the [EC2 instance types](provision/README.md#instance-types).
+
+3. [Create the AWS instances](provision/README.md#usage). From the `xnat-aws/provision` directory, type:
 
 ```bash
 terraform init
@@ -46,7 +60,7 @@ This will create the infrastructure on AWS.
 > **Note**: after the `terraform apply` steps have completed, you may need to wait 1-2 minutes
 > before running the configuration. This is to allow time for the AWS instances to finish starting up.
 
-3. [Install XNAT](configure/README.md). From the `xnat-aws/configure` directory,  first type:
+4. [Install XNAT](configure/README.md). From the `xnat-aws/configure` directory,  first type:
 
 ```bash
 python -m pip install -r requirements.txt
@@ -63,7 +77,7 @@ This will run several Ansible commands to install and configure XNAT.
 
 See [`Logging into the web server`](configure/README.md#logging-in-to-the-web-server) for notes on how to log into XNAT once it has been deployed.
 
-4. \[Optional\] [Create a sample project and upload data](configure/README.md#create-a-sample-project-and-upload-data). From the `xnat-aws/configure` directory, type:
+5. \[Optional\] [Create a sample project and upload data](configure/README.md#create-a-sample-project-and-upload-data). From the `xnat-aws/configure` directory, type:
 
 ```bash
 ./setup_xnat_project.sh
@@ -112,4 +126,3 @@ See [`Testing with multiple users`](configure/README.md#testing-with-multiple-us
 ## Acknowledgement
 
 This work was funded by [Health and Bioscience IDEAS](https://healthbioscienceideas.github.io/), a project supported by the UKRI Innovation Scholars: Data Science Training in Health and Bioscience (MR/V03863X/1).
-
