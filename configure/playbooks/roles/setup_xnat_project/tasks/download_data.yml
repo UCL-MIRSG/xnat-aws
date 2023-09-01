@@ -32,3 +32,4 @@
         src: "{{ xnat_project_data.zip_file }}"
         dest: "{{ xnat_project_data.unzip_target }}"
         mode: "0644"
+        remote_src: true
