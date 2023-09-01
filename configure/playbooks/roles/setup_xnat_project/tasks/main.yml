@@ -8,10 +8,14 @@
 - name: "Create project owner if they do not already exist"
   ansible.builtin.include_tasks: create_owner.yml
 
-- name: Download data and create credentials file for upload
+- name: "Download data and create credentials file for upload"
   block:
     - name: "Download project data if we do not have a local copy"
       ansible.builtin.include_tasks: download_data.yml
 
     - name: "Create credentials file for use by XNATPy"
       ansible.builtin.include_tasks: xnatpy_credentials.yml
+
+- name: "Upload data to XNAT"
+  ansible.builtin.include_tasks: upload_data.yml
+  tags: test

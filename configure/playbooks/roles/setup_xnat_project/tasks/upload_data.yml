@@ -1,0 +1,11 @@
+- name: "Install necessary Python dependencies on host"
+  ansible.builtin.pip:
+    requirements: requirements.txt
+
+- name: "Run upload_data.py script"
+  ansible.builtin.script:
+    cmd: upload_data.py --metadata {{ xnat_project_data.sessions_metadata }} \
+      --data {{ xnat_project_data.unzip_target }} --inventory hosts.yml --host xnat_web \
+      --netrc {{ xnat_project_data.credentials_file }}
+  args:
+    executable: python3
