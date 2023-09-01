@@ -1,7 +1,7 @@
 ---
 - name: Ensure the download directory  exists
   ansible.builtin.file:
-    path: "{{ xnat_project_data.file | dirname }}"
+    path: "{{ xnat_download_dir }}"
     state: directory
     mode: "0755"
 
@@ -14,7 +14,7 @@
 
 - name: Check if project data directory exists
   ansible.builtin.stat:
-    path: "{{ xnat_project_data.directory }}"
+    path: "{{ xnat_project_data.unzip_target }}"
   register: xnat_project_data_directory
 
 - name: Unzip the data if necessary
@@ -23,12 +23,12 @@
 
     - name: Ensure the data directory exists
       ansible.builtin.file:
-        path: "{{ xnat_project_data.directory }}"
+        path: "{{ xnat_project_data.unzip_target }}"
         state: directory
         mode: "0755"
 
     - name: Unarchive the project data
       ansible.builtin.unarchive:
-        src: "{{ xnat_project_data.file }}"
-        dest: "{{ xnat_project_data.directory }}"
+        src: "{{ xnat_project_data.zip_file }}"
+        dest: "{{ xnat_project_data.unzip_target }}"
         mode: "0644"

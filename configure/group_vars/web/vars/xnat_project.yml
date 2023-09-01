@@ -17,9 +17,9 @@ xnat_project_owner:
   lastName: "Xavier"
   email: "c.xavier@{{ hostvars['xnat_web']['ansible_host'] }}"
 
+xnat_download_dir: "ideas-workshop-datasets"
 xnat_project_data:
-  s3_bucket: "ideas-workshop-datasets"
-  s3_object: "xnat-ibash.zip"
-  file: "../../data/ibash.zip"  # Where to store the zip file loclaly
-  directory: "../../data/ibash"  # Where the zip file should be unpacked to
-  credentials_file: "../../data/.netrc"  # Where to store credentials for XNATPy
+  url: "https://ideas-workshop-datasets.s3.amazonaws.com/xnat-ibash.zip"
+  zip_file: "{{ xnat_download_dir }}/ibash.zip"
+  unzip_target: "{{ xnat_download_dir }}/ibash"
+  credentials_file: "{{ xnat_download_dir }}/.netrc"
