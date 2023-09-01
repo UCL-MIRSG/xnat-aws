@@ -3,16 +3,19 @@
     name:
       - ansible
       - boto3
-      - tqdm
       - typer[all]>=0.9
       - xnat
-  tags: test
 
 - name: "Run upload_data.py script"
   ansible.builtin.script:
     cmd: upload_data.py --metadata {{ xnat_project_data.sessions_metadata }}
-      --data {{ xnat_project_data.unzip_target }} --inventory hosts.yml --host xnat_web
-      --netrc {{ xnat_project_data.credentials_file }}
+      --data {{ xnat_project_data.unzip_target }}
+      --user {{ xnat_project_owner.username }}
+      --password {{ xnat_project_owner.password }}
   args:
     executable: python3
-  tags: test
+  register: upload_data_result
+
+- name: "Print upload_data.py script output"
+  ansible.builtin.debug:
+    msg: "{{ upload_data_result.stdout_lines }}
