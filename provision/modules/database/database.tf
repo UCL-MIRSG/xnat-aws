@@ -19,8 +19,6 @@ resource "aws_db_instance" "db" {
   apply_immediately     = true
 
   username = local.db_username
-  # TODO: should we use Secrets Manager to store the password?
-  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#managed-master-passwords-via-secrets-manager-default-kms-key
   password = random_password.db_credentials.result
 
   availability_zone      = var.availability_zone
