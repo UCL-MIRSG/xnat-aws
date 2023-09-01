@@ -12,16 +12,18 @@ The Terraform scripts will create the following infrastructure on AWS:
 - an EFS instance used to store data uploaded to xnat; this volume is mounted on both the web server and Container Service server
 - security groups to manage access to the servers
 
-<details><summary>Notes on the infrastructure that is created</summary>
+## Instance types
 
-### Instance types
+We have found that we need to use a `db.t3.medium` instance the database, a `m4.xlarge` instance for
+the container service, and a `t3.large` instance for the web server, to prevent the site from
+crashing when uploading data or running containers.
 
-The smallest instance types (`t2.nano`) do not provide enough RAM for running XNAT. We have found
-that we need to use a `db.t3.medium` instance the database, a `m4.xlarge` instance for the container
-service, and a `t3.large` instance for the web server, to prevent the site from crashing when
-uploading data or running containers.
+Note however that this is assuming only a single user is running analyses. If you have multiple
+users, you may need to increase the instance type for the container service, as this
+is where the plugin containers are run. In particular, the *FastSurfer* pipeline requires a lot of
+memory and may fail if the instance type is too small.
 
-You can change the instance type used by setting `ec2_instance_type` in your `xnat-aws/provision/terraform.tfvars` file, e.g.:
+You can change the instance type used by changing the `ec2_instance_types` variable in your `xnat-aws/provision/terraform.tfvars` file, e.g.:
 
 ```terraform
 ec2_instance_types = {
@@ -31,14 +33,21 @@ ec2_instance_types = {
 }
 ```
 
-You can also increase the amount of RAM reserved for Java (and thus XNAT) in the Ansible configuration. In the file `xnat-aws/configure/group_vars/web/vars/tomcat.yml` you would need to modify the `java.mem` variable, e.g.:
+Alternatively, you could use a [GPU-enabled instance](https://aws.amazon.com/ec2/instance-types/g4/)
+for the container service and run the GPU version of the FastSurfer pipeline (see the
+[`run_fastsurfer_gpu`](../configure/playbooks/roles/container_service_client/files/recon-all-gpu-command.json)
+command). However, this will **significantly drive up the costs**.
+
+You may also have to increase the amount of RAM reserved for Java (and thus XNAT) in the Ansible configuration. In the file `xnat-aws/configure/group_vars/web/vars/tomcat.yml` you would need to modify the `java.mem` variable, e.g.:
 
 ```yaml
 java_mem:
   Xms: "512M"
-  Xmx: "6G"
+  Xmx: "16G"
   MetaspaceSize: "300M"
 ```
+
+<details><summary>Notes on the infrastructure that is created</summary>
 
 ### Subnets and availability zones
 
