@@ -23,3 +23,4 @@ xnat_project_data:
   zip_file: "{{ xnat_download_dir }}/ibash.zip"
   unzip_target: "{{ xnat_download_dir }}/ibash"
   credentials_file: "{{ xnat_download_dir }}/.netrc"
+  sessions_metadata: "{{ xnat_download_dir }}/ibash/ibash-sessions.csv"
