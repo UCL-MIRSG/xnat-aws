@@ -1,11 +1,11 @@
 {
-    "name": "run_fastsurfer_defaced",
+    "name": "run_fastsurfer_defaced_gpu",
     "label": "FastSurfer",
-    "description": "Runs the entire Fastsurfer pipeline on defaced data",
+    "description": "Runs the entire Fastsurfer pipeline on defaced data on a GPU-enabled machine",
     "version": "1.0",
     "schema-version": "1.0",
     "info-url": "https://github.com/Deep-MI/FastSurfer",
-    "image": "healthbioscienceideas/fastsurfer:cpu-xnat",
+    "image": "healthbioscienceideas/fastsurfer:gpu-xnat",
     "type": "docker",
     "index": "https://index.docker.io/v1/",
     "working-directory": "",
@@ -24,7 +24,8 @@
       }
     ],
     "environment-variables": {
-        "FS_LICENSE": "/fs60/license.txt"
+      "FS_LICENSE": "/fs60/license.txt",
+      "NVIDIA_VISIBLE_DEVICES": "all"
     },
     "ports": {},
     "inputs": [
@@ -92,9 +93,9 @@
     ],
     "xnat": [
       {
-        "name": "DEFACED DATA - Run FastSurfer pipeline on a defaced conformed T1 MGZ - CPU",
+        "name": "DEFACED DATA - Run FastSurfer pipeline on a defaced conformed T1 MGZ - GPU",
         "label": null,
-        "description": "DEFACED DATA - Run FastSurfer pipeline on a defaced conformed T1 MGZ - CPU",
+        "description": "DEFACED DATA - Run FastSurfer pipeline on a defaced conformed T1 MGZ - GPU",
         "contexts": [
           "xnat:mrSessionData"
         ],
@@ -102,7 +103,7 @@
           {
             "name": "session",
             "label": null,
-            "description": "Session running recon-all",
+            "description": "Session running recon-all-gpu",
             "type": "Session",
             "matcher": null,
             "default-value": null,

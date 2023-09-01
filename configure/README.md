@@ -76,3 +76,18 @@ For more information, see [here](https://wiki.xnat.org/container-service/enablin
 To enable the commands for a specific project, go to the **Project Settings** and go to the
 **Configure Commands** section. Then, toggle the **Enabled** button for the listed containers.
 For more information, see [here](https://wiki.xnat.org/container-service/enable-a-command-in-your-project-122978909.html).
+
+## Testing with multiple users
+
+The `test-multiple_xnat_users.yml` playbook can be used to create multiple users on the XNAT server. To run the playbook, go to the `xnat-aws/configure` directory and run the following command:
+
+```bash
+./run_tests.sh <number_of_users>
+```
+
+This will create `<number_of_users>` users on the XNAT server. The users will be named `testuser01`,
+`testuser02`, etc. and will have the passwords `carlos160201`, `carlos160202`, etc., respectivley.
+
+For each user, a separate project will be created and data will be uploaded to it. The data upload
+occurs **in parallel**, to simulate multiple users uploading data at the same time. This can be used
+to test whether the web server can handle the traffic.

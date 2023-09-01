@@ -26,7 +26,7 @@ variable "availability_zone" {
 }
 
 variable "subnet_ids" {
-  type = list(string)
+  type        = list(string)
   description = "List of subnet ids to deploy RDS instances in"
 }
 

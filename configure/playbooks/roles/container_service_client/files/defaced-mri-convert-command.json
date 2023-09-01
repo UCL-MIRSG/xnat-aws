@@ -6,7 +6,7 @@
     "schema-version": "1.0",
     "type": "docker",
     "info-url": "https://github.com/Deep-MI/FastSurfer",
-    "image": "healthbioscienceideas/fastsurfer:gpu",
+    "image": "healthbioscienceideas/fastsurfer:cpu-xnat",
     "index": "https://index.docker.io/v1/",
     "hash": "",
     "working-directory": "",
@@ -100,4 +100,3 @@
     }
 	    ]
 }
-

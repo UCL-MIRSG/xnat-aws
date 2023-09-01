@@ -1,0 +1,59 @@
+---
+name: 'Terraform'
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+
+    # Use the Bash shell regardless whether the GitHub Actions
+    # runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Install the latest version of Terraform CLI
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.3.9
+
+
+      # Generate credentials for Terraform
+      - name: Terraform Credentials
+        run: |
+          terraform init
+          terraform apply -auto-approve
+        working-directory: ./credentials
+
+      # Initialize a new or existing Terraform working directory by
+      # creating initial files, loading any remote state, downloading
+      # modules, etc.
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./provision
+
+      # Checks that all Terraform configuration files adhere to a
+      # canonical format
+      - name: Terraform Format
+        run: terraform fmt -check -recursive
+        working-directory: ./provision
+
+      # Checks that Terraform configuration is valid
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./provision

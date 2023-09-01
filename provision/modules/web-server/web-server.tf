@@ -95,8 +95,8 @@ resource "aws_security_group_rule" "allow_container_incoming" {
   type              = "ingress"
   security_group_id = aws_security_group.sg["container"].id
 
-  from_port   = local.container_port
-  to_port     = local.container_port
-  protocol    = local.tcp_protocol
+  from_port                = local.container_port
+  to_port                  = local.container_port
+  protocol                 = local.tcp_protocol
   source_security_group_id = aws_security_group.sg["main"].id # only allow connection from web server
 }

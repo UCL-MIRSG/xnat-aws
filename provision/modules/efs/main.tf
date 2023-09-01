@@ -1,7 +1,7 @@
 # Create an EFS and mount to public subnet
 locals {
-    # unique name to ensure idempotent file system creation
-    name = "xnat-${var.vpc_id}-${var.subnet_id}"
+  # unique name to ensure idempotent file system creation
+  name = "xnat-${var.vpc_id}-${var.subnet_id}"
 }
 
 # Security group to control access
@@ -29,7 +29,7 @@ resource "aws_security_group" "efs_security_group" {
 resource "aws_efs_file_system" "efs" {
 
   creation_token = local.name
-  encrypted = true
+  encrypted      = true
 
   lifecycle_policy {
     transition_to_ia = "AFTER_30_DAYS"
@@ -56,7 +56,7 @@ resource "aws_efs_mount_target" "mount" {
 # Store the hostname
 output "hostname" {
   description = "DNS hostnames of the EFS file system"
-  value = aws_efs_file_system.efs.dns_name
+  value       = aws_efs_file_system.efs.dns_name
 }
 
 

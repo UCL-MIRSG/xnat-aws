@@ -91,7 +91,7 @@ def _upload_data(
         subject = sessions[session]['subject']
         n_scans = sessions[session]['n_scans']
 
-        if session in connection.experiments:
+        if session in connection.projects[project].experiments:
             print(f'session {session} of subject {subject} ({n_scans} scans) already exists, skipping')
             continue
 

@@ -6,7 +6,7 @@
     "schema-version": "1.0",
     "type": "docker",
     "info-url": "https://github.com/Deep-MI/FastSurfer",
-    "image": "healthbioscienceideas/fastsurfer:gpu",
+    "image": "healthbioscienceideas/fastsurfer:cpu-xnat",
     "index": "https://index.docker.io/v1/",
     "hash": "",
     "working-directory": "",
@@ -16,7 +16,7 @@
     "limit-cpu": "1.5",
     "override-entrypoint": true,
     "environment-variables": {
-        "FS_LICENSE":"/fs60/license.txt"
+        "FS_LICENSE": "/fs60/license.txt"
     },
     "mounts": [
         {
@@ -100,4 +100,3 @@
     }
 	    ]
 }
-

@@ -1,6 +1,13 @@
 ---
 # Set up the Container Service on the hosts
 # The client configuration is done in `install_xnat.yml`
+- name: Wait until instance is running
+  hosts: cserv_hosts
+  gather_facts: false
+
+  roles:
+    - { role: wait_until_running }
+
 - name: Provision container service host
   hosts: cserv_hosts
   become: true
