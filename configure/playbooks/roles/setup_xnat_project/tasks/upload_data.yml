@@ -18,4 +18,4 @@
 
 - name: "Print upload_data.py script output"
   ansible.builtin.debug:
-    msg: "{{ upload_data_result.stdout_lines }}
+    msg: "{{ upload_data_result.stdout_lines }}"
