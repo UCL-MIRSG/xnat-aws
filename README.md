@@ -97,13 +97,20 @@ terraform destroy
 
 ## AWS cost estimate
 
-[It is estimated](provision/aws-cost-estimate.pdf) the AWS resources will cost approximately $90 USD per month.
+[It is estimated](provision/aws-cost-estimate.pdf) the AWS resources will cost approximately **$270
+USD per month** (assuming the workshop is run for a whole month) or about **$68 USD per week**.
 
-This is assuming usage of 50 hours per week (10 hours per day times 5 days per week) with the following resources:
-  - web server: t3.large
-  - Container Service server: m4.xlarge
-  - database server: db.t3.medium
-  - up to 20 GB EFS storage
+This is assuming usage of 50 hours per week (10 hours per day times 5 days per week) with the
+following resources:
+
+- web server: t3.large
+- Container Service server: m4.xlarge
+- database server: db.t3.medium
+- up to 20 GB EFS storage
+- AppStream instances for up to 10 users
+
+The largest cost here are the AppStream instances, which cost about **$124 USD per month**. Without
+using AppStream, the cost is reduced to about **$146 USD per month** or about **$37 USD per week**.
 
 Note, it is recommended that you [set a monthly budget](https://aws.amazon.com/aws-cost-management/aws-budgets/) to avoid unexpected large bills.
 
