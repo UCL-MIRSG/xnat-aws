@@ -1,4 +1,6 @@
 ---
+# FIXME: this playbook needs to be updated after the changes to the `setup_xnat_project` role
+# to run the data upload directly on the web-server
 - name: "Download project data if we do not have a local copy"
   delegate_to: localhost
   block:

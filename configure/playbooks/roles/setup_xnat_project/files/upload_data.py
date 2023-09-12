@@ -3,37 +3,7 @@ import pathlib
 from typing_extensions import Annotated
 
 import typer
-from tqdm.rich import tqdm
 import xnat
-
-from ansible.inventory.manager import InventoryManager
-from ansible.parsing.dataloader import DataLoader
-from rich import print
-
-
-def _server_hostname(
-    inventory: pathlib.Path,
-    host: str,
-) -> str:
-    """Get the Ansible hostname for a server from an inventory
-
-    Args:
-        inventory (pathlib.Path): Path to Ansible inventory
-        host (str): Name of host for which to get the hostname
-    
-    Returns:
-        str: hostname of the host
-    """
-
-    data_loader = DataLoader()
-    inventory = InventoryManager(
-        loader=data_loader,
-        sources=[inventory.as_posix()],
-    )
-    hostname = inventory.get_host(host).get_vars()["ansible_host"]
-
-    return hostname
-
 
 def _load_session_metadata(
     metadata_file: pathlib.Path,
@@ -85,7 +55,7 @@ def _upload_data(
             'CLARK KENT'.
     """
 
-    for session in tqdm(sessions):
+    for session in sessions:
 
         project = sessions[session]['project']
         subject = sessions[session]['subject']
@@ -114,19 +84,12 @@ metadata_help = (
     "that is produced by XNAT when downloading session metadata."
 )
 data_help = "Path to the directory containing the data to upload."
-inventory_help = "Path to Ansible inventory"
-host_help = "Name of host for which to get the hostname"
-netrc_help = (
-    "The credentials file to use for connecting to the server. Must be in the form "
-    "expected by XNATPy."
-)
 
 def upload_data(
     metadata_file: Annotated[str, typer.Option("--metadata", "-m", help=metadata_help)],
     data_directory: Annotated[str, typer.Option("--data", "-d", help=data_help)],
-    inventory: Annotated[str, typer.Option("--inventory", "-i", help=inventory_help)],
-    host: Annotated[str, typer.Option("--host", "-h", help=host_help)],
-    netrc_file: Annotated[str, typer.Option("--netrc", "-n", help=netrc_help)],
+    user: Annotated[str, typer.Option("--user", "-u", help="XNAT username")],
+    password: Annotated[str, typer.Option("--password", "-p", help="XNAT password")],
 ) -> None:
     """Upload a set of XNAT Sessions to a project
 
@@ -141,19 +104,13 @@ def upload_data(
     # Get full path to each file
     metadata_file = pathlib.Path(metadata_file).resolve()
     data_directory =pathlib.Path(data_directory).resolve()
-    inventory = pathlib.Path(inventory).resolve()
-    netrc_file = pathlib.Path(netrc_file).resolve()
 
-    # Determine the server hostname
-    server = _server_hostname(
-        inventory=inventory,
-        host=host,
-    )
+    server = "localhost:8080"
 
     # Connect to the server
     connection = xnat.connect(
         server=f"http://{server}",
-        netrc_file=netrc_file,
+        user=user, password=password,
         verify=False,
     )
 
