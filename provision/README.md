@@ -35,10 +35,10 @@ ec2_instance_types = {
 
 Alternatively, you could use a [GPU-enabled instance](https://aws.amazon.com/ec2/instance-types/g4/)
 for the container service and run the GPU version of the FastSurfer pipeline (see the
-[`run_fastsurfer_gpu`](../configure/playbooks/roles/container_service_client/files/recon-all-gpu-command.json)
+[`run_fastsurfer_gpu`](../configure/playbooks/roles/container_service_images/files/recon-all-gpu-command.json)
 command). However, this will **significantly drive up the costs**.
 
-You may also have to increase the amount of RAM reserved for Java (and thus XNAT) in the Ansible configuration. In the file `xnat-aws/configure/group_vars/web/vars/tomcat.yml` you would need to modify the `java.mem` variable, e.g.:
+You may also have to increase the amount of RAM reserved for Java (and thus XNAT) in the Ansible configuration. In the file `xnat-aws/configure/group_vars/xnat.yml` you would need to modify the `java.mem` variable, e.g.:
 
 ```yaml
 java_mem:

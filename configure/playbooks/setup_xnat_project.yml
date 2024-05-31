@@ -1,7 +1,7 @@
 ---
 - name: Set up IBASH project
-  hosts: web
+  hosts: xnat
   become: true
   gather_facts: true
   roles:
-    - { role: setup_xnat_project }
+    - role: setup_xnat_project

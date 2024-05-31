@@ -1,10 +1,10 @@
 ---
 - name: Create multiple XNAT users with their own projects
-  hosts: web
+  hosts: xnat
   become: false
   gather_facts: true
   vars:
     n_users: 4
 
   roles:
-    - { role: test-multiple_xnat_users }
+    - role: test-multiple_xnat_users

@@ -1,6 +1,6 @@
 ---
 - name: Stop and restart tomcat
-  hosts: web
+  hosts: xnat
   become: true
   become_user: root
   become_method: sudo
@@ -13,7 +13,7 @@
         state: stopped
 
   roles:
-    - { role: tomcat }
+    - role: tomcat
 
   post_tasks:
     - name: restart tomcat
