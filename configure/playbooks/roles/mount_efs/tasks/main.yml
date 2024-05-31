@@ -6,14 +6,14 @@
 
 - name: Ensure mount directory exists
   ansible.builtin.file:
-    path: "{{ efs_mount.directory }}"
+    path: "{{ mount_efs_directory }}"
     state: directory
     mode: "0755"
 
 - name: Mount the volume
   ansible.posix.mount:
-    src: "{{ efs_mount.src }}"
-    name: "{{ efs_mount.directory }}"
-    fstype: "{{ efs_mount.fstype }}"
-    opts: "{{ efs_mount.opts }}"
-    state: "{{ efs_mount.state }}"
+    src: "{{ mount_efs_src }}"
+    name: "{{ mount_efs_directory }}"
+    fstype: "{{ mount_efs_fstype }}"
+    opts: "{{ mount_efs_opts }}"
+    state: "{{ mount_efs_state }}"

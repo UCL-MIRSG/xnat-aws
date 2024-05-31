@@ -15,6 +15,7 @@
 
   roles:
     - { role: provision }
+    - role: mount_efs
     - { role: mirsg.install_python }
     - { role: java }
     - { role: tomcat }
