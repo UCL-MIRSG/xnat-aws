@@ -12,7 +12,7 @@
     - role: mirsg.infrastructure.install_java
     - role: mirsg.infrastructure.tomcat
     - role: mirsg.infrastructure.nginx
-    - role: xnat
+    - role: mirsg.infrastructure.xnat
 
 - name: Setup Container Service on hosts
   hosts: container_service_host

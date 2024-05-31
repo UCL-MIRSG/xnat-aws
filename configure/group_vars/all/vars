@@ -4,7 +4,7 @@ xnat_root_dir: "{{ xnat_data_dir }}/xnat"
 xnat_home_dir: "{{ xnat_root_dir }}/home"
 
 xnat_common_config:
-  admin_email: xnatadmin@{{ hostvars['xnat_web']['hostname'] }}
+  admin_email: xnatadmin@{{ hostvars['xnat_web']['ansible_host'] }}
   restrictUserListAccessToAdmins: true
   uiAllowNonAdminProjectCreation: false
   allowNonAdminsToClaimUnassignedSessions: true
@@ -39,6 +39,7 @@ selinux_enabled: true
 
 # XNAT supports PostgreSQL 11-14
 postgresql_version: 14
+postgresql_use_ssl: false
 
 java_keystore:
   keystore_pass: "{{ vault_keystore_password }}"
