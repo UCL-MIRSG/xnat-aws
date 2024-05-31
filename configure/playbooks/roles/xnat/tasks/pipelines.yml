@@ -61,7 +61,7 @@
     cert_path: "{{ ssl.server_cert }}"
     keystore_path: "{{ java.keystore_path }}"
     keystore_pass: "{{ java_keystore.keystore_pass }}"
-    cert_alias: "{{ xnat_web_server.host }}"
+    cert_alias: "{{ web_server.host }}"
     keystore_create: true
     state: present
   when: ssl.use_ssl and not ssl.validate_certs

@@ -1,0 +1,8 @@
+---
+# mirsg.infrastructure.docker - only used by the container_service_host group
+# but the container_service_client group needs access to these variables
+docker_client_certificate_cache_directory:
+  "{{ ansible_cache_dir }}/cserv_certificates/cserv"
+docker_server_hostname: "{{ hostvars['xnat_cserv']['ansible_host'] }}"
+docker_server_ip: "{{ hostvars['xnat_cserv']['private_ip'] }}"
+docker_server_port: 2376

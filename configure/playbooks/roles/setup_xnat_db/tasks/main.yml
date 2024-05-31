@@ -9,14 +9,14 @@
   become: true
   become_user: postgres
   community.postgresql.postgresql_user:
-    name: "{{ xnat_db.postgres_xnat_user }}"
-    password: "{{ xnat_db.postgres_xnat_password }}"
-    port: "{{ xnat_db.port }}"
+    name: "{{ db_server.postgresql_user }}"
+    password: "{{ db_server.postgresql_password }}"
+    port: "{{ db_server.port }}"
 
 - name: "Create XNAT PostgreSQL db"
   become: true
   become_user: postgres
   community.postgresql.postgresql_db:
-    name: "{{ xnat_db.postgres_xnat_database }}"
-    owner: "{{ xnat_db.postgres_xnat_user }}"
-    port: "{{ xnat_db.port }}"
+    name: "{{ db_server.postgresql_database }}"
+    owner: "{{ db_server.postgresql_user }}"
+    port: "{{ db_server.port }}"

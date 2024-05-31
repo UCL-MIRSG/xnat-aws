@@ -1,0 +1,99 @@
+---
+xnat_data_dir: /data
+xnat_root_dir: "{{ xnat_data_dir }}/xnat"
+xnat_home_dir: "{{ xnat_root_dir }}/home"
+
+xnat_common_config:
+  admin_email: xnatadmin@{{ hostvars['xnat_web']['hostname'] }}
+  restrictUserListAccessToAdmins: true
+  uiAllowNonAdminProjectCreation: false
+  allowNonAdminsToClaimUnassignedSessions: true
+  reloadPrearcDatabaseOnStartup: true
+  par: false
+  primaryAdminUsername: "{{ xnat_service_admin.username }}"
+  receivedFileUser: "{{ xnat_service_admin.username }}"
+  ipsThatCanSendEmailsThroughRest: 127.0.0.1
+  sessionXmlRebuilderInterval: "5"
+  # "^.*$" for all IPs
+  enabledProviders:
+    - localdb
+  enableSitewideAnonymizationScript: true
+  sitewideAnonymizationScript:
+    //\nversion \"6.1\"\nproject != \"Unassigned\" ? (0008,1030) :=
+    project\n(0010,0010) := subject\n(0010,0020) := session
+
+xnat_service_admin:
+  username: "admin_user"
+  firstname: "admin"
+  lastname: "user"
+  password: "{{ vault_service_admin_password }}"
+
+package_registry:
+  enabled: false
+  url: ""
+  authentication_header:
+    Bearer {{ vault_package_registry_token | default(omit) }}
+
+# Set this to true if selinux is enabled on the hosting OS
+selinux_enabled: true
+
+# XNAT supports PostgreSQL 11-14
+postgresql_version: 14
+
+java_keystore:
+  keystore_pass: "{{ vault_keystore_password }}"
+
+# JSON representation of the site-wide anonymisation script: this could be
+# defined in a string, or extracted from a template file e.g. using
+# lookup('template, 'foo.j2') | to_json
+xnat_sitewide_anonymization_script:
+  "{{ xnat_common_config.sitewideAnonymizationScript | to_json }}"
+
+# web server VM
+web_server:
+  host: "{{ hostvars['xnat_web']['ansible_host'] }}"
+  url: "http://{{ hostvars['xnat_web']['ansible_host'] }}"
+  ip: "{{ hostvars['xnat_web']['private_ip'] }}"
+  storage_dir: "{{ external_storage_drive }}/data"
+
+# database server VM
+db_server:
+  host: "{{ hostvars['xnat_web']['database_hostname'] }}"
+  port: "{{ hostvars['xnat_web']['database_port'] }}"
+  postgresql_database: "{{ hostvars['xnat_web']['database_name'] }}"
+  postgresql_user: "{{ hostvars['xnat_web']['database_user'] }}"
+  postgresql_password: "{{ vault_postgres_xnat_password }}"
+
+# SSL certificate settings
+ssl:
+  use_ssl: false
+  server_cert: "/etc/ssl/certs/{{ hostvars['xnat_web']['ansible_host'] }}.cert"
+  server_key: "/etc/ssl/certs/{{ hostvars['xnat_web']['ansible_host'] }}.key"
+  validate_certs: false
+
+
+# XNAT configuration
+xnat_config:
+  site_name: MIRSG_XNAT
+  site_description: <h1>MIRSG XNAT</h1><p>A test instance of XNAT.
+  admin_password: "{{ vault_admin_password }}"
+
+# mirsg.infrastructure.install_python
+install_python:
+  version: "3"
+  pip_version: 21.3.1
+  pip_executable: /usr/bin/pip3
+  system_packages:
+    - python3
+    - python3-pip
+    - python3-setuptools
+  pip_packages:
+    - cryptography
+
+# Mount point for external storage
+external_storage_drive: "/storage"
+mount_efs_src: "{{ hostvars[inventory_hostname]['efs_hostname'] }}:/"
+mount_efs_directory: "{{ external_storage_drive }}"
+mount_efs_fstype: "nfs4"
+mount_efs_opts: "nfsvers=4.1,rsize=1048576,hard,timeo=600,retrans=2,noresvport"
+mount_efs_state: mounted

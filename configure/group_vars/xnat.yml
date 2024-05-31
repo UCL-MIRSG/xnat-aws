@@ -1,0 +1,44 @@
+# mirsg.xnat.xnat
+# Some times the default admin account hasn't finished creating even after tomcat has started
+# Add a delay here to give the admin account a chance to be created
+# Note, this issue only seems to happen in CI
+xnat_wait_for_tomcat: 15
+
+# You may want to increase the heap space if you have enough RAM available
+java_mem:
+  Xms: "512M"
+  Xmx: "6G"
+  MetaspaceSize: "300M"
+
+xnat_plugin_urls:
+  - https://api.bitbucket.org/2.0/repositories/xnatdev/container-service/downloads/container-service-3.4.3-fat.jar
+  - https://api.bitbucket.org/2.0/repositories/icrimaginginformatics/ohif-viewer-xnat-plugin/downloads/ohif-viewer-3.6.2.jar
+  - https://api.bitbucket.org/2.0/repositories/xnatx/ml-plugin/downloads/ml-plugin-1.0.2.jar
+  - https://api.bitbucket.org/2.0/repositories/xnatx/datasets-plugin/downloads/datasets-plugin-1.0.3.jar
+  - https://api.bitbucket.org/2.0/repositories/xnatdev/xnat-image-viewer-plugin/downloads/ximgview-plugin-1.0.2.jar
+  - https://api.bitbucket.org/2.0/repositories/xnatx/xnatx-dxm-settings-plugin/downloads/dxm-settings-plugin-1.0.jar
+
+# Variables for creating an XNAT project
+xnat_project:
+  id: ibash
+  metadata_file: 'ibash_project.xml'
+
+xnat_investigator:
+  title: "Prof"
+  firstname: "Charles"
+  lastname: "Xavier"
+  institution: "Xavier Institute For Higher Learning"
+
+xnat_project_owner:
+  username: "profX"
+  password: "carlos1602"
+  firstName: "Charles"
+  lastName: "Xavier"
+  email: "c.xavier@{{ hostvars['xnat_web']['ansible_host'] }}"
+
+xnat_download_dir: "ideas-workshop-datasets"
+xnat_project_data:
+  url: "https://ideas-workshop-datasets.s3.amazonaws.com/xnat-ibash.zip"
+  zip_file: "{{ xnat_download_dir }}/ibash.zip"
+  unzip_target: "{{ xnat_download_dir }}/ibash"
+  sessions_metadata: "{{ xnat_download_dir }}/ibash/ibash-sessions.csv"

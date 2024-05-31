@@ -3,7 +3,7 @@
 # Return 200 if created, 417 if already exists
 - name: "Create I-BASH project if it doesn't exist"
   ansible.builtin.uri:
-    url: "{{ xnat_web_server.url }}/data/projects/"
+    url: "{{ web_server.url }}/data/projects/"
     user: "{{ xnat_service_admin.username }}"
     password: "{{ xnat_service_admin.password }}"
     method: POST
@@ -18,7 +18,7 @@
 
 - name: Make the project public
   ansible.builtin.uri:
-    url: "{{ xnat_web_server.url }}/data/projects/{{ xnat_project.id }}/accessibility/public"
+    url: "{{ web_server.url }}/data/projects/{{ xnat_project.id }}/accessibility/public"
     user: "{{ xnat_service_admin.username }}"
     password: "{{ xnat_service_admin.password }}"
     method: PUT

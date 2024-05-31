@@ -1,33 +1,36 @@
 ---
-- name: Wait until instance is running
-  hosts: web
-  gather_facts: false
-
-  roles:
-    - { role: wait_until_running }
-
-- name: Install dependencies
-  hosts: web
-  become: true
-  become_user: root
-  become_method: sudo
-  gather_facts: true
-
-  roles:
-    - { role: provision }
-    - role: mount_efs
-    - { role: mirsg.install_python }
-    - { role: java }
-    - { role: tomcat }
-    - { role: nginx }
-
 - name: Install and configure XNAT
-  hosts: web
+  hosts: xnat
   become: true
-  become_user: root
-  become_method: sudo
   gather_facts: true
 
   roles:
-    - { role: xnat }
-    - { role: container_service_client, when: container_service_enabled }
+    - role: wait_until_running
+    - role: mount_efs
+    - role: mirsg.infrastructure.provision
+    - role: mirsg.infrastructure.install_python
+    - role: mirsg.infrastructure.install_java
+    - role: mirsg.infrastructure.tomcat
+    - role: mirsg.infrastructure.nginx
+    - role: xnat
+
+- name: Setup Container Service on hosts
+  hosts: container_service_host
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: wait_until_running
+    - role: mount_efs
+    - role: mirsg.infrastructure.provision
+    - role: mirsg.infrastructure.install_python
+    - role: mirsg.infrastructure.docker
+
+- name: Setup Container Service on clients (i.e. the web servers)
+  hosts: container_service_client
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: mirsg.infrastructure.xnat_container_service
+    - role: container_service_images

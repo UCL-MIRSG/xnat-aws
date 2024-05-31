@@ -94,8 +94,8 @@ http {
     server {
         listen {{ nginx.http_port }};
 
-        server_name {{ xnat_web_server.host }};
-        return 301 https://{{ xnat_web_server.host }}:{{ nginx.https_port }}$request_uri;
+        server_name {{ web_server.host }};
+        return 301 https://{{ web_server.host }}:{{ nginx.https_port }}$request_uri;
     }
 {% endif %}
 
@@ -115,7 +115,7 @@ http {
 
 
         # Note: server_name is only used for disambiguation
-        server_name     {{ xnat_web_server.host }};
+        server_name     {{ web_server.host }};
 
         root            {{ tomcat.root }};
 

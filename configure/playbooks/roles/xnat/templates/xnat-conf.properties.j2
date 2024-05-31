@@ -1,7 +1,7 @@
 datasource.driver=org.postgresql.Driver
-datasource.url=jdbc:postgresql://{{ xnat_db.host }}:{{ xnat_db.port }}/{{ xnat_db.postgres_xnat_database }}
-datasource.username={{ xnat_db.postgres_xnat_user }}
-datasource.password={{ xnat_db.postgres_xnat_password }}
+datasource.url=jdbc:postgresql://{{ db_server.host }}:{{ db_server.port }}/{{ db_server.postgresql_database }}
+datasource.username={{ db_server.postgresql_user }}
+datasource.password={{ db_server.postgresql_password }}
 
 hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 hibernate.hbm2ddl.auto=update
