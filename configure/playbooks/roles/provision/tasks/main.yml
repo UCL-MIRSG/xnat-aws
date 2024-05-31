@@ -1,6 +1,0 @@
----
-- name: "Update packages"
-  import_tasks: package_update.yml
-
-- name: "Set locale"
-  import_tasks: locale.yml
