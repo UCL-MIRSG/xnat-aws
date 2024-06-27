@@ -6,5 +6,3 @@ data
 
 .vscode
 
-terraform.tfstate
-**/.terraform/*
