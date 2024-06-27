@@ -1,3 +1,8 @@
+- name: Remove python3-requests
+  ansible.builtin.yum:
+    name: python3-requests
+    state: absent
+
 - name: "Install necessary Python dependencies on host"
   ansible.builtin.pip:
     name:

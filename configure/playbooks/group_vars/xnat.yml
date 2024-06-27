@@ -53,9 +53,10 @@ ldap_ca_cert_file_on_client: "{{ xnat.install_downloads }}/certs/ldap-ca.cert"
 # mirsg.infrastructure.nginx
 nginx_use_ssl: "{{ ssl.use_ssl }}"
 nginx_server_name: "{{ web_server.host }}"
-nginx_upstream_port: 8104
+nginx_upstream_port: 104
 nginx_upstream_listen_port: 8104
 nginx_proxy_port: 8080 # tomcat
 nginx_root: /usr/share/tomcat/webapps/ROOT
 nginx_app_access_log: "{{ nginx_log_folder }}/xnat.access.log"
 nginx_app_error_log: "{{ nginx_log_folder }}/xnat.error.log"
+nginx_conf_template: nginx_reverse_proxy_aws.j2
