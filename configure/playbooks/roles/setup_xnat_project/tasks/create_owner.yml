@@ -3,7 +3,7 @@
 # Returns 201 if created, 409 if already exists
 - name: "Create project owner"
   ansible.builtin.uri:
-    url: "{{ xnat_web_server.url }}/xapi/users/"
+    url: "{{ web_server.url }}/xapi/users/"
     user: "{{ xnat_service_admin.username }}"
     password: "{{ xnat_service_admin.password }}"
     method: POST
@@ -25,7 +25,7 @@
 # Set project owner
 - name: Make user owner of the project
   ansible.builtin.uri:
-    url: "{{ xnat_web_server.url }}/data/projects/{{ xnat_project.id }}/users/Owners/{{ xnat_project_owner.username }}"
+    url: "{{ web_server.url }}/data/projects/{{ xnat_project.id }}/users/Owners/{{ xnat_project_owner.username }}"
     user: "{{ xnat_service_admin.username }}"
     password: "{{ xnat_service_admin.password }}"
     method: PUT

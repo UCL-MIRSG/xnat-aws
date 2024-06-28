@@ -1,0 +1,62 @@
+---
+xnat:
+  owner: "{{ tomcat_owner }}"
+  group: "{{ tomcat_group }}"
+  install_downloads: "{{ tomcat_catalina_home }}/install_downloads"
+  pipeline_install_dir: "{{ tomcat_catalina_home }}/pipeline_installer"
+  processingUrl: ""
+
+xnat_source:
+  war_file_name: xnat-web-{{ xnat_version }}.war
+  plugins_downloads_dir: /ansible/downloads/xnat_plugins
+  xnat_downloads_dir: /ansible/downloads/xnat
+  pipeline_installer_file_name:
+    pipeline-installer-{{ xnat_pipeline_version }}.tar
+  xnat_war_url:
+    https://api.bitbucket.org/2.0/repositories/xnatdev/xnat-web/downloads/xnat-web-{{
+    xnat_version }}.war
+  pipelines_url:
+    https://api.github.com/repos/NrgXnat/xnat-pipeline-engine/tarball/{{
+    xnat_pipeline_version }}
+  context_file_location: /usr/share/tomcat/webapps/ROOT/META-INF/context.xml
+
+# mirsg.infrastructure.tomcat
+tomcat_version: 9.0.82
+tomcat_owner: tomcat
+tomcat_group: tomcat
+
+tomcat_webapp_name: ROOT
+tomcat_root: /usr/share/tomcat/webapps/{{ tomcat_webapp_name }}
+tomcat_root_webapp: "{{ tomcat_root }}.war"
+
+tomcat_catalina_home: /usr/share/tomcat
+tomcat_catalina_opts: >-
+  -Dxnat.home={{ xnat_home_dir }} -Xms{{ java_mem.Xms | default("512M") }}
+  -Xmx{{ java_mem.Xmx | default("1G") }} -XX:MetaspaceSize={{
+  java_mem.MetaspaceSize | default("100M") }} -XX:+UseG1GC -server
+
+tomcat_hostname: localhost
+tomcat_port: 8080
+
+tomcat_backup_directory: /usr/share/tomcat_bkp
+tomcat_items_to_restore:
+  - "{{ tomcat_backup_directory }}/webapps"
+  - "{{ tomcat_backup_directory }}/logs"
+  - "{{ tomcat_backup_directory }}/install_downloads"
+  - "{{ tomcat_backup_directory }}/.postgresql"
+
+java:
+  keystore_path: /usr/lib/jvm/jre/lib/security/cacerts/
+
+ldap_ca_cert_file_on_client: "{{ xnat.install_downloads }}/certs/ldap-ca.cert"
+
+# mirsg.infrastructure.nginx
+nginx_use_ssl: "{{ ssl.use_ssl }}"
+nginx_server_name: "{{ web_server.host }}"
+nginx_upstream_port: 104
+nginx_upstream_listen_port: 8104
+nginx_proxy_port: 8080 # tomcat
+nginx_root: /usr/share/tomcat/webapps/ROOT
+nginx_app_access_log: "{{ nginx_log_folder }}/xnat.access.log"
+nginx_app_error_log: "{{ nginx_log_folder }}/xnat.error.log"
+nginx_conf_template: nginx_reverse_proxy_aws.j2
