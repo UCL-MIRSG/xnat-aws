@@ -27,7 +27,7 @@ module "get_ami" {
 module "setup_vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = var.deployment_env_name+"-xnat-vpc"
+  name = var.deployment_env_name+"-vpc"
   cidr = var.vpc_cidr_block
 
   azs             = var.availability_zones
