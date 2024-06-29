@@ -90,6 +90,7 @@ install_python:
     - python3-setuptools
   pip_packages:
     - cryptography
+    - docker
 
 # Mount point for external storage
 external_storage_drive: "/storage"

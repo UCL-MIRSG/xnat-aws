@@ -2,6 +2,7 @@
 collections:
   - name: ansible.posix
   - name: amazon.aws
+  - name: community.docker
   - name: mirsg.infrastructure
     type: git
     source: https://github.com/UCL-MIRSG/ansible-collection-infra.git

@@ -25,6 +25,7 @@
     - role: mirsg.infrastructure.provision
     - role: mirsg.infrastructure.install_python
     - role: mirsg.infrastructure.docker
+    - role: configure_docker_swarm
 
 - name: Setup Container Service on clients (i.e. the web servers)
   hosts: container_service_client

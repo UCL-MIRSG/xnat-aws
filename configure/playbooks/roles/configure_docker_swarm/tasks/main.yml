@@ -1,0 +1,6 @@
+---
+# Configure docker as a singel node swarm
+
+- name: Configure docker as a single node swarm
+  community.docker.docker_swarm:
+      state: present
