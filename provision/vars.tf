@@ -11,6 +11,12 @@ variable "availability_zones" {
   default     = ["eu-west-2a", "eu-west-2b"]
 }
 
+variable "deployment_env_name" {
+  type = string
+  description = "Name for the deployment environment to distinguish it from other deployments"
+  default = "xnat"
+}
+
 # VPC
 variable "vpc_cidr_block" {
   type        = string

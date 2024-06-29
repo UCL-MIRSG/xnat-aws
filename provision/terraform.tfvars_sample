@@ -1,6 +1,7 @@
 # General AWS
 aws_region         = "eu-west-2"
 availability_zones = ["eu-west-2a", "eu-west-2b"]
+deployment_env_name = "xnat"
 
 # CIDR blocks
 vpc_cidr_block = "192.168.0.0/16" # 192.168.0.0 to 	192.168.255.255

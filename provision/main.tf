@@ -7,7 +7,8 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Terraform = "true"
+      terraform = "true"
+      deployment_env = var.deployment_env_name
     }
   }
 }
@@ -26,7 +27,7 @@ module "get_ami" {
 module "setup_vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "xnat-vpc"
+  name = var.deployment_env_name+"-xnat-vpc"
   cidr = var.vpc_cidr_block
 
   azs             = var.availability_zones
@@ -58,11 +59,6 @@ module "setup_vpc" {
   default_vpc_name            = "default-xnat-vpc"
   default_network_acl_name    = "default-xnat-acl"
   default_route_table_name    = "default-xnat-route-table"
-
-  # these tags will be applied to all resources
-  tags = {
-    environment = "xnat"
-  }
 
 }
 
