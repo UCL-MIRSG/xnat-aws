@@ -61,7 +61,7 @@ module "setup_vpc" {
 
   # these tags will be applied to all resources
   tags = {
-    Name = "xnat"
+    environment = "xnat"
   }
 
 }
