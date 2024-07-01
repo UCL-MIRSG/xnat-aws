@@ -1,0 +1,10 @@
+---
+# mirsg.infrastructure.docker
+docker_generate_certificates: true # generate TLS certs for clients
+docker_client_hostnames:
+  - "{{ hostvars['xnat_web']['ansible_host'] }}"
+docker_tls_verify: false
+
+# docker<25 is required for XNAT
+# see: https://groups.google.com/g/xnat_discussion/c/yyPBkN4kayE/m/LUe5GQH5AAAJ
+docker_version: 24.0.9

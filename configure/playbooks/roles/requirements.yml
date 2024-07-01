@@ -1,17 +1,8 @@
 ---
 collections:
-  - community.general
-  - ansible.posix
-  - community.docker
-  - community.crypto
-  - amazon.aws
-
-roles:
-
-  - src: https://github.com/UCL-MIRSG/ansible-role-install-python.git
-    version: 2023.02.9.0
-    name: mirsg.install_python
-
-  - src: https://github.com/UCL-MIRSG/ansible-role-ssl-certificates.git
-    version: 2023.02.8.0
-    name: mirsg.ssl_certificates
+  - name: ansible.posix
+  - name: amazon.aws
+  - name: mirsg.infrastructure
+    type: git
+    source: https://github.com/UCL-MIRSG/ansible-collection-infra.git
+    version: 1.22.0

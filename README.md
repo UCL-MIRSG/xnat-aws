@@ -95,6 +95,21 @@ To destroy the infrastructure, go to the `xnat-aws/provision` directory and type
 terraform destroy
 ```
 
+If this command is interrupted i.e. you lose internet connection when running locally, you may find that you can no longer run `terraform destroy` successfully.
+Therefore you need to manually delete some resources in the AWS console, but you can encounter errors when attempting to delete certain resources:
+`The vpc 'vpc-id' has dependencies and cannot be deleted.` or
+`Network interface is currently in use and is of type "interface".`
+
+To find the remaining VPC dependencies, go to the `xnat-aws/provision` directory and type:
+
+```bash
+    ./show_resources_to_delete.sh
+```
+
+N.B. You need to add your `VPC ID` and `region` to the `show_resources_to_delete.sh` script.
+
+After deleting the dependiences you can retry deleting your VPC and/or Network interface - [see more info](https://repost.aws/knowledge-center/troubleshoot-dependency-error-delete-vpc).
+
 ## AWS cost estimate
 
 [It is estimated](provision/aws-cost-estimate.pdf) the AWS resources will cost approximately **$270

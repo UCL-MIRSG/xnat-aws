@@ -9,5 +9,5 @@
 hosts.yml
 .vault_password
 group_vars/all/vault
-group_vars/web/vault
+group_vars/xnat/vault
 

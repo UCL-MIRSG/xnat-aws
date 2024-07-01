@@ -20,17 +20,21 @@ all:
   children:
 
     # All web servers
-    web:
+    xnat:
       hosts:
         xnat_web:
 
     # All Container Service server hosts
-    cserv_hosts:
+    container_service_host:
       hosts:
         xnat_cserv:
 
+    container_service_client:
+      hosts:
+        xnat_web:
+
     # xnat_cserv hosts and all the clients (web servers) it serves
-    xnat_container_service:
+    container_service:
       hosts:
         xnat_cserv:
         xnat_web:

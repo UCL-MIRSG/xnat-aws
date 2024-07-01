@@ -111,6 +111,6 @@ locals {
   tcp_protocol             = "tcp"
   any_protocol             = "-1"
   all_ips                  = ["0.0.0.0/0"]
-  ansible_vault_file       = "../configure/group_vars/web/vault"
+  ansible_vault_file       = "../configure/group_vars/xnat/vault"
   encryption_password_file = "../configure/.vault_password"
 }

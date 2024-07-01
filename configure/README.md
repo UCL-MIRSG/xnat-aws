@@ -15,7 +15,7 @@ This will install the dependencies listed in [requirements.txt](requirements.txt
 To run the configuration with Ansible we will need to:
 
 - install required Ansible roles and collection
-- run the `install_container_service.yml` and `install_xnat.yml` playbooks
+- run the `install_xnat.yml` playbooks
 
 These steps are done in the script `xnat-aws/configure/install_xnat.sh`. To run the script, go to the `xnat-aws/configure` directory and run the following command:
 

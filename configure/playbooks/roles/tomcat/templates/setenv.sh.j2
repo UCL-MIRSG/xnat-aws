@@ -1,5 +1,0 @@
-{% if tomcat_version.split('.')[0] == "7" %}
-CATALINA_OPTS="-Dxnat.home={{ xnat_home_dir }} -Xms{{ java_mem.Xms }} -Xmx{{ java_mem.Xmx }} -XX:MaxPermSize=512m -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC -Djavax.sql.DataSource.Factory=org.apache.commons.dbcp.BasicDataSourceFactory"
-{% else %}
-CATALINA_OPTS="-Dxnat.home={{ xnat_home_dir }} -Xms{{ java_mem.Xms }} -Xmx{{ java_mem.Xmx }} -XX:MetaspaceSize={{ java_mem.MetaspaceSize }} -XX:+UseG1GC -server"
-{% endif %}
