@@ -3,7 +3,7 @@
 # Returns 200 if created, 409 if already exists
 - name: "Create new investigator"
   ansible.builtin.uri:
-    url: "{{ xnat_web_server.url }}/xapi/investigators/"
+    url: "{{ web_server.url }}/xapi/investigators/"
     user: "{{ xnat_service_admin.username }}"
     password: "{{ xnat_service_admin.password }}"
     method: POST

@@ -1,0 +1,19 @@
+---
+- name: Ensure nfs-utils is installed (for mounting EFS volume)
+  ansible.builtin.yum:
+    name: nfs-utils
+    state: present
+
+- name: Ensure mount directory exists
+  ansible.builtin.file:
+    path: "{{ mount_efs_directory }}"
+    state: directory
+    mode: "0755"
+
+- name: Mount the volume
+  ansible.posix.mount:
+    src: "{{ mount_efs_src }}"
+    name: "{{ mount_efs_directory }}"
+    fstype: "{{ mount_efs_fstype }}"
+    opts: "{{ mount_efs_opts }}"
+    state: "{{ mount_efs_state }}"

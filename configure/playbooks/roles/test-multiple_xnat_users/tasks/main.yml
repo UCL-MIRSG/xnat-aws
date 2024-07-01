@@ -13,7 +13,7 @@
   loop_control:
     loop_var: user_id
   vars:
-    xnat_web_url: "{{ xnat_web_server.url }}"
+    xnat_web_url: "{{ web_server.url }}"
     admin_username: "{{ xnat_service_admin.username }}"
     admin_password: "{{ xnat_service_admin.password }}"
     ssl_certs: "{{ ssl.validate_certs }}"
