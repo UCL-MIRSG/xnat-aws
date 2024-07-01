@@ -163,7 +163,7 @@ to skip the prompt.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.52.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.56.1 |
 | <a name="provider_local"></a> [local](#provider\_local) | 2.5.1 |
 
 ## Modules
