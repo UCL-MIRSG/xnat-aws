@@ -103,7 +103,7 @@ module "efs" {
 module "database" {
   source = "./modules/database"
 
-  name              = "xnat_db"
+  name              = "${var.deployment_env_name}-db"
   vpc_id            = module.setup_vpc.vpc_id
   instance_type     = var.ec2_instance_types["xnat_db"]
   availability_zone = var.availability_zones[0]
@@ -175,7 +175,7 @@ resource "local_file" "ansible-hosts" {
 
 locals {
   # AWS
-  ssh_key_name             = "aws-rsa"
+  ssh_key_name             = "${var.deployment_env_name}-ssh-key"
   ssh_private_key_filename = "../ssh/aws-rsa"
   ssh_public_key_filename  = "../ssh/aws-rsa.pub"
 

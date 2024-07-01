@@ -1,5 +1,5 @@
 resource "aws_db_subnet_group" "xnat-db" {
-  name       = "xnat-db"
+  name       = "${var.vpc_id}-db"
   subnet_ids = var.subnet_ids
 
   tags = {
@@ -87,7 +87,7 @@ resource "aws_security_group_rule" "allow_all_outgoing" {
 
 # Define Database parameter group to force connections to use SSL
 resource "aws_db_parameter_group" "db-parameters" {
-  name   = "${local.db_name}-db-parameters"
+  name   = "${var.vpc_id}-db-parameters"
   family = "postgres${local.postgres_version}"
 
   parameter {
