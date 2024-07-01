@@ -114,3 +114,9 @@ variable "as2_image_name" {
   description = "Name of the AppStream image"
   default     = "IDEAS-FSL-AmazonLinux2-EFSMount-2023-08-30"
 }
+
+variable "schedule_expression" {
+  type        = string
+  description = "cron expression to determine when the EC2 and RDS instances are scheduled to stop."
+  default     = "cron(0 0 18 * * *)" # 6pm evrery day
+}
