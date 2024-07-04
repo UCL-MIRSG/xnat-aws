@@ -16,7 +16,7 @@ Below is an overview of the infrastructure that will be created. See the notes o
 
 - An [AWS account](https://portal.aws.amazon.com/billing/signup?refid=em_127222&redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start/email)
 - [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-- AWS credentials stored locally using [`aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#:~:text=settings%20using%20commands.-,aws%20configure,-Run%20this%20command) (or [`aws configure sso`](https://docs.aws.amazon.com/cli/latest/userguide/sso-configure-profile-token.html)) and then subsequently logging in using `aws sso login --profile <profile_name>`
+- AWS credentials stored locally using [`aws configure`](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#:~:text=settings%20using%20commands.-,aws%20configure,-Run%20this%20command) (or [`aws configure sso`](https://docs.aws.amazon.com/cli/latest/userguide/sso-configure-profile-token.html)) and then subsequently logging in using `aws sso login --profile <profile_name>`. You may also need to `export AWS_PROFILE=<profile_name>` in your terminal.
 - [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) >= 0.15
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible) >= 2.15.0 - we recommend installing Ansible in a virtual environment, using either [Conda](https://docs.conda.io/en/latest/miniconda.html) or [Virtualenv](https://virtualenv.pypa.io/en/latest/)
 - [Other Python dependencies](configure/README.md#install-python-dependencies) - these should be installed in the same virtual environment as Ansible. These dependencies are required if you would like to create a project and upload sample data to it.
@@ -118,6 +118,8 @@ See [more details about AppStream in provision README.](provision/README.md)
     This will create a project on your XNAT server and upload data to it.
 
     The sample data can be used for running a [workshop](https://healthbioscienceideas.github.io/MedICSS-Project-Repro-Pipelines/) on implementing reproducible medical image analysis pipelines with XNAT.
+
+6. \[Optional\] Enable Container Service images. Currently [not possible via the API](https://groups.google.com/g/xnat_discussion/c/Xcwp_bWcHf8/m/okBgAmDPBwAJ), but can be done [manually through the XNAT UI.](https://wiki.xnat.org/container-service/enable-a-command-in-your-project)
 
 ## Important!
 
