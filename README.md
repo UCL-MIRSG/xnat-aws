@@ -35,13 +35,31 @@ Once you have installed and set up the requirements, there are three steps to de
     This will will create and SSH key and various passwords that will be used for accessing the AWS
     servers and configuring XNAT.
 
+#### AppStream
+
+
+The AppStream image is only created if the `create_appstream` variable is set to `true`. When
+running `terraform apply`, the user will be prompted to enter a value for this variable.
+Alternatively, you can use
+
+```bash
+terraform apply -var 'create_appstream=true'
+```
+
+to skip the prompt.
+
+See [more details about AppStream in provision README.](provision/README.md)
+
+> **Note**: If you select AppStream then you need to have an image accesible with the name in your terraform.tfvars. Otherwise it hangs.
+
+
 2. [Set the necessary Terraform variables](provision/README.md#usage). From the `xnat-aws/provision`
    directory:
 
     First copy the `terraform.tfvars.example` file to `terraform.tfvars`:
 
     ```bash
-    cp terraform.tfvars.example terraform.tfvars
+    cp terraform.tfvars_sample terraform.tfvars
     ```
 
     Then edit the `terraform.tfvars` file to change any variables as necessary. In particular, you
