@@ -23,7 +23,7 @@ Below is an overview of the infrastructure that will be created. See the notes o
 
 ## Quick start
 
-Once you have installed and set up the requirements, there are three steps to deploying XNAT on AWS:
+Once you have installed and set up the requirements, there are three steps to deploying XNAT on AWS. If re-running the deployment i.e. returning after `terraform destroy`, you may be able to skip the first two steps:
 
 1. [Generate credentials](credentials/README.md). From the `xnat-aws/credentials` directory, type:
 
@@ -83,13 +83,29 @@ See [more details about AppStream in provision README.](provision/README.md)
     python -m pip install -r requirements.txt
     ```
 
-    This will install Ansible and other Python dependencies. Then, from the same directory, type:
+    This will install Ansible and other Python dependencies. You can do this within a conda environment which you can create and activate with:
+
+    ```bash
+    conda create -n xnat-aws-9 -c conda-forge python=3.9
+    conda activate xnat-aws-9
+    ```
+
+
+    Then, from the same directory, type:
 
     ```bash
     ./install_xnat.sh
     ```
 
     This will run several Ansible commands to install and configure XNAT.
+
+    If your configuration fails and you need to re-run the Ansible playbooks from a certain task onwards, you can do so by running:
+
+    ```bash
+    ansible-playbook playbooks/install_xnat.yml -i hosts.yml --vault-password-file=.vault_password --start-at-task="<task_name>"
+    ```
+
+    Ansible variables can be modified in several places such as in `group_vars` or in the playbooks themselves, but it is important to understand [variable precedence](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable) for overriding default variable values.
 
     See [`Logging into the web server`](configure/README.md#logging-in-to-the-web-server) for notes on how to log into XNAT once it has been deployed.
 
@@ -112,6 +128,12 @@ To destroy the infrastructure, go to the `xnat-aws/provision` directory and type
 ```bash
 terraform destroy
 ```
+
+As before, you can also type:
+```bash
+terraform destroy -var 'create_appstream=true'
+```
+to skip the create_appstream prompt.
 
 If this command is interrupted i.e. you lose internet connection when running locally, you may find that you can no longer run `terraform destroy` successfully.
 Therefore you need to manually delete some resources in the AWS console, but you can encounter errors when attempting to delete certain resources:
@@ -152,7 +174,7 @@ Note, it is recommended that you [set a monthly budget](https://aws.amazon.com/a
 To test the infrastructure setup with multiple XNAT users, go to the `xnat-aws/configure` directory and type:
 
 ```bash
-./run_tests.sh <number of users>
+./run_tests.sh <number_of_users>
 ```
 
 This will create the specified number of users on the XNAT server, each with their own project and
@@ -160,6 +182,16 @@ some example data. This can be useful to test whether the infrastructure can han
 running various tasks simultaneously.
 
 See [`Testing with multiple users`](configure/README.md#testing-with-multiple-users) for more details.
+
+## Troubleshooting
+
+If you need to SSH into the VM to troubleshoot, you can do so by running:
+
+```bash
+ssh -i ../ssh/aws-rsa rocky@<Public_IP4_address>
+```
+
+You can find the <Public_IP4_address> in the AWS console under the EC2 instances section.
 
 ## Acknowledgement
 
