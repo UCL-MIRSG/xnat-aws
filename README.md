@@ -132,9 +132,11 @@ terraform destroy
 ```
 
 As before, you can also type:
+
 ```bash
 terraform destroy -var 'create_appstream=true'
 ```
+
 to skip the create_appstream prompt.
 
 If this command is interrupted i.e. you lose internet connection when running locally, you may find that you can no longer run `terraform destroy` successfully.
