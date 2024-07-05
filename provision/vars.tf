@@ -95,7 +95,7 @@ variable "instance_os" {
 variable "create_appstream" {
   type        = bool
   description = "Whether to create an AppStream image"
-  default = false
+  default     = false
 }
 
 variable "as2_instance_type" {
