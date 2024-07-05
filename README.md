@@ -38,7 +38,7 @@ Once you have installed and set up the requirements, there are three steps to de
 #### AppStream
 
 
-The AppStream image is only created if the `create_appstream` variable is set to `true`. When
+The AppStream image is only created if the `create_appstream` variable is set to `true`. Currently, `create_appstream` variable is set to `false` by default in the `provision/vars.tf`. If `create_appstream` is not defined in `terraform.tfvars` then when
 running `terraform apply`, the user will be prompted to enter a value for this variable.
 Alternatively, you can use
 
