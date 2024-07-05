@@ -83,13 +83,7 @@ See [more details about AppStream in provision README.](provision/README.md)
     python -m pip install -r requirements.txt
     ```
 
-    This will install Ansible and other Python dependencies. You can do this within a conda environment which you can create and activate with:
-
-    ```bash
-    conda create -n xnat-aws-9 -c conda-forge python=3.9
-    conda activate xnat-aws-9
-    ```
-
+    This will install Ansible and other Python dependencies.
 
     Then, from the same directory, type:
 
