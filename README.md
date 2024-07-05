@@ -38,8 +38,9 @@ Once you have installed and set up the requirements, there are three steps to de
 #### AppStream
 
 
-The AppStream image is only created if the `create_appstream` variable is set to `true`. Currently, `create_appstream` variable is set to `false` by default in the `provision/vars.tf`. If `create_appstream` is not defined in `terraform.tfvars` then when
-running `terraform apply`, the user will be prompted to enter a value for this variable.
+If you would like the workshop participants to be able to run software like FreeView or fsleyes to visualise the results from analyses run on XNAT, you can optionally launch an Appstream image with this software pre-installed.
+
+The AppStream image is only created if the `create_appstream` variable is set to `true` in your `terraform.tfvars` file. Currently, `create_appstream` defaults to `false`.
 Alternatively, you can use
 
 ```bash
