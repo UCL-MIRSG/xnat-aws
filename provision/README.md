@@ -195,7 +195,7 @@ to skip the prompt.
 | <a name="input_as2_instance_type"></a> [as2\_instance\_type](#input\_as2\_instance\_type) | Instance type to use for the AppStream image | `string` | `"stream.standard.medium"` | no |
 | <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | AZs to use for deploying XNAT | `list(string)` | <pre>[<br>  "eu-west-2a",<br>  "eu-west-2b"<br>]</pre> | no |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to use for deploying XNAT | `string` | `"eu-west-2"` | no |
-| <a name="input_create_appstream"></a> [create\_appstream](#input\_create\_appstream) | Whether to create an AppStream image | `bool` | n/a | yes |
+| <a name="input_create_appstream"></a> [create\_appstream](#input\_create\_appstream) | Whether to create an AppStream image | `bool` | `false` | no |
 | <a name="input_ec2_instance_types"></a> [ec2\_instance\_types](#input\_ec2\_instance\_types) | Instance type to use for each server | `map(any)` | <pre>{<br>  "xnat_cserv": "m4.xlarge",<br>  "xnat_db": "db.t3.large",<br>  "xnat_web": "t3.large"<br>}</pre> | no |
 | <a name="input_extend_http_cidr"></a> [extend\_http\_cidr](#input\_extend\_http\_cidr) | The CIDR blocks to grant HTTP access to the web server, in addition to your own IP address | `list(string)` | `[]` | no |
 | <a name="input_extend_https_cidr"></a> [extend\_https\_cidr](#input\_extend\_https\_cidr) | The CIDR blocks to grant HTTSP access to the web server, in addition to your own IP address | `list(string)` | `[]` | no |
