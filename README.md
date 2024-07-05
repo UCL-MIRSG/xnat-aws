@@ -41,13 +41,6 @@ Once you have installed and set up the requirements, there are three steps to de
 If you would like the workshop participants to be able to run software like FreeView or fsleyes to visualise the results from analyses run on XNAT, you can optionally launch an Appstream image with this software pre-installed.
 
 The AppStream image is only created if the `create_appstream` variable is set to `true` in your `terraform.tfvars` file. Currently, `create_appstream` defaults to `false`.
-Alternatively, you can use
-
-```bash
-terraform apply -var 'create_appstream=true'
-```
-
-to skip the prompt.
 
 See [more details about AppStream in provision README.](provision/README.md)
 
