@@ -5,4 +5,4 @@ collections:
   - name: mirsg.infrastructure
     type: git
     source: https://github.com/UCL-MIRSG/ansible-collection-infra.git
-    version: 1.27.0
+    version: 1.28.0
