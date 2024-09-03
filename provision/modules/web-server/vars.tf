@@ -67,3 +67,9 @@ variable "https_cidr" {
   type        = list(string)
   description = "The CIDR block to grant HTTSP access to the web server"
 }
+
+variable "scheduled" {
+  type        = bool
+  description = "Whether to schedule the instance to stop and start automatically"
+  default     = false
+}
