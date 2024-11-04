@@ -193,18 +193,18 @@ to skip the prompt.
 | <a name="input_as2_desired_instance_num"></a> [as2\_desired\_instance\_num](#input\_as2\_desired\_instance\_num) | Number of instances to use for the AppStream image | `number` | `1` | no |
 | <a name="input_as2_image_name"></a> [as2\_image\_name](#input\_as2\_image\_name) | Name of the AppStream image | `string` | `"IDEAS-FSL-AmazonLinux2-EFSMount-2023-08-30"` | no |
 | <a name="input_as2_instance_type"></a> [as2\_instance\_type](#input\_as2\_instance\_type) | Instance type to use for the AppStream image | `string` | `"stream.standard.medium"` | no |
-| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | AZs to use for deploying XNAT | `list(string)` | <pre>[<br>  "eu-west-2a",<br>  "eu-west-2b"<br>]</pre> | no |
+| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | AZs to use for deploying XNAT | `list(string)` | <pre>[<br/>  "eu-west-2a",<br/>  "eu-west-2b"<br/>]</pre> | no |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to use for deploying XNAT | `string` | `"eu-west-2"` | no |
 | <a name="input_create_appstream"></a> [create\_appstream](#input\_create\_appstream) | Whether to create an AppStream image | `bool` | `false` | no |
-| <a name="input_ec2_instance_types"></a> [ec2\_instance\_types](#input\_ec2\_instance\_types) | Instance type to use for each server | `map(any)` | <pre>{<br>  "xnat_cserv": "m4.xlarge",<br>  "xnat_db": "db.t3.large",<br>  "xnat_web": "t3.large"<br>}</pre> | no |
+| <a name="input_ec2_instance_types"></a> [ec2\_instance\_types](#input\_ec2\_instance\_types) | Instance type to use for each server | `map(any)` | <pre>{<br/>  "xnat_cserv": "m4.xlarge",<br/>  "xnat_db": "db.t3.large",<br/>  "xnat_web": "t3.large"<br/>}</pre> | no |
 | <a name="input_extend_http_cidr"></a> [extend\_http\_cidr](#input\_extend\_http\_cidr) | The CIDR blocks to grant HTTP access to the web server, in addition to your own IP address | `list(string)` | `[]` | no |
 | <a name="input_extend_https_cidr"></a> [extend\_https\_cidr](#input\_extend\_https\_cidr) | The CIDR blocks to grant HTTSP access to the web server, in addition to your own IP address | `list(string)` | `[]` | no |
 | <a name="input_extend_ssh_cidr"></a> [extend\_ssh\_cidr](#input\_extend\_ssh\_cidr) | CIDR blocks servers should permit SHH access from, in addition to your own IP address | `list(string)` | `[]` | no |
 | <a name="input_instance_os"></a> [instance\_os](#input\_instance\_os) | OS to use for the instance - will determine the AMI to use | `string` | `"rocky9"` | no |
-| <a name="input_instance_private_ips"></a> [instance\_private\_ips](#input\_instance\_private\_ips) | Private IP addresses for each instance | `map(any)` | <pre>{<br>  "xnat_cserv": "192.168.56.14",<br>  "xnat_web": "192.168.56.10"<br>}</pre> | no |
+| <a name="input_instance_private_ips"></a> [instance\_private\_ips](#input\_instance\_private\_ips) | Private IP addresses for each instance | `map(any)` | <pre>{<br/>  "xnat_cserv": "192.168.56.14",<br/>  "xnat_web": "192.168.56.10"<br/>}</pre> | no |
 | <a name="input_root_block_device_size"></a> [root\_block\_device\_size](#input\_root\_block\_device\_size) | Storage space on the root block device (GB) | `number` | `30` | no |
 | <a name="input_smtp_private_ip"></a> [smtp\_private\_ip](#input\_smtp\_private\_ip) | Private IP address to use to the SMTP mail server | `string` | `"192.168.56.101"` | no |
-| <a name="input_subnet_cidr_blocks"></a> [subnet\_cidr\_blocks](#input\_subnet\_cidr\_blocks) | CIDR block for the VPC and subnets | `map(any)` | <pre>{<br>  "private": [<br>    "192.168.100.0/24",<br>    "192.168.101.0/24"<br>  ],<br>  "public": [<br>    "192.168.56.0/24"<br>  ]<br>}</pre> | no |
+| <a name="input_subnet_cidr_blocks"></a> [subnet\_cidr\_blocks](#input\_subnet\_cidr\_blocks) | CIDR block for the VPC and subnets | `map(any)` | <pre>{<br/>  "private": [<br/>    "192.168.100.0/24",<br/>    "192.168.101.0/24"<br/>  ],<br/>  "public": [<br/>    "192.168.56.0/24"<br/>  ]<br/>}</pre> | no |
 | <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | CIDR block for the VPC | `string` | `"192.168.0.0/16"` | no |
 
 ## Outputs
