@@ -1,5 +1,5 @@
 ---
-- name: "Create XNAT user {{ user_name }}"
+- name: Create XNAT user {{ user_name }}
   ansible.builtin.uri:
     url: "{{ xnat_web_url }}/xapi/investigators/"
     user: "{{ admin_username }}"
@@ -10,42 +10,46 @@
       title: "{{ user_name }}"
       firstname: "{{ user_firstname }}"
       lastname: "{{ user_lastname }}"
-      institution: "Test"
+      institution: Test
     validate_certs: "{{ ssl_certs }}"
-    status_code: [200, 409]
+    status_code:
+      - 200
+      - 409
   register: xnat_create_investigator
   changed_when: xnat_create_investigator.status == 200
 
 - name: Ensure the data directory exists
   delegate_to: localhost
   ansible.builtin.file:
-    path: "../../data"
+    path: ../../data
     state: directory
     mode: "0755"
 
-- name: "Create project XML file for {{ user_name }}"
+- name: Create project XML file for {{ user_name }}
   delegate_to: localhost
   ansible.builtin.template:
-    src: "ibash_project.xml.j2"
+    src: ibash_project.xml.j2
     dest: "{{ project_xml_file }}"
     mode: "0600"
 
-- name: "Create I-BASH project for {{ user_name }}"
+- name: Create I-BASH project for {{ user_name }}
   ansible.builtin.uri:
     url: "{{ xnat_web_url }}/data/projects/"
     user: "{{ admin_username }}"
     password: "{{ admin_password }}"
     method: POST
     headers:
-      Content-Type: "application/xml"
-      Accept: "application/xml"
+      Content-Type: application/xml
+      Accept: application/xml
     body: "{{ lookup('file', project_xml_file) }}"
     validate_certs: "{{ ssl_certs }}"
-    status_code: [200, 409]
+    status_code:
+      - 200
+      - 409
   register: xnat_project_created
   changed_when: xnat_project_created.status == 200
 
-- name: "Create owner for the project"
+- name: Create owner for the project
   ansible.builtin.uri:
     url: "{{ xnat_web_url }}/xapi/users/"
     user: "{{ admin_username }}"
@@ -62,11 +66,13 @@
       verified: true
       enabled: true
     validate_certs: "{{ ssl_certs }}"
-    status_code: [201, 409]
+    status_code:
+      - 201
+      - 409
   register: xnat_create_user
   changed_when: xnat_create_user.status == 201
 
-- name: "Make user owner of their project"
+- name: Make user owner of their project
   ansible.builtin.uri:
     url:
       "{{ xnat_web_url }}/data/projects/{{ project_id }}/users/Owners/{{
@@ -76,17 +82,17 @@
     method: PUT
     validate_certs: "{{ ssl_certs }}"
 
-- name: "Create credentials file for use by XNATPy"
+- name: Create credentials file for use by XNATPy
   delegate_to: localhost
   ansible.builtin.template:
-    src: ".netrc-testuser.j2"
+    src: .netrc-testuser.j2
     dest: "{{ netrc_file }}"
     mode: "0600"
     force: true
 
-- name: "Generate ibash-sessions csv for {{ user_name }}"
+- name: Generate ibash-sessions csv for {{ user_name }}
   delegate_to: localhost
   ansible.builtin.template:
-    src: "ibash-sessions.csv.j2"
+    src: ibash-sessions.csv.j2
     dest: "{{ project_metadata }}"
     mode: "0600"

@@ -1,9 +1,10 @@
+---
 - name: Remove python3-requests
   ansible.builtin.yum:
     name: python3-requests
     state: absent
 
-- name: "Install necessary Python dependencies on host"
+- name: Install necessary Python dependencies on host
   ansible.builtin.pip:
     name:
       - ansible
@@ -11,7 +12,7 @@
       - typer[all]>=0.9
       - xnat
 
-- name: "Run upload_data.py script"
+- name: Run upload_data.py script
   ansible.builtin.script:
     cmd:
       upload_data.py --metadata {{ xnat_project_data.sessions_metadata }} --data
@@ -21,6 +22,6 @@
     executable: python3
   register: upload_data_result
 
-- name: "Print upload_data.py script output"
+- name: Print upload_data.py script output
   ansible.builtin.debug:
     msg: "{{ upload_data_result.stdout_lines }}"

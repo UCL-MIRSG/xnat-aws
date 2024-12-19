@@ -9,10 +9,12 @@
     body: "{{ lookup('file', command_file) }}"
     body_format: json
     validate_certs: "{{ ssl.validate_certs }}"
-    status_code: [201, 400]
+    status_code:
+      - 201
+      - 400
   register: xnat_commands_added
   changed_when: xnat_commands_added.status == 201
   loop_control:
-    loop_var: "command_file"
+    loop_var: command_file
   with_fileglob:
-    - "files/*-command.json"
+    - files/*-command.json

@@ -1,3 +1,4 @@
+---
 name: Generate terraform docs
 on:
   - pull_request
@@ -16,4 +17,4 @@ jobs:
           working-dir: ./provision
           output-file: README.md
           output-method: inject
-          git-push: "true"
+          git-push: true

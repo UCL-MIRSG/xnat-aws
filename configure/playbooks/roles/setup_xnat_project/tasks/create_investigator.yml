@@ -1,7 +1,7 @@
 ---
 # Create investigator
 # Returns 200 if created, 409 if already exists
-- name: "Create new investigator"
+- name: Create new investigator
   ansible.builtin.uri:
     url: "{{ web_server.url }}/xapi/investigators/"
     user: "{{ xnat_service_admin.username }}"
@@ -14,6 +14,8 @@
       lastname: "{{ xnat_investigator.lastname }}"
       institution: "{{ xnat_investigator.institution }}"
     validate_certs: "{{ ssl.validate_certs }}"
-    status_code: [200, 409]
+    status_code:
+      - 200
+      - 409
   register: xnat_create_investigator
   changed_when: xnat_create_investigator.status == 200

@@ -1,13 +1,13 @@
 ---
 # FIXME: this playbook needs to be updated after the changes to the `setup_xnat_project` role
 # to run the data upload directly on the web-server
-- name: "Download project data if we do not have a local copy"
+- name: Download project data if we do not have a local copy
   delegate_to: localhost
   block:
-    - name: "Download project data"
+    - name: Download project data
       ansible.builtin.include_tasks: ./roles/setup_xnat_project/tasks/download_data.yml
 
-- name: "Set up XNAT users and their projects"
+- name: Set up XNAT users and their projects
   ansible.builtin.include_tasks: setup_single_testuser.yml
   loop: "{{ range(1, n_users | int + 1) | list }}"
   loop_control:
@@ -19,18 +19,18 @@
     ssl_certs: "{{ ssl.validate_certs }}"
     user_name: "{{ 'testuser%02x' | format(user_id) }}"
     user_password: "{{ 'carlos1602%02x' | format(user_id) }}"
-    user_firstname: "testuser"
+    user_firstname: testuser
     user_lastname: "{{ '%02x' | format(user_id) }}"
     user_email: "{{ user_name }}@ibash.org"
-    project_id: "ibash-{{ '%02x' | format(user_id) }}"
-    project_name: "Test project for {{ user_name }}"
-    project_data_dir: "../../data"
+    project_id: ibash-{{ '%02x' | format(user_id) }}
+    project_name: Test project for {{ user_name }}
+    project_data_dir: ../../data
     project_data: "{{ project_data_dir }}/ibash"
     project_xml_file: "{{ project_data_dir }}/{{ project_id }}_project.xml"
     project_metadata: "{{ project_data }}/{{ project_id }}-sessions.csv"
     netrc_file: "{{ project_data_dir }}/.netrc-{{ user_name }}"
 
-- name: "Upload data for each user - concurrently"
+- name: Upload data for each user - concurrently
   delegate_to: localhost
   poll: 0
   async: 10800 # allow up to 3 hours for this task to complete  necessary when uploading large data
@@ -45,13 +45,13 @@
     loop_var: user_id
   vars:
     user_name: "{{ 'testuser%02x' | format(user_id) }}"
-    project_id: "ibash-{{ '%02x' | format(user_id) }}"
-    project_data_dir: "../../data"
+    project_id: ibash-{{ '%02x' | format(user_id) }}
+    project_data_dir: ../../data
     project_data: "{{ project_data_dir }}/ibash"
     project_metadata: "{{ project_data }}/{{ project_id }}-sessions.csv"
     netrc_file: "{{ project_data_dir }}/.netrc-{{ user_name }}"
 
-- name: "Check upload data status"
+- name: Check upload data status
   delegate_to: localhost
   ansible.builtin.async_status:
     jid: "{{ item.ansible_job_id }}"
@@ -61,7 +61,7 @@
   retries: 180
   delay: 5
 
-- name: "Print upload data stdout"
+- name: Print upload data stdout
   ansible.builtin.debug:
     msg: "{{ item.stdout_lines }}"
   loop: "{{ upload_data_status.results }}"
