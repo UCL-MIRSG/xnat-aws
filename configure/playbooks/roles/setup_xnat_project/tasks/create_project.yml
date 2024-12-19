@@ -18,7 +18,9 @@
 
 - name: Make the project public
   ansible.builtin.uri:
-    url: "{{ web_server.url }}/data/projects/{{ xnat_project.id }}/accessibility/public"
+    url:
+      "{{ web_server.url }}/data/projects/{{ xnat_project.id
+      }}/accessibility/public"
     user: "{{ xnat_service_admin.username }}"
     password: "{{ xnat_service_admin.password }}"
     method: PUT

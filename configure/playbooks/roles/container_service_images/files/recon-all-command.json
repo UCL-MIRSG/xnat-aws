@@ -24,7 +24,7 @@
     }
   ],
   "environment-variables": {
-      "FS_LICENSE": "/fs60/license.txt"
+    "FS_LICENSE": "/fs60/license.txt"
   },
   "ports": {},
   "inputs": [
@@ -95,9 +95,7 @@
       "name": "Run FastSurfer pipeline on a conformed T1 MGZ - CPU",
       "label": null,
       "description": "Run FastSurfer pipeline on a conformed T1 MGZ - CPU",
-      "contexts": [
-        "xnat:mrSessionData"
-      ],
+      "contexts": ["xnat:mrSessionData"],
       "external-inputs": [
         {
           "name": "session",

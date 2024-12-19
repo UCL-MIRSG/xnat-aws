@@ -12,5 +12,3 @@ variable "ingress_from" {
   type        = list(string)
   description = "The CIDR blocks to allow access to the EFS store"
 }
-
-

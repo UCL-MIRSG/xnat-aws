@@ -15,7 +15,7 @@ variable "availability_zones" {
 variable "vpc_cidr_block" {
   type        = string
   description = "CIDR block for the VPC"
-  default     = "192.168.0.0/16" # 192.168.0.0 to 	192.168.255.255
+  default     = "192.168.0.0/16" # 192.168.0.0 to 192.168.255.255
 }
 
 variable "subnet_cidr_blocks" {

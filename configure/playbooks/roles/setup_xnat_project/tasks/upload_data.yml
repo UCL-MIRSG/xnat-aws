@@ -13,10 +13,10 @@
 
 - name: "Run upload_data.py script"
   ansible.builtin.script:
-    cmd: upload_data.py --metadata {{ xnat_project_data.sessions_metadata }}
-      --data {{ xnat_project_data.unzip_target }}
-      --user {{ xnat_project_owner.username }}
-      --password {{ xnat_project_owner.password }}
+    cmd:
+      upload_data.py --metadata {{ xnat_project_data.sessions_metadata }} --data
+      {{ xnat_project_data.unzip_target }} --user {{ xnat_project_owner.username
+      }} --password {{ xnat_project_owner.password }}
   args:
     executable: python3
   register: upload_data_result

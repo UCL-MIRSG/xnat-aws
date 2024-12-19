@@ -96,9 +96,7 @@
       "name": "Run FastSurfer pipeline on a conformed T1 MGZ - GPU",
       "label": null,
       "description": "Run FastSurfer pipeline on a conformed T1 MGZ - GPU",
-      "contexts": [
-        "xnat:mrSessionData"
-      ],
+      "contexts": ["xnat:mrSessionData"],
       "external-inputs": [
         {
           "name": "session",

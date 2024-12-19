@@ -20,7 +20,6 @@
 - name: Unzip the data if necessary
   when: not xnat_project_data_directory.stat.exists or data_downloaded.changed
   block:
-
     - name: Ensure the data directory exists
       ansible.builtin.file:
         path: "{{ xnat_project_data.unzip_target }}"

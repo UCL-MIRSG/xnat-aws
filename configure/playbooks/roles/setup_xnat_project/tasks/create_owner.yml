@@ -25,7 +25,9 @@
 # Set project owner
 - name: Make user owner of the project
   ansible.builtin.uri:
-    url: "{{ web_server.url }}/data/projects/{{ xnat_project.id }}/users/Owners/{{ xnat_project_owner.username }}"
+    url:
+      "{{ web_server.url }}/data/projects/{{ xnat_project.id }}/users/Owners/{{
+      xnat_project_owner.username }}"
     user: "{{ xnat_service_admin.username }}"
     password: "{{ xnat_service_admin.password }}"
     method: PUT

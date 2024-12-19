@@ -33,10 +33,11 @@
 - name: "Upload data for each user - concurrently"
   delegate_to: localhost
   poll: 0
-  async: 10800  # allow up to 3 hours for this task to complete  necessary when uploading large data
+  async: 10800 # allow up to 3 hours for this task to complete  necessary when uploading large data
   ansible.builtin.command:
-    python ../scripts/upload_data.py --metadata {{ project_metadata }} --data {{ project_data }} \
-      --inventory ../hosts.yml --host xnat_web --netrc {{ netrc_file }}
+    python ../scripts/upload_data.py --metadata {{ project_metadata }} --data {{
+    project_data }} \ --inventory ../hosts.yml --host xnat_web --netrc {{
+    netrc_file }}
   register: upload_data
   changed_when: upload_data.failed != false
   loop: "{{ range(1, n_users | int + 1) | list }}"

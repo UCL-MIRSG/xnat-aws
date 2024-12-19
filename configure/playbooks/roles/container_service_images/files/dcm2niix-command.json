@@ -57,9 +57,7 @@
       "name": "dcm2niix-scan",
       "label": "dcm2niix",
       "description": "Run dcm2niix on a Scan",
-      "contexts": [
-        "xnat:imageScanData"
-      ],
+      "contexts": ["xnat:imageScanData"],
       "external-inputs": [
         {
           "name": "scan",
@@ -100,4 +98,3 @@
   "ulimits": {},
   "secrets": []
 }
-

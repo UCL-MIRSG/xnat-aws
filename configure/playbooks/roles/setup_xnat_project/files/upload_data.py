@@ -5,6 +5,7 @@ from typing_extensions import Annotated
 import typer
 import xnat
 
+
 def _load_session_metadata(
     metadata_file: pathlib.Path,
 ) -> dict[str, str]:
@@ -25,13 +26,13 @@ def _load_session_metadata(
     """
 
     sessions = {}
-    with open(metadata_file, newline='') as csvfile:
+    with open(metadata_file, newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            sessions[row['Label']] = {
-                'project': row['Project'],
-                'subject': row['Subject'],
-                'n_scans': len(row['Scans'].split(',')),
+            sessions[row["Label"]] = {
+                "project": row["Project"],
+                "subject": row["Subject"],
+                "n_scans": len(row["Scans"].split(",")),
             }
 
     return sessions
@@ -56,18 +57,21 @@ def _upload_data(
     """
 
     for session in sessions:
-
-        project = sessions[session]['project']
-        subject = sessions[session]['subject']
-        n_scans = sessions[session]['n_scans']
+        project = sessions[session]["project"]
+        subject = sessions[session]["subject"]
+        n_scans = sessions[session]["n_scans"]
 
         if session in connection.projects[project].experiments:
-            print(f'session {session} of subject {subject} ({n_scans} scans) already exists, skipping')
+            print(
+                f"session {session} of subject {subject} ({n_scans} scans) already exists, skipping"
+            )
             continue
 
         path = (data_directory / f"{subject}_{session}.zip").resolve()
 
-        print(f'uploading session {session} of subject {subject} ({n_scans} scans) from file "{path}"...')
+        print(
+            f'uploading session {session} of subject {subject} ({n_scans} scans) from file "{path}"...'
+        )
         connection.services.import_(
             path=path,
             project=project,
@@ -84,6 +88,7 @@ metadata_help = (
     "that is produced by XNAT when downloading session metadata."
 )
 data_help = "Path to the directory containing the data to upload."
+
 
 def upload_data(
     metadata_file: Annotated[str, typer.Option("--metadata", "-m", help=metadata_help)],
@@ -103,14 +108,15 @@ def upload_data(
 
     # Get full path to each file
     metadata_file = pathlib.Path(metadata_file).resolve()
-    data_directory =pathlib.Path(data_directory).resolve()
+    data_directory = pathlib.Path(data_directory).resolve()
 
     server = "localhost:8080"
 
     # Connect to the server
     connection = xnat.connect(
         server=f"http://{server}",
-        user=user, password=password,
+        user=user,
+        password=password,
         verify=False,
     )
 
@@ -125,6 +131,7 @@ def upload_data(
         sessions=sessions,
         data_directory=data_directory,
     )
+
 
 if __name__ == "__main__":
     typer.run(upload_data)
