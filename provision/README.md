@@ -182,66 +182,68 @@ terraform apply -var 'create_appstream=true'
 to skip the prompt.
 
 <!-- BEGIN_TF_DOCS -->
+
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=0.15 |
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.1.4 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.30.0 |
+| Name                                                                     | Version   |
+| ------------------------------------------------------------------------ | --------- |
+| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >=0.15    |
+| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 1.1.4  |
+| <a name="requirement_aws"></a> [aws](#requirement_aws)                   | >= 5.30.0 |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.82.2 |
-| <a name="provider_local"></a> [local](#provider\_local) | 2.5.1 |
+| Name                                                   | Version |
+| ------------------------------------------------------ | ------- |
+| <a name="provider_aws"></a> [aws](#provider_aws)       | 5.82.2  |
+| <a name="provider_local"></a> [local](#provider_local) | 2.5.1   |
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_appstream"></a> [appstream](#module\_appstream) | github.com/HealthBioscienceIDEAS/terraform-aws-IDEAS-appstream | n/a |
-| <a name="module_database"></a> [database](#module\_database) | ./modules/database | n/a |
-| <a name="module_efs"></a> [efs](#module\_efs) | ./modules/efs | n/a |
-| <a name="module_get_ami"></a> [get\_ami](#module\_get\_ami) | ./modules/get_ami | n/a |
-| <a name="module_get_my_ip"></a> [get\_my\_ip](#module\_get\_my\_ip) | ./modules/get_my_ip | n/a |
-| <a name="module_setup_vpc"></a> [setup\_vpc](#module\_setup\_vpc) | terraform-aws-modules/vpc/aws | n/a |
-| <a name="module_web_server"></a> [web\_server](#module\_web\_server) | ./modules/web-server | n/a |
+| Name                                                              | Source                                                         | Version |
+| ----------------------------------------------------------------- | -------------------------------------------------------------- | ------- |
+| <a name="module_appstream"></a> [appstream](#module_appstream)    | github.com/HealthBioscienceIDEAS/terraform-aws-IDEAS-appstream | n/a     |
+| <a name="module_database"></a> [database](#module_database)       | ./modules/database                                             | n/a     |
+| <a name="module_efs"></a> [efs](#module_efs)                      | ./modules/efs                                                  | n/a     |
+| <a name="module_get_ami"></a> [get_ami](#module_get_ami)          | ./modules/get_ami                                              | n/a     |
+| <a name="module_get_my_ip"></a> [get_my_ip](#module_get_my_ip)    | ./modules/get_my_ip                                            | n/a     |
+| <a name="module_setup_vpc"></a> [setup_vpc](#module_setup_vpc)    | terraform-aws-modules/vpc/aws                                  | n/a     |
+| <a name="module_web_server"></a> [web_server](#module_web_server) | ./modules/web-server                                           | n/a     |
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [aws_key_pair.key_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
+| Name                                                                                                                                                    | Type     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| [aws_key_pair.key_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair)                                           | resource |
 | [aws_security_group_rule.appstream_allow_all_outgoing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [local_file.ansible-hosts](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
+| [local_file.ansible-hosts](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file)                                          | resource |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_as2_desired_instance_num"></a> [as2\_desired\_instance\_num](#input\_as2\_desired\_instance\_num) | Number of instances to use for the AppStream image | `number` | `1` | no |
-| <a name="input_as2_image_name"></a> [as2\_image\_name](#input\_as2\_image\_name) | Name of the AppStream image | `string` | `"IDEAS-FSL-AmazonLinux2-EFSMount-2023-08-30"` | no |
-| <a name="input_as2_instance_type"></a> [as2\_instance\_type](#input\_as2\_instance\_type) | Instance type to use for the AppStream image | `string` | `"stream.standard.medium"` | no |
-| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | AZs to use for deploying XNAT | `list(string)` | <pre>[<br/>  "eu-west-2a",<br/>  "eu-west-2b"<br/>]</pre> | no |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to use for deploying XNAT | `string` | `"eu-west-2"` | no |
-| <a name="input_create_appstream"></a> [create\_appstream](#input\_create\_appstream) | Whether to create an AppStream image | `bool` | `false` | no |
-| <a name="input_ec2_instance_types"></a> [ec2\_instance\_types](#input\_ec2\_instance\_types) | Instance type to use for each server | `map(any)` | <pre>{<br/>  "xnat_cserv": "m4.xlarge",<br/>  "xnat_db": "db.t3.large",<br/>  "xnat_web": "t3.large"<br/>}</pre> | no |
-| <a name="input_extend_http_cidr"></a> [extend\_http\_cidr](#input\_extend\_http\_cidr) | The CIDR blocks to grant HTTP access to the web server, in addition to your own IP address | `list(string)` | `[]` | no |
-| <a name="input_extend_https_cidr"></a> [extend\_https\_cidr](#input\_extend\_https\_cidr) | The CIDR blocks to grant HTTSP access to the web server, in addition to your own IP address | `list(string)` | `[]` | no |
-| <a name="input_extend_ssh_cidr"></a> [extend\_ssh\_cidr](#input\_extend\_ssh\_cidr) | CIDR blocks servers should permit SHH access from, in addition to your own IP address | `list(string)` | `[]` | no |
-| <a name="input_instance_os"></a> [instance\_os](#input\_instance\_os) | OS to use for the instance - will determine the AMI to use | `string` | `"rocky9"` | no |
-| <a name="input_instance_private_ips"></a> [instance\_private\_ips](#input\_instance\_private\_ips) | Private IP addresses for each instance | `map(any)` | <pre>{<br/>  "xnat_cserv": "192.168.56.14",<br/>  "xnat_web": "192.168.56.10"<br/>}</pre> | no |
-| <a name="input_root_block_device_size"></a> [root\_block\_device\_size](#input\_root\_block\_device\_size) | Storage space on the root block device (GB) | `number` | `30` | no |
-| <a name="input_smtp_private_ip"></a> [smtp\_private\_ip](#input\_smtp\_private\_ip) | Private IP address to use to the SMTP mail server | `string` | `"192.168.56.101"` | no |
-| <a name="input_subnet_cidr_blocks"></a> [subnet\_cidr\_blocks](#input\_subnet\_cidr\_blocks) | CIDR block for the VPC and subnets | `map(any)` | <pre>{<br/>  "private": [<br/>    "192.168.100.0/24",<br/>    "192.168.101.0/24"<br/>  ],<br/>  "public": [<br/>    "192.168.56.0/24"<br/>  ]<br/>}</pre> | no |
-| <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | CIDR block for the VPC | `string` | `"192.168.0.0/16"` | no |
+| Name                                                                                                      | Description                                                                                 | Type           | Default                                                                                                                                      | Required |
+| --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | :------: |
+| <a name="input_as2_desired_instance_num"></a> [as2_desired_instance_num](#input_as2_desired_instance_num) | Number of instances to use for the AppStream image                                          | `number`       | `1`                                                                                                                                          |    no    |
+| <a name="input_as2_image_name"></a> [as2_image_name](#input_as2_image_name)                               | Name of the AppStream image                                                                 | `string`       | `"IDEAS-FSL-AmazonLinux2-EFSMount-2023-08-30"`                                                                                               |    no    |
+| <a name="input_as2_instance_type"></a> [as2_instance_type](#input_as2_instance_type)                      | Instance type to use for the AppStream image                                                | `string`       | `"stream.standard.medium"`                                                                                                                   |    no    |
+| <a name="input_availability_zones"></a> [availability_zones](#input_availability_zones)                   | AZs to use for deploying XNAT                                                               | `list(string)` | <pre>[<br/> "eu-west-2a",<br/> "eu-west-2b"<br/>]</pre>                                                                                      |    no    |
+| <a name="input_aws_region"></a> [aws_region](#input_aws_region)                                           | AWS region to use for deploying XNAT                                                        | `string`       | `"eu-west-2"`                                                                                                                                |    no    |
+| <a name="input_create_appstream"></a> [create_appstream](#input_create_appstream)                         | Whether to create an AppStream image                                                        | `bool`         | `false`                                                                                                                                      |    no    |
+| <a name="input_ec2_instance_types"></a> [ec2_instance_types](#input_ec2_instance_types)                   | Instance type to use for each server                                                        | `map(any)`     | <pre>{<br/> "xnat_cserv": "m4.xlarge",<br/> "xnat_db": "db.t3.large",<br/> "xnat_web": "t3.large"<br/>}</pre>                                |    no    |
+| <a name="input_extend_http_cidr"></a> [extend_http_cidr](#input_extend_http_cidr)                         | The CIDR blocks to grant HTTP access to the web server, in addition to your own IP address  | `list(string)` | `[]`                                                                                                                                         |    no    |
+| <a name="input_extend_https_cidr"></a> [extend_https_cidr](#input_extend_https_cidr)                      | The CIDR blocks to grant HTTSP access to the web server, in addition to your own IP address | `list(string)` | `[]`                                                                                                                                         |    no    |
+| <a name="input_extend_ssh_cidr"></a> [extend_ssh_cidr](#input_extend_ssh_cidr)                            | CIDR blocks servers should permit SHH access from, in addition to your own IP address       | `list(string)` | `[]`                                                                                                                                         |    no    |
+| <a name="input_instance_os"></a> [instance_os](#input_instance_os)                                        | OS to use for the instance - will determine the AMI to use                                  | `string`       | `"rocky9"`                                                                                                                                   |    no    |
+| <a name="input_instance_private_ips"></a> [instance_private_ips](#input_instance_private_ips)             | Private IP addresses for each instance                                                      | `map(any)`     | <pre>{<br/> "xnat_cserv": "192.168.56.14",<br/> "xnat_web": "192.168.56.10"<br/>}</pre>                                                      |    no    |
+| <a name="input_root_block_device_size"></a> [root_block_device_size](#input_root_block_device_size)       | Storage space on the root block device (GB)                                                 | `number`       | `30`                                                                                                                                         |    no    |
+| <a name="input_smtp_private_ip"></a> [smtp_private_ip](#input_smtp_private_ip)                            | Private IP address to use to the SMTP mail server                                           | `string`       | `"192.168.56.101"`                                                                                                                           |    no    |
+| <a name="input_subnet_cidr_blocks"></a> [subnet_cidr_blocks](#input_subnet_cidr_blocks)                   | CIDR block for the VPC and subnets                                                          | `map(any)`     | <pre>{<br/> "private": [<br/> "192.168.100.0/24",<br/> "192.168.101.0/24"<br/> ],<br/> "public": [<br/> "192.168.56.0/24"<br/> ]<br/>}</pre> |    no    |
+| <a name="input_vpc_cidr_block"></a> [vpc_cidr_block](#input_vpc_cidr_block)                               | CIDR block for the VPC                                                                      | `string`       | `"192.168.0.0/16"`                                                                                                                           |    no    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_ansible_install_xnat"></a> [ansible\_install\_xnat](#output\_ansible\_install\_xnat) | Run this command from the `xnat-aws/configure` directory to install and configure XNAT. |
-| <a name="output_xnat_web_url"></a> [xnat\_web\_url](#output\_xnat\_web\_url) | Once XNAT has been installed and configured, the web server will be accessible at this URL. |
+| Name                                                                                            | Description                                                                                 |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| <a name="output_ansible_install_xnat"></a> [ansible_install_xnat](#output_ansible_install_xnat) | Run this command from the `xnat-aws/configure` directory to install and configure XNAT.     |
+| <a name="output_xnat_web_url"></a> [xnat_web_url](#output_xnat_web_url)                         | Once XNAT has been installed and configured, the web server will be accessible at this URL. |
+
 <!-- END_TF_DOCS -->
