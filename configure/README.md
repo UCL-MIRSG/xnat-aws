@@ -106,7 +106,7 @@ button for the listed containers. For more information, see
 
 ## Testing with multiple users
 
-The `test-multiple_xnat_users.yml` playbook can be used to create multiple users
+The `test_multiple_xnat_users.yml` playbook can be used to create multiple users
 on the XNAT server. To run the playbook, go to the `xnat-aws/configure`
 directory and run the following command:
 

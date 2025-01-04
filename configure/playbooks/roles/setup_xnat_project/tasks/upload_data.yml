@@ -1,6 +1,6 @@
 ---
 - name: Remove python3-requests
-  ansible.builtin.yum:
+  ansible.legacy.dnf:
     name: python3-requests
     state: absent
 

@@ -7,4 +7,4 @@
     n_users: 4
 
   roles:
-    - role: test-multiple_xnat_users
+    - role: test_multiple_xnat_users
