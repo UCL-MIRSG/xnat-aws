@@ -1,6 +1,6 @@
 ---
 - name: Ensure nfs-utils is installed (for mounting EFS volume)
-  ansible.builtin.yum:
+  ansible.legacy.dnf:
     name: nfs-utils
     state: present
 
