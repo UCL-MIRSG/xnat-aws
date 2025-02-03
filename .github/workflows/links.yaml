@@ -16,5 +16,5 @@ jobs:
       - name: Check links
         uses: UCL-MIRSG/.github/actions/links@4695e545829b91dcddc6e36358454bc4a879f751 # v0
         with:
-          app-id: ${{ secrets.LINK_APP_ID }}
+          app-id: ${{ vars.LINK_APP_ID }}
           app-pem: ${{ secrets.LINK_APP_PEM }}
