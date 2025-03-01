@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 2
     steps:
       - name: Check links
-        uses: UCL-MIRSG/.github/actions/links@4695e545829b91dcddc6e36358454bc4a879f751 # v0
+        uses: UCL-MIRSG/.github/actions/links@942a6fca32d2f2ae18178ed95e88eaa18a613022 # v0
         with:
           app-id: ${{ vars.LINKS_APP_ID }}
           app-pem: ${{ secrets.LINKS_PRIVATE_KEY }}
