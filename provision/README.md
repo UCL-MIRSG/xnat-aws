@@ -67,7 +67,7 @@ where all resources are deployed. However, we also create a second private
 subnet in a second availability zone, but nothing is deployed here.
 
 This is due a
-[requirement of RDS to have subnets defined in at least two availability zones, even if you're deploying in a single availability zone](https://repost.aws/questions/QUf7DbNMKFQmWiRg8oMB0obA/why-must-an-rds-always-have-two-subnets#ANurWZpEHBRPa1SwrtRh9Q9w).
+[requirement of RDS to have subnets defined in at least two availability zones, even if you're deploying in a single availability zone](https://repost.aws/questions/QUB992dLuURtmGzHD_QYQlnw/why-aws-rds-service-needs-two-subnets-from-different-azs).
 but deploy instance in only two subnets in a single availability zone.
 
 ### Security groups and access
