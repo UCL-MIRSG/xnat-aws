@@ -12,8 +12,8 @@
     status_code:
       - 201
       - 400
-  register: xnat_commands_added
-  changed_when: xnat_commands_added.status == 201
+  register: container_service_images_xnat_commands_added
+  changed_when: container_service_images_xnat_commands_added.status == 201
   loop_control:
     loop_var: command_file
   with_fileglob:
