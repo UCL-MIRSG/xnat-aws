@@ -38,8 +38,8 @@
     python ../scripts/upload_data.py --metadata {{ project_metadata }} --data {{
     project_data }} \ --inventory ../hosts.yml --host xnat_web --netrc {{
     netrc_file }}
-  register: upload_data
-  changed_when: upload_data.failed != false
+  register: test_multiple_xnat_users_upload_data
+  changed_when: test_multiple_xnat_users_upload_data.failed != false
   loop: "{{ range(1, n_users | int + 1) | list }}"
   loop_control:
     loop_var: user_id
@@ -55,14 +55,14 @@
   delegate_to: localhost
   ansible.builtin.async_status:
     jid: "{{ item.ansible_job_id }}"
-  loop: "{{ upload_data.results }}"
-  register: upload_data_status
-  until: upload_data_status.finished
+  loop: "{{ test_multiple_xnat_users_upload_data.results }}"
+  register: test_multiple_xnat_users_upload_data_status
+  until: test_multiple_xnat_users_upload_data_status.finished
   retries: 180
   delay: 5
 
 - name: Print upload data stdout
   ansible.builtin.debug:
     msg: "{{ item.stdout_lines }}"
-  loop: "{{ upload_data_status.results }}"
+  loop: "{{ test_multiple_xnat_users_upload_data_status.results }}"
   when: item.stdout != ""

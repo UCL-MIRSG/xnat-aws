@@ -17,5 +17,5 @@
     status_code:
       - 200
       - 409
-  register: xnat_create_investigator
-  changed_when: xnat_create_investigator.status == 200
+  register: setup_xnat_project_xnat_create_investigator
+  changed_when: setup_xnat_project_xnat_create_investigator.status == 200

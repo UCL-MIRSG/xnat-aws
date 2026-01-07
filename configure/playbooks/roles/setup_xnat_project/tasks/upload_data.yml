@@ -20,8 +20,8 @@
       }} --password {{ xnat_project_owner.password }}
   args:
     executable: python3
-  register: upload_data_result
+  register: setup_xnat_project_upload_data_result
 
 - name: Print upload_data.py script output
   ansible.builtin.debug:
-    msg: "{{ upload_data_result.stdout_lines }}"
+    msg: "{{ setup_xnat_project_upload_data_result.stdout_lines }}"

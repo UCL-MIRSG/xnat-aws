@@ -21,8 +21,8 @@
     status_code:
       - 201
       - 409
-  register: xnat_create_user
-  changed_when: xnat_create_user.status == 201
+  register: setup_xnat_project_xnat_create_user
+  changed_when: setup_xnat_project_xnat_create_user.status == 201
 
 # Set project owner
 - name: Make user owner of the project
