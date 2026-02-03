@@ -7,9 +7,18 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: Generate token
+        id: generate-token
+        # yamllint disable-line rule:line-length
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2
+        with:
+          app-id: ${{ vars.TERRAFORM_DOCS_APP_ID }}
+          private-key: ${{ secrets.TERRAFORM_DOCS_APP_PRIVATE_KEY }}
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Render terraform docs and push changes back to PR
         uses: terraform-docs/gh-actions@main
