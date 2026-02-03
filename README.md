@@ -52,8 +52,8 @@ deploying XNAT on AWS. If re-running the deployment i.e. returning after
    terraform apply
    ```
 
-   This will will create and SSH key and various passwords that will be used for
-   accessing the AWS servers and configuring XNAT.
+   This will will create various passwords that will be used for accessing the
+   AWS servers and configuring XNAT.
 
    ### AppStream
 

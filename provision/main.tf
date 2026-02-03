@@ -149,10 +149,20 @@ resource "aws_security_group_rule" "appstream_allow_all_outgoing" {
   cidr_blocks = ["0.0.0.0/0"]
 }
 
+resource "tls_private_key" "ssh_key" {
+  algorithm = "ED25519"
+}
+
 # Copy public key to AWS
 resource "aws_key_pair" "key_pair" {
   key_name   = local.ssh_key_name
-  public_key = file(local.ssh_public_key_filename)
+  public_key = tls_private_key.ssh_key.public_key_openssh
+}
+
+resource "local_sensitive_file" "ssh_private_key" {
+  content         = tls_private_key.ssh_key.private_key_pem
+  filename        = local.ssh_private_key_filename
+  file_permission = "0600"
 }
 
 # Write the ansible hosts file
@@ -181,7 +191,6 @@ locals {
   # AWS
   ssh_key_name             = "aws-rsa"
   ssh_private_key_filename = "../ssh/aws-rsa"
-  ssh_public_key_filename  = "../ssh/aws-rsa.pub"
 
   # Ansible user for connecting to the instance
   ansible_ssh_user = {
