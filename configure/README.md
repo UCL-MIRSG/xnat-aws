@@ -82,7 +82,7 @@ with the username `profX` and the password `carlos1602`.
 
 This user is an owner of the project but is not a site-wide admin. This means
 the user can upload data for the project, and even delete the project, but
-cannot perform admin actions on the site. See this section for
+cannot perform admin actions on the site. See these instructions for
 [logging in as an administrator](#check-the-xnat-admin-credentials).
 
 ## Enable the XNAT Container Service images
@@ -96,13 +96,13 @@ of images the server, but they still need to be enabled manually. To do this,
 log into the server and go to the **Administer** tab. Then, under the **Plugin
 Settings** section, click on **Command Configurations** and toggle the
 **Enabled** button for the listed containers. This will make the commands
-available site-wide. See this page for
-[more information](https://wiki.xnat.org/container-service/enabling-commands-and-setting-site-wide-defaults-126156956.html).
+available site-wide. More information can be found on the
+[XNAT website](https://wiki.xnat.org/container-service/enabling-commands-and-setting-site-wide-defaults-126156956.html).
 
 To enable the commands for a specific project, go to the **Project Settings**
 and go to the **Configure Commands** section. Then, toggle the **Enabled**
-button for the listed containers. See this page for
-[more information](https://wiki.xnat.org/container-service/enable-a-command-in-your-project-122978909.html).
+button for the listed containers. More information can be found on the
+[XNAT website](https://wiki.xnat.org/container-service/enable-a-command-in-your-project-122978909.html).
 
 ## Testing with multiple users
 

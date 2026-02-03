@@ -189,13 +189,15 @@ to skip the prompt.
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=0.15 |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.1.4 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.30.0 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.2.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.27.0 |
-| <a name="provider_local"></a> [local](#provider\_local) | 2.6.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.30.0 |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.6.2 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.2.1 |
 
 ## Modules
 
@@ -216,6 +218,8 @@ to skip the prompt.
 | [aws_key_pair.key_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
 | [aws_security_group_rule.appstream_allow_all_outgoing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [local_file.ansible-hosts](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
+| [local_sensitive_file.ssh_private_key](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
+| [tls_private_key.ssh_key](https://registry.terraform.io/providers/hashicorp/tls/4.2.1/docs/resources/private_key) | resource |
 
 ## Inputs
 
