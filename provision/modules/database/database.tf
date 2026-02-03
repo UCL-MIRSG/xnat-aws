@@ -41,7 +41,7 @@ resource "random_password" "db_credentials" {
 # Write the passwords to file and encrypt the vault
 resource "local_sensitive_file" "ansible-vault" {
 
-  content = templatefile("templates/ansible_vault.tftpl", {
+  content = templatefile("${path.module}/../../templates/ansible_vault.tftpl", {
     postgres_xnat_password = random_password.db_credentials.result
   })
   filename        = local.ansible_vault_file
