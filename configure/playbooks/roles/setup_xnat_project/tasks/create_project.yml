@@ -15,8 +15,8 @@
     status_code:
       - 200
       - 409
-  register: xnat_project_created
-  changed_when: xnat_project_created.status == 200
+  register: setup_xnat_project_xnat_project_created
+  changed_when: setup_xnat_project_xnat_project_created.status == 200
 
 - name: Make the project public
   ansible.builtin.uri:

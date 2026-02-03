@@ -15,8 +15,8 @@
     status_code:
       - 200
       - 409
-  register: xnat_create_investigator
-  changed_when: xnat_create_investigator.status == 200
+  register: test_multiple_xnat_users_xnat_create_investigator
+  changed_when: test_multiple_xnat_users_xnat_create_investigator.status == 200
 
 - name: Ensure the data directory exists
   delegate_to: localhost
@@ -46,8 +46,8 @@
     status_code:
       - 200
       - 409
-  register: xnat_project_created
-  changed_when: xnat_project_created.status == 200
+  register: test_multiple_xnat_users_xnat_project_created
+  changed_when: test_multiple_xnat_users_xnat_project_created.status == 200
 
 - name: Create owner for the project
   ansible.builtin.uri:
@@ -69,8 +69,8 @@
     status_code:
       - 201
       - 409
-  register: xnat_create_user
-  changed_when: xnat_create_user.status == 201
+  register: test_multiple_xnat_users_xnat_create_user
+  changed_when: test_multiple_xnat_users_xnat_create_user.status == 201
 
 - name: Make user owner of their project
   ansible.builtin.uri:
