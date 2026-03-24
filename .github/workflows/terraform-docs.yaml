@@ -5,7 +5,7 @@ on:
 
 jobs:
   docs:
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     steps:
       - uses: UCL-MIRSG/.github/actions/terraform-docs@08475f02f1352e0ec7099a1c8c8fd3e75bce642c # v0
         with:
