@@ -7,23 +7,8 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - name: Generate token
-        id: generate-token
-        # yamllint disable-line rule:line-length
-        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2
+      - uses: UCL-MIRSG/.github/actions/terraform-docs@08475f02f1352e0ec7099a1c8c8fd3e75bce642c # v0
         with:
           app-id: ${{ vars.TERRAFORM_DOCS_APP_ID }}
-          private-key: ${{ secrets.TERRAFORM_DOCS_APP_PRIVATE_KEY }}
-
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ steps.generate-token.outputs.token }}
-
-      - name: Render terraform docs and push changes back to PR
-        uses: terraform-docs/gh-actions@main
-        with:
+          app-pem: ${{ secrets.TERRAFORM_DOCS_APP_PRIVATE_KEY }}
           working-dir: ./provision
-          output-file: README.md
-          output-method: inject
-          git-push: true
