@@ -7,7 +7,7 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: UCL-MIRSG/.github/actions/terraform-docs@08475f02f1352e0ec7099a1c8c8fd3e75bce642c # v0
+      - uses: UCL-MIRSG/.github/actions/terraform-docs@fa217391231c656a9a110d6bd82956b8274b551c # v0
         with:
           app-id: ${{ vars.TERRAFORM_DOCS_APP_ID }}
           app-pem: ${{ secrets.TERRAFORM_DOCS_APP_PRIVATE_KEY }}
