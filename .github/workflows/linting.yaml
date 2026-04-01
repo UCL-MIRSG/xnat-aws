@@ -21,6 +21,8 @@ concurrency:
 jobs:
   linting:
     if: github.event.pull_request.draft == false
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: UCL-MIRSG/.github/actions/linting@fa217391231c656a9a110d6bd82956b8274b551c # v0

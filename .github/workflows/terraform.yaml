@@ -13,6 +13,8 @@ permissions:
 jobs:
   terraform:
     name: Terraform
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
 
     # Use the Bash shell regardless whether the GitHub Actions
@@ -25,6 +27,8 @@ jobs:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
 
       # Install the latest version of Terraform CLI
       - name: Setup Terraform
