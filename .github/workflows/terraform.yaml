@@ -7,9 +7,6 @@ on:
       - main
   pull_request:
 
-permissions:
-  contents: read
-
 jobs:
   terraform:
     name: Terraform
