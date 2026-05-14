@@ -1,0 +1,14 @@
+---
+name: Update the terraform lock file to work on both platforms
+
+on:
+  pull_request:
+
+jobs:
+  terraform-lock-update:
+    runs-on: ubuntu-slim
+    steps:
+      - uses: UCL-MIRSG/.github/actions/terraform-lock-update@602da492affc15f81de75c454a91a7343c4b842d # v0
+        with:
+          app-id: ${{ vars.TERRAFORM_LOCK_UPDATE_APP_ID }}
+          app-pem: ${{ secrets.TERRAFORM_LOCK_UPDATE_APP_PRIVATE_KEY }}
