@@ -23,7 +23,7 @@ jobs:
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
-      - uses: UCL-MIRSG/.github/actions/linting@0ebba40bf580f7aed98275c156ab8fb71c33ea82 # v0
+      - uses: UCL-MIRSG/.github/actions/linting@08ca3caf4617aa6568fd6edf276cb3edbdaae375 # v0
         with:
           pre-commit-config: ./.pre-commit-config.yaml
           ansible-roles-config: ./configure/playbooks/roles/requirements.yml
