@@ -21,9 +21,11 @@ concurrency:
 jobs:
   linting:
     if: github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    runs-on: ubuntu-slim
     steps:
-      - uses: UCL-MIRSG/.github/actions/linting@0ebba40bf580f7aed98275c156ab8fb71c33ea82 # v0
+      - uses: UCL-MIRSG/.github/actions/linting@fa217391231c656a9a110d6bd82956b8274b551c # v0
         with:
           pre-commit-config: ./.pre-commit-config.yaml
           ansible-roles-config: ./configure/playbooks/roles/requirements.yml
