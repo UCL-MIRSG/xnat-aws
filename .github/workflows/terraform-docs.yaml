@@ -5,10 +5,12 @@ on:
 
 jobs:
   docs:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: UCL-MIRSG/.github/actions/terraform-docs@08475f02f1352e0ec7099a1c8c8fd3e75bce642c # v0
+      - uses: UCL-MIRSG/.github/actions/terraform-docs@08ca3caf4617aa6568fd6edf276cb3edbdaae375 # v0
         with:
           app-id: ${{ vars.TERRAFORM_DOCS_APP_ID }}
-          app-pem: ${{ secrets.TERRAFORM_DOCS_APP_PRIVATE_KEY }}
+          app-pem: ${{ secrets.TERRAFORM_DOCS_APP_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env]
           working-dir: ./provision
