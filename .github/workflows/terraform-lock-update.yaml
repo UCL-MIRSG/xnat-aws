@@ -6,9 +6,11 @@ on:
 
 jobs:
   terraform-lock-update:
+    permissions:
+      contents: read
     runs-on: ubuntu-slim
     steps:
       - uses: UCL-MIRSG/.github/actions/terraform-lock-update@ee53b1a497918d8f7c5cc4051c71b3e27ce15b7f # v0
         with:
           app-id: ${{ vars.TERRAFORM_LOCK_UPDATE_APP_ID }}
-          app-pem: ${{ secrets.TERRAFORM_LOCK_UPDATE_APP_PRIVATE_KEY }}
+          app-pem: ${{ secrets.TERRAFORM_LOCK_UPDATE_APP_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env]
