@@ -2,7 +2,6 @@
 # https://lychee.cli.rs/guides/config/ 
 
 # Comma-separated list of accepted status codes for valid links. 
-# 429 is included to allow for rate-limited endpoints that 
-may return 429 Too Many Requests.
+# 429 is included to allow for rate-limited endpoints that may return 429 Too Many Requests.
 accept = ["200", "429"]
 
