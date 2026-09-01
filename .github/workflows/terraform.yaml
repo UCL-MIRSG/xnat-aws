@@ -25,6 +25,8 @@ jobs:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       # Install the latest version of Terraform CLI
       - name: Setup Terraform

@@ -10,6 +10,8 @@ on:
 
 jobs:
   links:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
@@ -17,4 +19,4 @@ jobs:
         uses: UCL-MIRSG/.github/actions/links@ee53b1a497918d8f7c5cc4051c71b3e27ce15b7f # v0
         with:
           app-id: ${{ vars.LINKS_APP_ID }}
-          app-pem: ${{ secrets.LINKS_PRIVATE_KEY }}
+          app-pem: ${{ secrets.LINKS_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env]
