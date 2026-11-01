@@ -25,7 +25,7 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     steps:
-      - uses: UCL-MIRSG/.github/actions/linting@ee53b1a497918d8f7c5cc4051c71b3e27ce15b7f # v0
+      - uses: UCL-MIRSG/.github/actions/linting@15e7b1d799e83c59e7e193210f2a21eb48b81fce # v0
         with:
           pre-commit-config: ./.pre-commit-config.yaml
           ansible-roles-config: ./configure/playbooks/roles/requirements.yml
