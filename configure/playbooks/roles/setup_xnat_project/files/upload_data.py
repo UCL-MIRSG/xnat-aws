@@ -1,6 +1,6 @@
 import csv
 import pathlib
-from typing_extensions import Annotated
+from typing import Annotated
 
 import typer
 import xnat
